@@ -7,7 +7,7 @@ body {
 .hero {
     position: relative;
     height: 85vh;
-    background-image: url("manage\ library.jpg");
+    background-image: url("manage library.jpg");
     background-size: cover;
     background-position: center;
     display: flex;
