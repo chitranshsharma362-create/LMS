@@ -1,0 +1,56 @@
+
+
+.box{
+    width: 320px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border:2px solid black;
+    border-radius: 10px;
+    display: none;
+    /* z-index: 10; */
+}
+
+.box.show{
+    display: block;
+}
+
+h2{
+    text-align: center;
+    color: rgb(9, 57, 57);
+}
+
+input{
+    width: 90%;
+    padding: 8px;
+    margin: 8px;
+    border-radius: 10px;
+}
+
+input[type="checkbox"]{
+    accent-color: rgb(36, 159, 155);
+    width: auto;
+    margin: 8px;
+}
+
+span{
+    font-size: 13px;
+    color: red;
+    margin: 8px;
+}
+
+button{
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    background: rgb(5, 153, 153);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover{
+    background: rgb(3, 91, 91);
+}
+
