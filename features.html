@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="head-foot.css">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="form.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <div id="header"></div>
+
+    <div class="box">
+        <h2>Signup</h2>
+
+        <form id="form">
+            <input type="text" id="name" placeholder="Username">
+            <span id="nameError"></span>
+
+            <input type="email" id="email" placeholder="E-mail">
+            <span id="mailError"></span>
+
+            <input type="password" id="password" placeholder="Password">
+            <span id="passError"></span>
+
+            <input type="password" id="confirmpass" placeholder="Confirm Password">
+            <span id="confirmError"></span>
+
+            <label>
+                <input type="checkbox" id="showpass"> Show Password
+            </label>
+
+            <button type="submit">Register</button>
+            <script src="form.js"></script>
+        </form>
+    </div>
+
+    <section class="whyUs">
+        <div class="why-conatiner">
+
+            <div class="why-text">
+                <span class="why-tag">WHY CHOOSE US?</span>
+                <h2 class="why-h2">Why you should start manage Library digitally ?</h2>
+
+                <p>Managing libraries manually is time-consuming and prone to errors.
+                    Adigital library management system helps you organise resources
+                    efficiently, reduce paperwork, and save valuable time.
+
+                    <br>
+
+                    Digital management is not just a trend - it is a smarter , faster , and more secure
+                    way to run a modern library.
+                </p>
+
+                <div class="why-features">
+                    <div class="feature">
+                        <div class="icon">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </div>
+                        <h4>Skilled Management</h4>
+                        <p>Smart tools to manage library operations quickly and efficiently.</p>
+                    </div>
+
+                    <div class="feature">
+                        <div class="icon">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+                        <h4>Accurate Records</h4>
+                        <p>Digital tracking ensures error-free and well-organized data.</p>
+                    </div>
+
+                    <div class="feature">
+                        <div class="icon">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <h4>Easy Access</h4>
+                        <p>use the Library system anytime , anywhere with complete flexibility</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="why-img">
+                <img src="about.avif">
+            </div>
+        </div>
+    </section>
+
+    <div id="footer"></div>
+
+    <script src="main.js"></script>
+
+    <script>
+        fetch("header.html")
+            .then(Response => Response.text())
+            .then(data => {
+                document.getElementById("header").innerHTML = data;
+
+                let currentPage = window.location.pathname.split("/").pop();
+                let links = document.querySelectorAll(".menu .menubar ul li a");
+                if (!currentPage || currentPage == "#") {
+                    currentPage = "home.html"
+                }
+
+                links.forEach(link => {
+                    console.log("current Page:", currentPage);
+                    let linkPage = link.getAttribute("href");
+                    if (linkPage == currentPage) {
+                        link.closest("li").classList.add("underline_current");
+                    }
+                })
+            });
+
+        fetch("footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer").innerHTML = data;
+            });
+    </script>
+</body>
+
+</html>
