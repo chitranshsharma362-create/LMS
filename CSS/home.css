@@ -377,3 +377,96 @@ body {
     opacity: 1;
     visibility: visible;
 }
+
+@media(max-width:576px) {
+    .hero-content p {
+        font-size: 20px;
+        letter-spacing: 1.5px;
+        margin-bottom: 10px;
+        opacity: 0.9;
+    }
+
+    .hero-content h1 {
+        margin-top: 0;
+        font-size: 50px;
+        margin-bottom: 20px;
+    }
+
+    .about-tag {
+        color: #ff4d4d;
+        font-weight: 400;
+        font-size: 20px;
+        letter-spacing: 1.5px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .about-text .about-h2 {
+        text-align: left;
+        font-size: 25px;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        color: #0b0b2c;
+    }
+
+    .about-text p {
+        color: #555;
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        max-width: 305px;
+        text-align: justify;
+    }
+
+    .why-tag {
+        color: #ff4d4d;
+        font-weight: 400;
+        font-size: 20px;
+        letter-spacing: 1.5px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .why-h2 {
+        text-align: left;
+        font-size: 25px;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        color: #0b0b2c;
+    }
+
+    .why-text p {
+        color: #555;
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        max-width: 305px;
+        text-align: justify;
+    }
+
+    .contact-tag {
+        color: #ff4d4d;
+        font-weight: 400;
+        font-size: 20px;
+        letter-spacing: 1.5px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .contact-h2 {
+        text-align: left;
+        font-size: 25px;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        color: #0b0b2c;
+    }
+
+    .contact-text p {
+        color: #555;
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        max-width: 305px;
+        text-align: justify;
+    }
+}
