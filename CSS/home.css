@@ -457,7 +457,7 @@ body {
         margin-bottom: 8px;
     }
 
-    .contact-h2 {
+    .contact-info h2 {
         text-align: left;
         font-size: 25px;
         line-height: 1.2;
@@ -465,7 +465,7 @@ body {
         color: #0b0b2c;
     }
 
-    .contact-text p {
+    .contact-info p {
         color: #555;
         font-size: 15px;
         line-height: 1.5;
