@@ -461,7 +461,7 @@ body {
         margin-bottom: 8px;
     }
 
-    .contact-info contact-h2 {
+    .contact-h2 {
         text-align: left;
         font-size: 25px;
         line-height: 1.2;
@@ -469,7 +469,7 @@ body {
         color: #0b0b2c;
     }
 
-    .contact-info p {
+    .contact-text p {
         color: #555;
         font-size: 15px;
         line-height: 1.5;
@@ -477,11 +477,12 @@ body {
         max-width: 305px;
         text-align: justify;
     }
-     .why-features {
+
+    .why-features {
         display: flex;
         flex-direction: column;
         width: 100%;
-        gap: 5px;
+        gap: 15px;
     }
 
     .feature {
@@ -511,12 +512,15 @@ body {
     .feature h4 {
         font-size: 18px;
         margin-bottom: 8px;
-        color: #111;
     }
 
     .feature p {
         font-size: 15px;
-        color: #666;
         line-height: 1.5;
+        text-align: justify;
+    }
+
+    .contact-form form {
+        gap: 5px;
     }
 }
