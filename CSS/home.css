@@ -469,4 +469,46 @@ body {
         max-width: 305px;
         text-align: justify;
     }
+     .why-features {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+    .feature {
+        background: #fff;
+        padding: 25px 22px;
+        border-radius: 8px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+    }
+
+    .feature .icon {
+        width: 55px;
+        height: 55px;
+        background: #3f37c9;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 5px;
+    }
+
+    .feature .icon i {
+        color: #fff;
+        font-size: 22px;
+    }
+
+    .feature h4 {
+        font-size: 18px;
+        margin-bottom: 8px;
+        color: #111;
+    }
+
+    .feature p {
+        font-size: 15px;
+        color: #666;
+        line-height: 1.5;
+    }
 }
