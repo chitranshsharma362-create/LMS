@@ -94,6 +94,10 @@ body {
     flex: 1;
 }
 
+.about-text ul {
+    list-style: none;
+}
+
 .about-tag {
     color: #ff4d4d;
     font-weight: 600;
