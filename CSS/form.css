@@ -37,6 +37,7 @@ span{
     font-size: 13px;
     color: red;
     margin: 8px;
+    text-align: justify;
 }
 
 button{
