@@ -461,7 +461,7 @@ body {
         margin-bottom: 8px;
     }
 
-    .contact-info h2 {
+    .contact-info contact-h2 {
         text-align: left;
         font-size: 25px;
         line-height: 1.2;
