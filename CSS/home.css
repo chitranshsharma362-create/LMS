@@ -307,16 +307,6 @@ body {
     font-size: 18px;
 }
 
-.contact-box h4{
-    font-size: 16px;
-    margin-bottom: 3px;
-}
-
-.contact-box span{
-    font-size: 14px;
-    color: #535151;
-}
-
 .contact-form{
     flex: 1;
     background: #fff;
