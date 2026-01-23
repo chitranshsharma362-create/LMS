@@ -25,8 +25,14 @@ fetch("footer.html")
     });
 
 document.addEventListener("click", function (e) {
-    if (e.target.id === "loginBtn") {
-        document.querySelector(".box").classList.toggle("show");
+     if (e.target.id === "loginBtn") {
+        document.querySelector(".box").classList.add("show");
+        document.querySelector(".form-overlay").classList.add("show");
+    }
+
+    if (e.target.classList.contains("form-overlay")) {
+        document.querySelector(".box").classList.remove("show");
+        document.querySelector(".form-overlay").classList.remove("show");
     }
 });
 
