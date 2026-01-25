@@ -24,8 +24,34 @@ fetch("footer.html")
         document.getElementById("footer").innerHTML = data;
     });
 
+fetch("about-section.html")
+    .then(Response => Response.text())
+    .then(data => {
+        document.getElementById("about-section").innerHTML = data;
+    });
+
+fetch("features-section.html")
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("features-section").innerHTML = data;
+    });
+
+fetch("contact-section.html")
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("contact-section").innerHTML = data;
+    });
+
+fetch("form.html")
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("login-form").innerHTML = data;
+    });
+
+
+
 document.addEventListener("click", function (e) {
-     if (e.target.id === "loginBtn") {
+    if (e.target.id === "loginBtn") {
         document.querySelector(".box").classList.add("show");
         document.querySelector(".form-overlay").classList.add("show");
     }
