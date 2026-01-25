@@ -1,71 +1,61 @@
-let form = document.getElementById("form");
+document.addEventListener("DOMContentLoaded", function () {
 
-let nameInput = document.getElementById("name");
-let nameError = document.getElementById("nameError");
-let mailInput = document.getElementById("email");
-let mailError = document.getElementById("mailError");
-let passwordInput = document.getElementById("password");
-let passError = document.getElementById("passError");
-let confirmInput = document.getElementById("confirmpass");
-let confirmError = document.getElementById("confirmError");
+    let form = document.getElementById("form");
+    if(!form) return; // safety
 
-let showpass = document.getElementById("showpass");
+    let nameInput = document.getElementById("name");
+    let nameError = document.getElementById("nameError");
+    let mailInput = document.getElementById("email");
+    let mailError = document.getElementById("mailError");
+    let passwordInput = document.getElementById("password");
+    let passError = document.getElementById("passError");
+    let confirmInput = document.getElementById("confirmpass");
+    let confirmError = document.getElementById("confirmError");
+    let showpass = document.getElementById("showpass");
 
-form.addEventListener("submit" , function(e){
-    e.preventDefault();
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    let valid = true;
+        let valid = true;
 
-    if(nameInput.value.length < 3){
-        nameError.innerText = "Minimum 3 characters";
-        valid = false;
-    } else{
-        nameError.innerText = "";
-    }
+        if (nameInput.value.length < 3) {
+            nameError.innerText = "Minimum 3 characters";
+            valid = false;
+        } else nameError.innerText = "";
 
-    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-    if(! mailInput.value.match(emailPattern)){
-        mailError.innerText = "Invalid email";
-        valid = false;
-    } else {
-        mailError.innerText = "";
-    }
+        let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+        if (!mailInput.value.match(emailPattern)) {
+            mailError.innerText = "Invalid email";
+            valid = false;
+        } else mailError.innerText = "";
 
-    let password = passwordInput.value;
+        let password = passwordInput.value;
+        if (password.length < 8 || !(/\d/.test(password)) || !(/[!@#$%^&*]/.test(password))) {
+            passError.innerText = "Minimum 8 characters, 1 number & 1 special character required";
+            valid = false;
+        } else passError.innerText = "";
 
-    if(password.length < 8 || !(/\d/.test(password)) || !(/[!@#$%^&*]/).test(password)){
-        passError.innerText = "Minimum 8 characters, 1 number & 1 special character required";
-        valid = false;
-    }else{
-        passError.innerText = "";
-    }
+        if (password !== confirmInput.value) {
+            confirmError.innerText = "Password mismatch";
+            valid = false;
+        } else confirmError.innerText = "";
 
-    if(password !== confirmInput.value){
-        confirmError.innerText = "Password mismatch";
-        valid = false;
-    } else {
-        confirmError.innerText = "";
-    }
+        if (valid) {
+            localStorage.setItem("userData", JSON.stringify({
+                name: nameInput.value,
+                email: mailInput.value,
+                password
+            }));
 
-    if(valid){
+            alert("Signup Successful");
+            form.reset();
+        }
+    });
 
-        let user = {
-            name: nameInput.value,
-            email: mailInput.value,
-            password: passwordInput.value
-        };
+    showpass.addEventListener("change", function () {
+        let type = showpass.checked ? "text" : "password";
+        passwordInput.type = type;
+        confirmInput.type = type;
+    });
 
-        let userString = JSON.stringify(user);
-        localStorage.setItem("userData" , userString);
-
-        alert("Signup Succesfull");
-        form.reset();
-    }
-});
-
-showpass.addEventListener("change" , function(){
-    let type = showpass.checked ?
-    "text" : "password";
-    passwordInput.type = type;
-    confirmInput.type = type;
 });
