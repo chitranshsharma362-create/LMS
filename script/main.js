@@ -19,7 +19,7 @@ fetch("header.html")
     });
 
 fetch("footer.html")
-    .then(response => response.text())
+    .then(Response => Response.text())
     .then(data => {
         document.getElementById("footer").innerHTML = data;
     });
@@ -31,19 +31,19 @@ fetch("about-section.html")
     });
 
 fetch("features-section.html")
-    .then(response => response.text())
+    .then(Response => Response.text())
     .then(data => {
         document.getElementById("features-section").innerHTML = data;
     });
 
 fetch("contact-section.html")
-    .then(response => response.text())
+    .then(Response => Response.text())
     .then(data => {
         document.getElementById("contact-section").innerHTML = data;
     });
 
 fetch("form.html")
-    .then(response => response.text())
+    .then(Response => Response.text())
     .then(data => {
         document.getElementById("login-form").innerHTML = data;
     });
