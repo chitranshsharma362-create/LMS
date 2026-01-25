@@ -1,44 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="CSS/head-foot.css">
-    <link rel="stylesheet" href="CSS/home.css">
-    <link rel="stylesheet" href="CSS/form.css">
+    <link rel="stylesheet" href="head-foot.css">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="form.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="script/form.js" defer> </script>
-    <script src="script/main.js" defer> </script>
+    <script src="script/form.js" defer></script>
+    <script src="script/main.js" defer></script>
 </head>
-
 <body>
     <div id="header"> </div>
-    <div class="form-overlay"></div>
-    <div class="box">
-        <h2>Signup</h2>
 
-        <form id="form">
-            <input type="text" id="name" placeholder="Username">
-            <span id="nameError"></span>
-
-            <input type="email" id="email" placeholder="E-mail">
-            <span id="mailError"></span>
-
-            <input type="password" id="password" placeholder="Password">
-            <span id="passError"></span>
-
-            <input type="password" id="confirmpass" placeholder="Confirm Password">
-            <span id="confirmError"></span>
-
-            <label>
-                <input type="checkbox" id="showpass"> Show Password
-            </label>
-
-            <button type="submit">Register</button>
-        </form>
-    </div>
+    <div id="login-form"> </div>
 
     <section class="hero">
         <div class="overlay"></div>
@@ -53,147 +29,17 @@
         </div>
     </section>
 
-    <section class="about">
-        <div class="about-container">
+    <div id="about-section"> </div>
 
-            <div class="about-img">
-                <img src="about.avif">
-            </div>
+    <div id="features-section"></div>
 
-            <div class="about-text">
-
-                <span class="about-tag">ABOUT US</span>
-                <h2 class="about-h2">Smart Digital Library for Everyone</h2>
-
-                <p><strong>eLibrary+</strong> is a modern library management system that helps
-                    students and administrators manage books digitally
-                    from anywhere at any time.
-                    <br>
-                    Our eLibrary+ is designed to make library operation simple,
-                    fast , and fully digital.we help Schools , Colleges and Institution
-                    manage their library efficiently-anytime, anywhere.
-                    <br>
-                    Our goal is to reduce paperwork, save time and bring traditional
-                    libraries into digital era. Whether it's a small library or a large Institution
-                    , our eLibrary+ provide a reliable, scalable, and user friendly solution to manage
-                    knowledge smarter.
-                </p>
-
-                <ul>
-                    <li>✔ Easy book & user management</li>
-                    <li>✔ Online access 24/7</li>
-                    <li>✔ Secure & reliable system</li>
-                    <li>✔ Paperless digital records</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <section class="whyUs">
-        <div class="why-conatiner">
-
-            <div class="why-text">
-                <span class="why-tag">WHY CHOOSE US?</span>
-                <h2 class="why-h2">Why you should start manage Library digitally ?</h2>
-
-                <p>Managing libraries manually is time-consuming and prone to errors.
-                    Adigital library management system helps you organise resources
-                    efficiently, reduce paperwork, and save valuable time.
-
-                    <br>
-
-                    Digital management is not just a trend - it is a smarter , faster , and more secure
-                    way to run a modern library.
-                </p>
-
-                <div class="why-features">
-                    <div class="feature">
-                        <div class="icon">
-                            <i class="fa-solid fa-book-open-reader"></i>
-                        </div>
-                        <h4>Skilled Management</h4>
-                        <p>Smart tools to manage library operations quickly and efficiently.</p>
-                    </div>
-
-                    <div class="feature">
-                        <div class="icon">
-                            <i class="fa-solid fa-database"></i>
-                        </div>
-                        <h4>Accurate Records</h4>
-                        <p>Digital tracking ensures error-free and well-organized data.</p>
-                    </div>
-
-                    <div class="feature">
-                        <div class="icon">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                        </div>
-                        <h4>Easy Access</h4>
-                        <p>use the Library system anytime , anywhere with complete flexibility</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="why-img">
-                <img src="about22.jpeg">
-            </div>
-        </div>
-    </section>
-
-    <section class="contact-sec">
-        <div class="contact-container">
-
-            <div class="contact-info">
-                <span class="contact-tag">CONTACT US</span>
-                <h2 class="contact-h2">Get In Touch With eLibrary+</h2>
-                <p>
-                    Have questions about our digital library system?
-                    Feel free to contact us anytime. Our team is always
-                    ready to help you.
-                </p>
-
-                <div class="contact-box">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <div>
-                        <h4>Address</h4>
-                        Jaipur, Rajasthan, India
-                    </div>
-                </div>
-
-                <div class="contact-box">
-                    <i class="fa-solid fa-phone"></i>
-                    <div>
-                        <h4>Phone</h4>
-                        +91 88247 96537
-                    </div>
-                </div>
-
-                <div class="contact-box">
-                    <i class="fa-solid fa-envelope"></i>
-                    <div>
-                        <h4>Email</h4>
-                        chitranshsharma362@gmail.com
-                    </div>
-                </div>
-            </div>
-
-            <div class="contact-form">
-                <form>
-                    <input type="text" placeholder="Your Name" required>
-                    <input type="email" placeholder="Your Email" required>
-                    <input type="text" placeholder="Subject">
-                    <textarea placeholder="Your Message"></textarea>
-                    <button type="submit">Send Message</button>
-                </form>
-            </div>
-
-        </div>
-    </section>
+    <div id="contact-section"></div>
 
     <button id="scrollTopBtn" title="Go to top">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 
     <div id="footer"> </div>
-</body>
 
+</body>
 </html>
