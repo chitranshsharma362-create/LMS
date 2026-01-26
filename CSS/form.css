@@ -1,5 +1,5 @@
 .box {
-    position: fixed;            
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.9);
@@ -22,8 +22,9 @@
 .form-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 9998;
+
     opacity: 0;
     visibility: hidden;
     transition: 0.3s ease;
@@ -34,32 +35,43 @@
     visibility: visible;
 }
 
-h2{
+h2 {
     text-align: center;
     color: rgb(9, 57, 57);
 }
 
-input{
+.box-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+
+input {
     width: 90%;
     padding: 8px;
     margin: 8px;
     border-radius: 10px;
 }
 
-input[type="checkbox"]{
-    accent-color:rgb(48, 25, 221);
+input[type="checkbox"] {
+    accent-color: rgb(48, 25, 221);
     width: auto;
     margin: 8px;
 }
 
-span{
-    font-size: 13px;
+span {
+    display: block;
     color: red;
-    margin: 8px;
-    text-align: justify;
+    width: 295px;
+    font-size: 13px;
+    margin-top: 4px;
+    margin-bottom: 10px;
+    padding-left: 9px;
 }
 
-button{
+button {
     margin-top: 15px;
     width: 100%;
     padding: 10px;
@@ -70,7 +82,7 @@ button{
     cursor: pointer;
 }
 
-button:hover{
+button:hover {
     background: rgb(17, 14, 195);
 }
 
@@ -104,5 +116,3 @@ button:hover{
     }
 
 }
-
-
