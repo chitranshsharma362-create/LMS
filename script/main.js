@@ -19,7 +19,7 @@ fetch("header.html")
     });
 
 fetch("footer.html")
-    .then(Response => Response.text())
+    .then(response => response.text())
     .then(data => {
         document.getElementById("footer").innerHTML = data;
     });
@@ -31,36 +31,73 @@ fetch("about-section.html")
     });
 
 fetch("features-section.html")
-    .then(Response => Response.text())
+    .then(response => response.text())
     .then(data => {
         document.getElementById("features-section").innerHTML = data;
     });
 
 fetch("contact-section.html")
-    .then(Response => Response.text())
+    .then(response => response.text())
     .then(data => {
         document.getElementById("contact-section").innerHTML = data;
     });
 
 fetch("form.html")
-    .then(Response => Response.text())
+    .then(response => response.text())
     .then(data => {
         document.getElementById("login-form").innerHTML = data;
     });
 
 
-
 document.addEventListener("click", function (e) {
-    if (e.target.id === "loginBtn") {
-        document.querySelector(".box").classList.add("show");
-        document.querySelector(".form-overlay").classList.add("show");
+
+    const loginBtn = document.getElementById("loginBtn");
+    const dropdown = document.getElementById("loginDropdown");
+    const box = document.querySelector(".box");
+    const overlay = document.querySelector(".form-overlay");
+
+    if (!loginBtn || !dropdown || !box || !overlay) return;
+
+    if (e.target === loginBtn) {
+        e.stopPropagation();
+        dropdown.classList.toggle("show");
+        return;
     }
 
-    if (e.target.classList.contains("form-overlay")) {
-        document.querySelector(".box").classList.remove("show");
-        document.querySelector(".form-overlay").classList.remove("show");
+    if (e.target.id === "student-form") {
+        e.preventDefault();
+        box.classList.add("show");
+        overlay.classList.add("show");
+        dropdown.classList.remove("show");
+        return;
     }
+
+    if (e.target.id === "teacher-form") {
+        e.preventDefault();
+        box.classList.add("show");
+        overlay.classList.add("show");
+        dropdown.classList.remove("show");
+        return;
+    }
+
+    if (e.target.id === "librarian-form") {
+        e.preventDefault();
+        box.classList.add("show");
+        overlay.classList.add("show");
+        dropdown.classList.remove("show");
+        return;
+    }
+    
+    if (e.target.classList.contains("form-overlay")) {
+        box.classList.remove("show");
+        overlay.classList.remove("show");
+        return;
+    }
+    dropdown.classList.remove("show");
 });
+
+
+
 
 let scrollBtn = document.getElementById("scrollTopBtn");
 
@@ -71,10 +108,10 @@ window.addEventListener("scroll", () => {
         scrollBtn.classList.remove("show");
     }
 });
-
 scrollBtn.addEventListener("click", () => {
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
 });
+
