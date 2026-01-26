@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 let form = document.getElementById("form");
 
 let nameInput = document.getElementById("name");
@@ -54,5 +55,5 @@ showpass.addEventListener("change", function () {
     passwordInput.type = type;
     confirmInput.type = type;
 });
-
+});
 
