@@ -1,85 +1,58 @@
-  let form = document.getElementById("form");
+let form = document.getElementById("form");
 
-  let nameInput = document.getElementById("name");
-  let nameError = document.getElementById("nameError");
-  let mailInput = document.getElementById("email");
-  let mailError = document.getElementById("mailError");
-  let passwordInput = document.getElementById("password");
-  let passError = document.getElementById("passError");
-  let confirmInput = document.getElementById("confirmpass");
-  let confirmError = document.getElementById("confirmError");
-  let showpass = document.getElementById("showpass");
-  showpass.addEventListener("change", () => {
-    const type = showpass.checked ? "text" : "password";
-    passwordInput.type = type;
-    confirmInput.type = type;
-  });
+let nameInput = document.getElementById("name");
+let nameError = document.getElementById("nameError");
+let mailInput = document.getElementById("email");
+let mailError = document.getElementById("mailError");
+let passwordInput = document.getElementById("password");
+let passError = document.getElementById("passError");
+let confirmInput = document.getElementById("confirmpass");
+let confirmError = document.getElementById("confirmError");
+let showpass = document.getElementById("showpass");
 
-  form.addEventListener("submit", async (e) => {
+form.addEventListener("submit", function (e) {
     e.preventDefault();
 
     let valid = true;
-    if (nameInput.value.trim().length < 3) {
-      nameError.innerText = "Minimum 3 characters";
-      valid = false;
+
+    if (nameInput.value.length < 3) {
+        nameError.innerText = "Minimum 3 characters";
+        valid = false;
     } else nameError.innerText = "";
 
-    let email = mailInput.value.trim().toLowerCase();
-    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
-    if (!email.match(emailPattern)) {
-      mailError.innerText = "Invalid email";
-      valid = false;
+    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    if (!mailInput.value.match(emailPattern)) {
+        mailError.innerText = "Invalid email";
+        valid = false;
     } else mailError.innerText = "";
 
-    let password = passwordInput.value.trim();
-    if (
-      password.length < 8 ||
-      !(/\d/.test(password)) ||
-      !(/[!@#$%^&*]/.test(password))
-    ) {
-      passError.innerText =
-        "Minimum 8 characters, 1 number & 1 special character required";
-      valid = false;
+    let password = passwordInput.value;
+    if (password.length < 8 || !(/\d/.test(password)) || !(/[!@#$%^&*]/.test(password))) {
+        passError.innerText = "Minimum 8 characters, 1 number & 1 special character required";
+        valid = false;
     } else passError.innerText = "";
 
     if (password !== confirmInput.value) {
-      confirmError.innerText = "Password mismatch";
-      valid = false;
+        confirmError.innerText = "Password mismatch";
+        valid = false;
     } else confirmError.innerText = "";
 
-    if (!valid) return;
+    if (valid) {
+        localStorage.setItem("userData", JSON.stringify({
+            name: nameInput.value,
+            email: mailInput.value,
+            password
+        }));
 
-    const { data: existingUser, error: checkError } =
-      await supabaseClient
-        .from("users")
-        .select("id")
-        .eq("email", email)
-        .maybeSingle();
-
-    if (checkError) {
-      alert("Error checking user");
-      return;
+        alert("Signup Successful");
+        form.reset();
     }
+});
 
-    if (existingUser) {
-      alert("Email already registered");
-      return;
-    }
+showpass.addEventListener("change", function () {
+    let type = showpass.checked ? "text" : "password";
+    passwordInput.type = type;
+    confirmInput.type = type;
+});
 
-    const { error: insertError } =
-      await supabaseClient
-        .from("users")
-        .insert([{
-          name: nameInput.value.trim(),
-          email,
-          password
-        }]);
 
-    if (insertError) {
-      alert("Registration failed");
-      return;
-    }
-
-    alert("Registration successful 🎉");
-    form.reset();
-  });
