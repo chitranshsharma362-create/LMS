@@ -69,7 +69,6 @@ document.addEventListener("click", function (e) {
         box.classList.add("show");
         overlay.classList.add("show");
         dropdown.classList.remove("show");
-        showLoginForm("studentform");
         return;
     }
 
@@ -78,7 +77,6 @@ document.addEventListener("click", function (e) {
         box.classList.add("show");
         overlay.classList.add("show");
         dropdown.classList.remove("show");
-        showLoginForm("teacherform");
         return;
     }
 
@@ -87,7 +85,6 @@ document.addEventListener("click", function (e) {
         box.classList.add("show");
         overlay.classList.add("show");
         dropdown.classList.remove("show");
-        showLoginForm("librarianform");
         return;
     }
     
@@ -118,13 +115,4 @@ scrollBtn.addEventListener("click", () => {
     });
 });
 
-function showLoginForm(formId){
-    let forms = document.querySelectorAll(".login-form");
-    forms.forEach(f => f.classList.remove("show"));
-
-    let targetForm = document.getElementById(formId);
-    if (targetForm){
-        targetForm.classList.add("show");
-    }
-}
 
