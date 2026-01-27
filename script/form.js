@@ -1,19 +1,15 @@
 let form = document.getElementById("form");
-
 let nameInput = document.getElementById("name");
 let nameError = document.getElementById("nameError");
-
 let mailInput = document.getElementById("email");
 let mailError = document.getElementById("mailError");
-
 let passwordInput = document.getElementById("password");
 let passError = document.getElementById("passError");
-
 let confirmInput = document.getElementById("confirmpass");
 let confirmError = document.getElementById("confirmError");
-
 let showpass = document.getElementById("showpass");
 
+if(form){
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -70,9 +66,12 @@ form.addEventListener("submit", async (e) => {
   alert("Registration successful");
   form.reset();
 });
+}
 
+if(showpass){
 showpass.addEventListener("change", () => {
   const type = showpass.checked ? "text" : "password";
   passwordInput.type = type;
   confirmInput.type = type;
 });
+}
