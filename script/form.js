@@ -1,4 +1,6 @@
-let form = document.getElementById("form");
+document.addEventListener("submit", function(e){
+    if (e.target.id !=="form" return;
+    e.preventDefaut();
 let nameInput = document.getElementById("name");
 let nameError = document.getElementById("nameError");
 let mailInput = document.getElementById("email");
@@ -50,4 +52,5 @@ if(showpass){
         confirmInput.type = type;
     });
 }
+})
 
