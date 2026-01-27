@@ -39,7 +39,8 @@ if(form){
             confirmError.innerText = "Password mismatch";
             valid = false;
         } else confirmError.innerText = "";
-    
+
+        if(!valid) return;
         alert("Signup Successful");
         form.reset();
     });
