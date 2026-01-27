@@ -11,6 +11,7 @@ let confirmError = document.getElementById("confirmError");
 let showpass = document.getElementById("showpass");
 
 if(form){
+    console.log("me form me aagya");
     form.addEventListener("submit", function (e) {
         e.preventDefault();
     
