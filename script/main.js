@@ -6,7 +6,7 @@ fetch("header.html")
         let currentPage = window.location.pathname.split("/").pop();
         let links = document.querySelectorAll(".menu .menubar ul li a");
         if (!currentPage || currentPage == "#") {
-            currentPage = "home.html"
+            currentPage = "index.html"
         }
 
         links.forEach(link => {
