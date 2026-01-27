@@ -2,6 +2,8 @@ document.addEventListener("submit", async (e) => {
   if (e.target.id !== "form") return;
 
   e.preventDefault();
+  
+  if (!validateForm()) return;
 
   const nameInput = document.getElementById("name");
   const emailInput = document.getElementById("email");
