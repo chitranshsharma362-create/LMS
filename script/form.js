@@ -1,4 +1,5 @@
 let form = document.getElementById("form");
+console.log("im here");
 
 let nameInput = document.getElementById("name");
 let nameError = document.getElementById("nameError");
