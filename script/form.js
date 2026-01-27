@@ -1,4 +1,3 @@
-function validateForm() {
     let nameInput = document.getElementById("name");
     let mailInput = document.getElementById("email");
     let passwordInput = document.getElementById("password");
@@ -38,7 +37,6 @@ function validateForm() {
     } else confirmError.innerText = "";
 
     return valid;
-}
 
 document.addEventListener("change", function (e) { 
     if (e.target.id !== "showpass") return; 
