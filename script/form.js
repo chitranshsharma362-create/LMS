@@ -40,13 +40,15 @@ if(form) {
     
             alert("Signup Successful");
             form.reset();
-});
+    });
 }
 
-showpass.addEventListener("change", function () {
-    let type = showpass.checked ? "text" : "password";
-    passwordInput.type = type;
-    confirmInput.type = type;
-});
+if(showpass) {
+    showpass.addEventListener("change", function () {
+        let type = showpass.checked ? "text" : "password";
+        passwordInput.type = type;
+        confirmInput.type = type;
+    });
+}
 
 
