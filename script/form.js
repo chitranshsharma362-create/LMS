@@ -1,6 +1,5 @@
-document.addEventListener("submit", function(e){
-    if (e.target.id !=="form") return;
-    e.preventDefault();
+let form = document.grtElementById("form");
+
 let nameInput = document.getElementById("name");
 let nameError = document.getElementById("nameError");
 let mailInput = document.getElementById("email");
@@ -41,6 +40,7 @@ if(form){
         } else confirmError.innerText = "";
 
         if(!valid) return;
+        
         alert("Signup Successful");
         form.reset();
     });
@@ -53,5 +53,4 @@ if(showpass){
         confirmInput.type = type;
     });
 }
-})
 
