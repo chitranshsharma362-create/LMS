@@ -1,3 +1,4 @@
+console.log("JS-LOADED");
 let form = document.getElementById("form");
 
 let nameInput = document.getElementById("name");
