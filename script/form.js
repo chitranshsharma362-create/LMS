@@ -59,8 +59,15 @@ document.addEventListener("submit", function (e) {
     form.reset();
 });
 
-showpass.addEventListener("change",function(){
-                          let type = showpass.checked ? "text" : "password";
+document.addEventListener("change", function (e) {
+    if (e.target.id !== "showpass") return;
+
+    let passwordInput = document.getElementById("password");
+    let confirmInput = document.getElementById("confirmpass");
+
+    if (!passwordInput || !confirmInput) return;
+
+    let type = e.target.checked ? "text" : "password";
     passwordInput.type = type;
     confirmInput.type = type;
 });
