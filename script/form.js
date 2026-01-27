@@ -40,7 +40,6 @@ form.addEventListener("submit", function (e) {
 
         alert("Signup Successful");
         form.reset();
-    }
 });
 }
 
