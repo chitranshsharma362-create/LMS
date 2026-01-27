@@ -39,3 +39,13 @@ function validateForm() {
 
     return valid;
 }
+
+document.addEventListener("change", function (e) { 
+    if (e.target.id !== "showpass") return; 
+    let passwordInput = document.getElementById("password"); 
+    let confirmInput = document.getElementById("confirmpass"); 
+    if (!passwordInput || !confirmInput) return; 
+    let type = e.target.checked ? "text" : "password"; 
+    passwordInput.type = type;
+    confirmInput.type = type; 
+});
