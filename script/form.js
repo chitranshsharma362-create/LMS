@@ -43,7 +43,7 @@ form.addEventListener("submit", function (e) {
 });
 }
 
-is(showpass){
+if(showpass){
 showpass.addEventListener("change", function () {
     let type = showpass.checked ? "text" : "password";
     passwordInput.type = type;
