@@ -1,4 +1,5 @@
-let form = document.getElementById("form");
+document.getElementById("form").addEventListener("submit" , async (e) => {
+  e.preventDefault();
 
 let nameInput = document.getElementById("name");
 let nameError = document.getElementById("nameError");
@@ -70,6 +71,7 @@ if(showpass) {
     alert("Registration failed");
     return;
   }
+})
 
 
 
