@@ -1,4 +1,4 @@
-let form = document.grtElementById("form");
+let form = document.getElementById("form");
 
 let nameInput = document.getElementById("name");
 let nameError = document.getElementById("nameError");
