@@ -51,4 +51,25 @@ if(showpass) {
     });
 }
 
+    const { data: existingUser } = await supabaseClient
+    .from("users")
+    .select("id")
+    .eq("email", email)
+    .maybeSingle();
+
+  if (existingUser) {
+    alert("Email already registered");
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("users")
+    .insert([{ name, email, password }]);
+
+  if (error) {
+    alert("Registration failed");
+    return;
+  }
+
+
 
