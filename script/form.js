@@ -17,6 +17,8 @@ document.addEventListener("submit", function (e) {
     let confirmInput = document.getElementById("confirmpass");
     let confirmError = document.getElementById("confirmError");
 
+    let showpass = document.getElementById("showpass");
+
     // ❗ safety check (important)
     if (
         !nameInput || !mailInput || !passwordInput || !confirmInput
