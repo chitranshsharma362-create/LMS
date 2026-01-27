@@ -59,7 +59,7 @@ document.addEventListener("submit", function (e) {
     form.reset();
 });
 
-showpass.addEventListener("change",funtion(){
+showpass.addEventListener("change",function(){
                           let type = showpass.checked ? "text" : "password";
     passwordInput.type = type;
     confirmInput.type = type;
