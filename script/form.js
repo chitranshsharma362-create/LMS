@@ -1,28 +1,13 @@
-console.log("JS-LOADED");
-
-document.addEventListener("submit", function (e) {
-    if (e.target.id !== "form") return;
-
-    e.preventDefault();
-    console.log("form submit fire");
-
-    let form = e.target;
-
+function validateForm() {
     let nameInput = document.getElementById("name");
-    let nameError = document.getElementById("nameError");
     let mailInput = document.getElementById("email");
-    let mailError = document.getElementById("mailError");
     let passwordInput = document.getElementById("password");
-    let passError = document.getElementById("passError");
     let confirmInput = document.getElementById("confirmpass");
+
+    let nameError = document.getElementById("nameError");
+    let mailError = document.getElementById("mailError");
+    let passError = document.getElementById("passError");
     let confirmError = document.getElementById("confirmError");
-
-    let showpass = document.getElementById("showpass");
-
-    // ❗ safety check (important)
-    if (
-        !nameInput || !mailInput || !passwordInput || !confirmInput
-    ) return;
 
     let valid = true;
 
@@ -31,7 +16,7 @@ document.addEventListener("submit", function (e) {
         valid = false;
     } else nameError.innerText = "";
 
-    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
     if (!mailInput.value.match(emailPattern)) {
         mailError.innerText = "Invalid email";
         valid = false;
@@ -43,8 +28,7 @@ document.addEventListener("submit", function (e) {
         !(/\d/.test(password)) ||
         !(/[!@#$%^&*]/.test(password))
     ) {
-        passError.innerText =
-            "Minimum 8 characters, 1 number & 1 special character required";
+        passError.innerText = "Weak password";
         valid = false;
     } else passError.innerText = "";
 
@@ -53,21 +37,5 @@ document.addEventListener("submit", function (e) {
         valid = false;
     } else confirmError.innerText = "";
 
-    if (!valid) return;
-
-    alert("Signup Successful");
-    form.reset();
-});
-
-document.addEventListener("change", function (e) {
-    if (e.target.id !== "showpass") return;
-
-    let passwordInput = document.getElementById("password");
-    let confirmInput = document.getElementById("confirmpass");
-
-    if (!passwordInput || !confirmInput) return;
-
-    let type = e.target.checked ? "text" : "password";
-    passwordInput.type = type;
-    confirmInput.type = type;
-});
+    return valid;
+}
