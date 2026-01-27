@@ -1,4 +1,3 @@
-if(form){
 document.getElementById("form").addEventListener("submit" , async (e) => {
   e.preventDefault();
 
@@ -49,4 +48,3 @@ if (insertError){
 
 alert("Registration successfully");
 e.target.reset();
-})
