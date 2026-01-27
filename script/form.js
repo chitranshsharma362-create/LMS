@@ -1,23 +1,30 @@
-document.addEventListener("DOMContentLoaded", function () {
+function initFormValidation() {
 
-    console.log("JS LOADED AFTER DOM");
+    console.log("initFormValidation called");
 
     let form = document.getElementById("form");
-    console.log("FORM =", form);
-
     if (!form) {
-        console.error("Form not found in DOM");
+        console.warn("Form not in DOM yet");
         return;
     }
 
-    console.log("me form me aagya");
+    let nameInput = document.getElementById("name");
+    let nameError = document.getElementById("nameError");
+    let mailInput = document.getElementById("email");
+    let mailError = document.getElementById("mailError");
+    let passwordInput = document.getElementById("password");
+    let passError = document.getElementById("passError");
+    let confirmInput = document.getElementById("confirmpass");
+    let confirmError = document.getElementById("confirmError");
+    let showpass = document.getElementById("showpass");
 
     form.addEventListener("submit", function (e) {
         e.preventDefault();
-        alert("Submit event fire 🔥");
-    });
+        console.log("SUBMIT FIRE 🔥");
 
-});
+        alert("Validation working");
+    });
+}
 
 
 // console.log("JS-LOADED");
