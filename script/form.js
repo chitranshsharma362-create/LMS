@@ -12,7 +12,7 @@ function validateForm() {
     let valid = true;
 
     if (nameInput.value.length < 3) {
-        nameError.innerText = "Minimum 8 characters, 1 number & 1 special character required";
+        nameError.innerText = "Minimum 3 Character";
         valid = false;
     } else nameError.innerText = "";
 
@@ -28,7 +28,7 @@ function validateForm() {
         !(/\d/.test(password)) ||
         !(/[!@#$%^&*]/.test(password))
     ) {
-        passError.innerText = "Weak password";
+        passError.innerText = "Minimum 8 characters, 1 number & 1 special character required";
         valid = false;
     } else passError.innerText = "";
 
