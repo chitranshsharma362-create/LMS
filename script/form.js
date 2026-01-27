@@ -56,3 +56,9 @@ document.addEventListener("submit", function (e) {
     alert("Signup Successful");
     form.reset();
 });
+
+showpass.addEventListener("change",funtion(){
+                          let type = showpass.checked ? "text" : "password";
+    passwordInput.type = type;
+    confirmInput.type = type;
+});
