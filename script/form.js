@@ -37,13 +37,6 @@ form.addEventListener("submit", function (e) {
         valid = false;
     } else confirmError.innerText = "";
 
-    if (valid) {
-        localStorage.setItem("userData", JSON.stringify({
-            name: nameInput.value,
-            email: mailInput.value,
-            password
-        }));
-
         alert("Signup Successful");
         form.reset();
     }
