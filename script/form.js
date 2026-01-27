@@ -8,7 +8,7 @@ let passError = document.getElementById("passError");
 let confirmInput = document.getElementById("confirmpass");
 let confirmError = document.getElementById("confirmError");
 let showpass = document.getElementById("showpass");
-console.log("hello ma aa gyaa");
+
 if(form){
     console.log("me form me aagya");
     form.addEventListener("submit", function (e) {
