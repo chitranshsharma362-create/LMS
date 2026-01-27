@@ -1,6 +1,6 @@
 document.addEventListener("submit", function(e){
-    if (e.target.id !=="form" return;
-    e.preventDefaut();
+    if (e.target.id !=="form") return;
+    e.preventDefault();
 let nameInput = document.getElementById("name");
 let nameError = document.getElementById("nameError");
 let mailInput = document.getElementById("email");
