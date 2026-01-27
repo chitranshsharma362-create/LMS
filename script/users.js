@@ -50,6 +50,8 @@ document.addEventListener("submit", async (e) => {
     alert("Registration successful");
     e.target.reset();
 
+    window.location.href = "Dashboard/librarian.html";
+
   } catch (err) {
     console.error(err);
     alert("Something went wrong. Please try again.");
