@@ -12,7 +12,7 @@ function validateForm() {
     let valid = true;
 
     if (nameInput.value.length < 3) {
-        nameError.innerText = "Minimum 3 characters";
+        nameError.innerText = "Minimum 8 characters, 1 number & 1 special character required";
         valid = false;
     } else nameError.innerText = "";
 
