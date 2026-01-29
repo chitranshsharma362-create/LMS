@@ -281,6 +281,10 @@ body {
     margin-bottom: 20px;
 }
 
+.contact-box h4{
+    margin:0;
+}
+
 .contact-box-text h4 {
     margin: 0;
     padding:0;
