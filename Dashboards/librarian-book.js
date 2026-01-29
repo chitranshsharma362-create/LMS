@@ -13,7 +13,7 @@ async function addBookToDB() {
         }
       ]);
 
-if (error) {
+if (insertError) throw insertError;
   alert("Book not Added");
   return;
 }
