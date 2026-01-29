@@ -1,7 +1,7 @@
 async function addBookToDB() {
-  const name = document.getElementById("").value;
-  const author = document.getElementById("").value;
-  const quantity = document.getElementById("").value;
+  const name = document.getElementById("bookName").value.trim();
+  const author = document.getElementById("bookAuthor").value.trim();
+  const quantity = document.getElementById("bookQty").value;
 
   const {error} = await supabase
   .from("books")
