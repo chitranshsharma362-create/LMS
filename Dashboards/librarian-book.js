@@ -1,22 +1,19 @@
 async function addBookToDB() {
-  const name = document.getElementById("bookName").value.trim();
-  const author = document.getElementById("bookAuthor").value.trim();
-  const quantity = document.getElementById("bookQty").value;
+  try {
+    const name = document.getElementById("bookName").value.trim();
+    const author = document.getElementById("bookAuthor").value.trim();
+    const quantity = Number(document.getElementById("bookQty").value);
 
-  const { error: insertError } = await supabaseClient
+    const { error } = await supabaseClient
       .from("books")
-      .insert([
-        {
-          name,
-          author,
-          quantity
-        }
-      ]);
+      .insert([{ name, author, quantity }]);
 
-if (insertError) throw insertError;
-  alert("Book not Added");
-  return;
-}
+    if (error) throw error;
 
-alert("Successfully Added");
+    alert("Successfully Added");
+  }
+  catch (err) {
+    console.error(err);
+    alert("Book not Added");
+  }
 }
