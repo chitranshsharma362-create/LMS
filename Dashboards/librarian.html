@@ -3,148 +3,267 @@
 
 <head>
     <meta charset="UTF-8">
+    <title>eLibrary+ Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="librarian.css">
+
+    <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
+
     <div class="container">
-        <div class="sidebar">
-            <h2 class="logo">
-                <i class="fa-solid fa-book"></i> eLibrary+
-            </h2>
-            <ul>
-                <li class="active"><i class="fa-solid fa-gauge"></i> <a href="#topbar"> Dashboard </a> </li>
-                <li><i class="fa-solid fa-book-open"></i> <a href="#books-section"> Manage Books </a> </li>
-                <li><i class="fa-solid fa-user-graduate"></i> <a href="#student-section"> Manage Students</a></li>
-                <li> <i class="fa-solid fa-arrow-right"></i> Issue / Return </li>
-                <li><i class="fa-solid fa-chart-pie"></i> Reports</li>
-                <li><i class="fa-solid fa-bell"></i> Notifications</li>
-            </ul>
 
-            <ul>
-                <li><a><i class="fa-solid fa-user"></i> Profile</a></li>
-                <li><a onclick="popupalert()" href="../index.html"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
-                </li>
-            </ul>
+        <aside class="sidebar">
+            <div>
+                <div class="logo">
+                    <i class="fa-solid fa-book"></i> eLibrary+
+                </div>
+
+                <ul class="menu">
+                    <li class="active" onclick="showSection('dashboard', this)">
+                        <i class="fa-solid fa-gauge"></i> Dashboard
+                    </li>
+                    <li onclick="showSection('books', this)">
+                        <i class="fa-solid fa-book-open"></i> Manage Books
+                    </li>
+                    <li onclick="showSection('students', this)">
+                        <i class="fa-solid fa-user-graduate"></i> Manage Students
+                    </li>
+                    <li onclick="showSection('issue', this)">
+                        <i class="fa-solid fa-arrow-right"></i> Issue / Return
+                    </li>
+                    <li onclick="showSection('reports', this)">
+                        <i class="fa-solid fa-chart-pie"></i> Reports
+                    </li>
+                    <li onclick="showSection('notifications', this)">
+                        <i class="fa-solid fa-bell"></i> Notifications
+                    </li>
+                </ul>
+            </div>
+
+            <div class="logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </div>
+        </aside>
+
+        <main class="main">
+
+            <div id="dashboard" class="section">
+
+                <div class="dash-header">
+                    <h2>Dashboard</h2>
+                    <p>Library overview & daily insights</p>
+                </div>
+
+                <div class="stats-cards">
+                    <div class="stat-card blue">
+                        <i class="fa-solid fa-book"></i>
+                        <div>
+                            <h3>Total Books</h3>
+                            <span>320</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card green">
+                        <i class="fa-solid fa-arrow-up"></i>
+                        <div>
+                            <h3>Books Issued</h3>
+                            <span>86</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card orange">
+                        <i class="fa-solid fa-arrow-down"></i>
+                        <div>
+                            <h3>Books Returned</h3>
+                            <span>64</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card purple">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        <div>
+                            <h3>Total Students</h3>
+                            <span>210</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="section-title">Quick Actions</h3>
+
+                <div class="quick-actions">
+                    <div class="quick-card">
+                        <i class="fa-solid fa-plus"></i>
+                        <p>Add New Book</p>
+                    </div>
+                    <div class="quick-card">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <p>Add Student</p>
+                    </div>
+                    <div class="quick-card">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <p>Issue Book</p>
+                    </div>
+                    <div class="quick-card">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <p>View Reports</p>
+                    </div>
+                </div>
+
+                <h3 class="section-title">Recent Activity</h3>
+
+                <table>
+                    <tr>
+                        <th>Student</th>
+                        <th>Book</th>
+                        <th>Action</th>
+                        <th>Date</th>
+                    </tr>
+                    <tr>
+                        <td>Rahul</td>
+                        <td>JavaScript</td>
+                        <td>Issued</td>
+                        <td>Today</td>
+                    </tr>
+                    <tr>
+                        <td>Anita</td>
+                        <td>Python</td>
+                        <td>Returned</td>
+                        <td>Yesterday</td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div id="books" class="section">
+                <div class="books-header">
+                    <h2>Manage Books</h2>
+                    <div class="book-actions">
+                        <button class="btn add-btn" onclick="openModal('bookModal')">
+                            <i class="fa-solid fa-plus"></i> Add Book
+                        </button>
+                        <button class="btn delete-btn" onclick="removeRow('bookTable')">
+                            <i class="fa-solid fa-trash"></i> Remove Book
+                        </button>
+                    </div>
+                </div>
+
+                <table id="bookTable">
+                    <tr>
+                        <th>Book</th>
+                        <th>Author</th>
+                        <th>Quantity</th>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="students" class="section">
+                <div class="books-header">
+                    <h2>Manage Students</h2>
+                    <div class="book-actions">
+                        <button class="btn add-btn" onclick="openModal('studentModal')">
+                            <i class="fa-solid fa-user-plus"></i> Add Student
+                        </button>
+                        <button class="btn delete-btn" onclick="removeRow('studentTable')">
+                            <i class="fa-solid fa-user-xmark"></i> Remove Student
+                        </button>
+                    </div>
+                </div>
+
+                <table id="studentTable">
+                    <tr>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Status</th>
+                        <th>Fees</th>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="issue" class="section">
+                <div class="books-header">
+                    <h2>Issue / Return</h2>
+                    <div class="book-actions">
+                        <button class="btn add-btn" onclick="openModal('issueModal')">
+                            Issue / Return
+                        </button>
+                        <button class="btn delete-btn" onclick="removeRow('IssuereturnTable')">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+
+                <table id="IssuereturnTable">
+                    <tr>
+                        <th>Student</th>
+                        <th>Book</th>
+                        <th>Duration</th>
+                        <th>Issue / Return</th>
+                        <th>Charges</th>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div id="reports" class="section">
+                <h2>Reports</h2>
+                <p>Library reports will be shown here</p>
+            </div>
+
+            <div id="notifications" class="section">
+                <h2>Notifications</h2>
+                <p>No new notifications</p>
+            </div>
+
+        </main>
+    </div>
+
+    <div class="modal" id="bookModal">
+        <div class="modal-box">
+            <h3>Add Book</h3>
+            <input id="bookName" placeholder="Book Name">
+            <input id="bookAuthor" placeholder="Author">
+            <input id="bookQty" type="number" placeholder="Quantity">
+            <div class="modal-actions">
+                <button class="btn add-btn" onclick="addBook()">Add</button>
+                <button class="btn delete-btn" onclick="closeModal('bookModal')">Cancel</button>
+            </div>
         </div>
+    </div>
 
-        <div class="main">
-            <div id="topbar" class="topbar">
-                <h2 class="logo">
-                    <i class="fa-solid fa-book"></i> BookVerse
-                </h2>
+    <div class="modal" id="studentModal">
+        <div class="modal-box">
+            <h3>Add Student</h3>
+            <input id="studentName" placeholder="Student Name">
+            <input id="studentCourse" placeholder="Course">
+            <input id="studentFees" placeholder="Fees">
+            <select id="studentStatus">
+                <option>Active</option>
+                <option>Inactive</option>
+            </select>
+            <div class="modal-actions">
+                <button class="btn add-btn" onclick="addStudent()">Add</button>
+                <button class="btn delete-btn" onclick="closeModal('studentModal')">Cancel</button>
             </div>
+        </div>
+    </div>
 
-            <div class="welcome">
-                <h3>Welcome Admin👋</h3>
-                <p>Your Library Management Dashboard</p>
+    <div class="modal" id="issueModal">
+        <div class="modal-box">
+            <h3>Issue/Return Book</h3>
+            <input type="text" id="issueStudentName" placeholder="Student Name">
+            <input type="text" id="issueBookName" placeholder="Book Name">
+            <input type="date" id="issueDuration" placeholder="Date">
+            <select id="issueReturnStatus">
+                <option>Issue</option>
+                <option>Return</option>
+            </select>
+            <input type="number" id="issueStudentFees" placeholder="Charges">
+            <div class="modal-actions">
+                <button class="btn add-btn" onclick="issuebook()">Add</button>
+                <button class="btn delete-btn" onclick="closeModal('issueModal')">Cancel</button>
             </div>
-
-            <div class="Books">
-                <div class="book">
-                    <h2> Computer Fundamental</h2>
-                    <p><b>Author:</b>Anita Goel</p>
-                    <p><b>Category:</b>Theory & Practicals</p>
-                    <p><b>Quantity:</b>40</p>
-                </div>
-
-                <div class="book">
-                    <h2>Web-Development</h2>
-                    <p><b>Author:</b>Jon Duckett</p>
-                    <p><b>Category:</b>Theory & Practicals</p>
-                    <p><b>Quantity:</b>6</p>
-                </div>
-
-                <div class="book">
-                    <h2> Java Script</h2>
-                    <p><b>Author:</b>Marijin Haverbeke</p>
-                    <p><b>Category:</b> Practicals</p>
-                    <p><b>Quantity:</b>21</p>
-                </div>
-
-                <div class="book">
-                    <h2> C Programming</h2>
-                    <p><b>Author:</b>Yashavant Kanetkar</p>
-                    <p><b>Category:</b>Theory & Practicals</p>
-                    <p><b>Quantity:</b>10</p>
-                </div>
-
-                <div class="book">
-                    <h2> Python</h2>
-                    <p><b>Author:</b>Mark Lutz</p>
-                    <p><b>Category:</b>Theory & Practicals</p>
-                    <p><b>Quantity:</b>12</p>
-                </div>
-
-                <div class="book">
-                    <h2> My Sql</h2>
-                    <p><b>Author:</b>Yashavant Kanetkar</p>
-                    <p><b>Category:</b>Theory & Practicals</p>
-                    <p><b>Quantity:</b>17</p>
-                </div>
-            </div>
-
-            <section id="books-section" class="books-section">
-                <div class="bookdetail">
-                    <h2> Books Details</h2>
-                </div>
-
-                <div class="books-container">
-                    <div class="books-card">
-                        <h3>Ordered Books</h3>
-                        <p>120</p>
-                    </div>
-
-                    <div class="books-card">
-                        <h3>Issued Books</h3>
-                        <p>75</p>
-                    </div>
-
-                    <div class="books-card">
-                        <h3>Purchased Books</h3>
-                        <p>60</p>
-                    </div>
-
-                    <div class="books-card">
-                        <h3>Rented Books</h3>
-                        <p>20</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="student-section" class="student-section">
-                <div class="studentdetail">
-                    <h2> Students Details</h2>
-                </div>
-                <div class="student-container">
-                    <div class="student">
-                        <p>Online Students</p>
-                        <h1>65</h1>
-                        <p>Active Today: 18</p>
-                    </div>
-
-                    <div class="student">
-                        <p>Ofline Students</p>
-                        <h1>124</h1>
-                        <p>Visited Today: 95</p>
-                    </div>
-
-                    <div class="student">
-                        <p>Not Comming</p>
-                        <h1>45</h1>
-                        <p>30<sup>+</sup> Days</p>
-                    </div>
-
-                    <div class="student">
-                        <p>Daily Visitors</p>
-                        <h1>124</h1>
-                        <p>Visited Today: 95</p>
-                    </div>
-                </div>
-            </section>
         </div>
     </div>
 </body>
