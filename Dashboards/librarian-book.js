@@ -12,7 +12,8 @@ async function addBookToDB() {
     quantity: quantity}]);
 
     if (error) throw error;
-
+    addBook();
+    closeModal("bookModal");
     alert("Successfully Added");
   }
   catch (err) {
