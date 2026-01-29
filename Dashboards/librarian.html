@@ -228,7 +228,7 @@
             <input id="bookAuthor" placeholder="Author">
             <input id="bookQty" type="number" placeholder="Quantity">
             <div class="modal-actions">
-                <button class="btn add-btn" onclick="addBook()">Add</button>
+                <button class="btn add-btn" onclick="addBook(); addBookToDB();">Add</button>
                 <button class="btn delete-btn" onclick="closeModal('bookModal')">Cancel</button>
             </div>
         </div>
