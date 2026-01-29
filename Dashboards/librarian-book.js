@@ -5,8 +5,11 @@ async function addBookToDB() {
     const quantity = Number(document.getElementById("bookQty").value);
 
     const { error } = await supabaseClient
-      .from("books")
-      .insert([{ name, author, quantity }]);
+       .from("books")
+  .insert([{
+    "book name": name,
+    "author name": author,
+    quantity: quantity}]);
 
     if (error) throw error;
 
