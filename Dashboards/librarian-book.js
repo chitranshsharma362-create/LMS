@@ -1,4 +1,4 @@
-async function addBook() {
+async function addBookToDB() {
   const name = document.getElementById("").value;
   const author = document.getElementById("").value;
   const quantity = document.getElementById("").value;
