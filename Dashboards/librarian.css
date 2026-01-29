@@ -65,6 +65,7 @@ body {
   padding-left: 30px;
 }
 
+
 .logout {
   padding: 15px 22px;
   border-top: 1px solid rgba(255,255,255,0.15);
@@ -72,8 +73,17 @@ body {
   transition: 0.3s;
 }
 
+.logout a{
+  text-decoration: none;
+}
+
 .logout:hover {
+   background-color: #9ba8fb1d;
+    border-radius: 40px;
+}
+.logout:active{
   background: #3b2de0;
+  border-radius: 40px;
 }
 
 .main {
