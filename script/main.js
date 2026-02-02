@@ -1,53 +1,59 @@
+/* =======================
+   LOAD HTML PARTIALS
+======================= */
+
 fetch("header.html")
-    .then(Response => Response.text())
-    .then(data => {
-        document.getElementById("header").innerHTML = data;
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("header").innerHTML = data;
 
-        let currentPage = window.location.pathname.split("/").pop();
-        let links = document.querySelectorAll(".menu .menubar ul li a");
+    // underline current menu
+    let currentPage = window.location.pathname.split("/").pop();
+    if (!currentPage || currentPage === "#") currentPage = "home.html";
 
-        if (!currentPage || currentPage == "#") {
-            currentPage = "index.html"
-        }
-
-        links.forEach(link => {
-            console.log("current Page:", currentPage);
-            let linkPage = link.getAttribute("href");
-            if (linkPage == currentPage) {
-                link.closest("li").classList.add("underline_current");
-            }
-        })
+    let links = document.querySelectorAll(".menu .menubar ul li a");
+    links.forEach(link => {
+      let linkPage = link.getAttribute("href");
+      if (linkPage === currentPage) {
+        link.closest("li").classList.add("underline_current");
+      }
     });
+  });
 
 fetch("footer.html")
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById("footer").innerHTML = data;
-    });
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("footer").innerHTML = data;
+  });
 
 fetch("about-section.html")
-    .then(Response => Response.text())
-    .then(data => {
-        document.getElementById("about-section").innerHTML = data;
-    });
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("about-section").innerHTML = data;
+  });
 
 fetch("features-section.html")
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById("features-section").innerHTML = data;
-    });
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("features-section").innerHTML = data;
+  });
 
 fetch("contact-section.html")
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById("contact-section").innerHTML = data;
-    });
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("contact-section").innerHTML = data;
+  });
 
 fetch("form.html")
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById("login-form").innerHTML = data;
-    });
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("login-form").innerHTML = data;
+  });
+
+
+/* =======================
+   LOGIN POPUP LOGIC
+======================= */
 
 document.addEventListener("click", function (e) {
 
@@ -59,17 +65,16 @@ document.addEventListener("click", function (e) {
 
   if (!loginBtn || !dropdown || !box || !overlay) return;
 
-  // Login button
-  if (e.target.closest("#loginBtn")) {
+  // LOGIN BUTTON CLICK
+  if (e.target === loginBtn) {
+    e.stopPropagation();
     dropdown.classList.toggle("show");
     return;
   }
 
-  // Dropdown ke andar click → close mat karo
-  if (e.target.closest("#loginDropdown")) return;
-
+  // OPEN FORM FUNCTION
   function openForm(formId) {
-    forms.forEach(f => f.style.display = "none");
+    forms.forEach(form => form.style.display = "none");
 
     const activeForm = document.getElementById(formId);
     if (activeForm) {
@@ -80,49 +85,56 @@ document.addEventListener("click", function (e) {
     }
   }
 
-  if (e.target.closest("#student-form")) {
+  // STUDENT LOGIN
+  if (e.target.id === "student-form") {
     e.preventDefault();
-    openForm("studentform");
+    openForm("studentForm");
     return;
   }
 
-  if (e.target.closest("#teacher-form")) {
+  // TEACHER LOGIN
+  if (e.target.id === "teacher-form") {
     e.preventDefault();
-    openForm("teacherform");
+    openForm("teacherForm");
     return;
   }
 
-  if (e.target.closest("#librarian-form")) {
+  // LIBRARIAN LOGIN
+  if (e.target.id === "librarian-form") {
     e.preventDefault();
-    openForm("librarianform");
+    openForm("librarianForm");
     return;
   }
 
-  // Overlay click → close modal
+  // CLOSE POPUP (OVERLAY)
   if (e.target.classList.contains("form-overlay")) {
     box.classList.remove("show");
     overlay.classList.remove("show");
     return;
   }
 
-  // Outside click → dropdown close
+  // CLICK OUTSIDE DROPDOWN
   dropdown.classList.remove("show");
 });
 
 
-let scrollBtn = document.getElementById("scrollTopBtn");
+/* =======================
+   SCROLL TO TOP BUTTON
+======================= */
+
+const scrollBtn = document.getElementById("scrollTopBtn");
 
 window.addEventListener("scroll", () => {
-    if (window.scrollY > 400) {
-        scrollBtn.classList.add("show");
-    } else {
-        scrollBtn.classList.remove("show");
-    }
+  if (window.scrollY > 400) {
+    scrollBtn.classList.add("show");
+  } else {
+    scrollBtn.classList.remove("show");
+  }
 });
 
 scrollBtn.addEventListener("click", () => {
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 });
