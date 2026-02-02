@@ -79,19 +79,19 @@ document.addEventListener("click", function (e) {
 
   if (e.target.id === "student-form") {
     e.preventDefault();
-    openForm("studentForm");
+    openForm("studentform");
     return;
   }
 
   if (e.target.id === "teacher-form") {
     e.preventDefault();
-    openForm("teacherForm");
+    openForm("teacherform");
     return;
   }
 
   if (e.target.id === "librarian-form") {
     e.preventDefault();
-    openForm("librarianForm");
+    openForm("librarianform");
     return;
   }
 
