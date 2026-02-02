@@ -55,9 +55,8 @@ document.addEventListener("click", function (e) {
     const dropdown = document.getElementById("loginDropdown");
     const box = document.querySelector(".box");
     const overlay = document.querySelector(".form-overlay");
-    const loginForm = document.getElementById("login-form");
 
-    if (!loginBtn || !dropdown || !box || !overlay || !loginForm) return;
+    if (!loginBtn || !dropdown || !box || !overlay) return;
 
     if (e.target === loginBtn) {
         e.stopPropagation();
@@ -65,19 +64,9 @@ document.addEventListener("click", function (e) {
         return;
     }
 
-    if (e.target.id === "student-form") {
-        // e.preventDefault();
-        // box.classList.add("show");
-        // overlay.classList.add("show");
-        // dropdown.classList.remove("show");
-        return;
-    }
-
-    if (e.target.id === "teacher-form") {
-        // e.preventDefault();
-        // box.classList.add("show");
-        // overlay.classList.add("show");
-        // dropdown.classList.remove("show");
+    if (e.target.id === "student-form" || e.target.id === "teacher-form") {
+        e.preventDefault();
+        dropdown.classList.remove("show");
         return;
     }
 
