@@ -66,16 +66,16 @@ document.addEventListener("click", function (e) {
 
     if (e.target.id === "student-form") {
         e.preventDefault();
-        box.classList.add("show");
-        overlay.classList.add("show");
+        box.classList.remove("show");
+        overlay.classList.remove("show");
         dropdown.classList.remove("show");
         return;
     }
 
     if (e.target.id === "teacher-form") {
         e.preventDefault();
-        box.classList.add("show");
-        overlay.classList.add("show");
+        box.classList.remove("show");
+        overlay.classList.remove("show");
         dropdown.classList.remove("show");
         return;
     }
