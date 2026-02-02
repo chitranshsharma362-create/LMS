@@ -59,14 +59,15 @@ document.addEventListener("click", function (e) {
 
   if (!loginBtn || !dropdown || !box || !overlay) return;
 
-  if (e.target === loginBtn) {
+  // Login button
+  if (e.target.closest("#loginBtn")) {
     e.stopPropagation();
     dropdown.classList.toggle("show");
     return;
   }
 
   function openForm(formId) {
-    forms.forEach(form => form.style.display = "none");
+    forms.forEach(f => f.style.display = "none");
 
     const activeForm = document.getElementById(formId);
     if (activeForm) {
@@ -77,19 +78,19 @@ document.addEventListener("click", function (e) {
     }
   }
 
-  if (e.target.id === "student-form") {
+  if (e.target.closest("#student-form")) {
     e.preventDefault();
     openForm("studentform");
     return;
   }
 
-  if (e.target.id === "teacher-form") {
+  if (e.target.closest("#teacher-form")) {
     e.preventDefault();
     openForm("teacherform");
     return;
   }
 
-  if (e.target.id === "librarian-form") {
+  if (e.target.closest("#librarian-form")) {
     e.preventDefault();
     openForm("librarianform");
     return;
@@ -103,6 +104,7 @@ document.addEventListener("click", function (e) {
 
   dropdown.classList.remove("show");
 });
+
 
 let scrollBtn = document.getElementById("scrollTopBtn");
 
