@@ -2,215 +2,148 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>eLibrary+ Student Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LMS</title>
-    <link rel="stylesheet" href="student.css">
+
+    <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
+
 <div class="container">
 
-    <div class="sidebar">
-        <h2 class="logo">
-            <i class="fa-solid fa-book"></i> LMS
-        </h2>
-
-        <ul>
-            <li class="active"><a onclick="showPage('dashboard')"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-            <li><a onclick="showPage('courses')"><i class="fa-solid fa-book-open"></i> My Courses</a></li>
-            <li><a onclick="showPage('assignment')"><i class="fa-solid fa-file-lines"></i> Assignments</a></li>
-            <li><a onclick="showPage('study')"><i class="fa-solid fa-folder-open"></i> Study Material</a></li>
-            <li><a onclick="showPage('profile')"><i class="fa-solid fa-user"></i> Profile</a></li>
-            <li><a href="admin.html" ; onclick="popupalert('confirm')" ><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
-        </ul>
-
-        <ul class="settings">
-            <li><i class="fa-solid fa-gear"></i> Settings</li>
-        </ul>
-    </div>
-
-    <div class="main">
-        <div class="topbar">
-            <h1><i class="fa-solid fa-book"></i> BookVerse</h1>
-            <div class="user">Welcome, User 👋</div>
-        </div>
-
-        <div id="dashboard" class="page">
-            <div class="welcome">
-                <h3>Welcome Chitransh 👋</h3>
-                <p>Your learning progress overview.</p>
-             </div>
-            <div class="welcome-card">
-
-                <div class="Dashboard card">
-                    <div class="card-top">
-                        <i class="fa-solid fa-book card-icon"></i>
-                        <h2>2</h2>
-                    </div>
-                    <h4>Books Issued</h4>
-                    <p>Maximum allowed: 5</p>
-                    <p>Last issued: 10 Dec</p>
-                    <button >View Issued Books</button>
-                </div>
-
-                 <div class="card Fine">
-                    <div class="card-top">
-                        <i class="fa-solid fa-indian-rupee-sign card-icon"></i>
-                        <h2>₹0</h2>
-                    </div>
-                    <h4>Fine Status</h4>
-                    <p>Fine per day: ₹5</p>
-                    <p>No overdue books</p>
-                    <button>View Fine Details</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-top">
-                        <i class="fa-solid fa-file-lines card-icon"></i>
-                        <h2>12</h2>
-                    </div>
-                    <h4>Study Materials</h4>
-                    <p>PDFs: 8 | Notes: 4</p>
-                    <p>Recently added: DBMS</p>
-                    <button onclick="showPage('study')">View Materials</button>
-                </div>
-                
-                <div class="card">
-                    <div class="card-top">
-                        <i class="fa-solid fa-file-pen card-icon"></i>
-                        <h2>6</h2>
-                    </div>
-                    <h4>Assignments</h4>
-                    <p>Pending: 2 | Submitted: 4</p>
-                    <p>Next Due: 18 Dec</p>
-                    <button onclick="showPage('assignment')">View Assignments</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-top">
-                        <i class="fa-solid fa-file-lines card-icon"></i>
-                        <h2>12</h2>
-                    </div>
-                    <h4>Study Materials</h4>
-                    <p>PDFs: 8 | Notes: 4</p>
-                    <p>Recently added: DBMS</p>
-                    <button onclick="showPage('study')">View Materials</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-top">
-                        <i class="fa-solid fa-file-lines card-icon"></i>
-                        <h2>12</h2>
-                    </div>
-                    <h4>Study Materials</h4>
-                    <p>PDFs: 8 | Notes: 4</p>
-                    <p>Recently added: DBMS</p>
-                    <button onclick="showPage('study')">View Materials</button>
-                </div>
-
+    <aside class="sidebar">
+        <div>
+            <div class="logo">
+                <i class="fa-solid fa-book"></i> eLibrary+
             </div>
+
+            <ul class="menu">
+                <li class="active" onclick="showSection('dashboard', this)">
+                    <i class="fa-solid fa-gauge"></i> Dashboard
+                </li>
+                <li onclick="showSection('mybooks', this)">
+                    <i class="fa-solid fa-book-open"></i> My Books
+                </li>
+                <li onclick="showSection('history', this)">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Issue History
+                </li>
+                <li onclick="showSection('profile', this)">
+                    <i class="fa-solid fa-user"></i> Profile
+                </li>
+                <li onclick="showSection('notifications', this)">
+                    <i class="fa-solid fa-bell"></i> Notifications
+                </li>
+            </ul>
         </div>
 
-        <div id="courses" class="page">
-            <h2 class="section-title">My Courses</h2>
+        <div class="logout">
+            <a href="../index.html">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+        </div>
+    </aside>
 
-            <div class="courses">
-                <div class="course-card">
-                     <h2>HTML Basics</h2>
-                     <p><b>Progress:</b>65%</p> 
-                     <p><b>Book Type:</b> PDF </p>
-                     <p><b>Last Accessed:</b> Yesterday</p>
-                     <button>View Pdf</button>
+    <main class="main">
+
+        <div id="dashboard" class="section" style="display:block;">
+            <div class="dash-header">
+                <h2>Student Dashboard</h2>
+                <p>Your library activity overview</p>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card blue">
+                    <i class="fa-solid fa-book"></i>
+                    <div>
+                        <h3>Total Books Issued</h3>
+                        <span>3</span>
                     </div>
+                </div>
 
-                <div class="course-card">
-                    <h2>CSS Mastery</h2>
-                     <p><b>Progress:</b>65%</p> 
-                     <p><b>Book Type:</b> PDF </p>
-                     <p><b>Last Accessed:</b> Yesterday</p>
-                     <button>View Pdf</button>
+                <div class="stat-card green">
+                    <i class="fa-solid fa-check"></i>
+                    <div>
+                        <h3>Books Returned</h3>
+                        <span>5</span>
+                    </div>
                 </div>
-                <div class="course-card">
-                    <h2>JS Beginners</h2>
-                     <p><b>Progress:</b>65%</p> 
-                     <p><b>Book Type:</b> PDF </p>
-                     <p><b>Last Accessed:</b> Yesterday</p>
-                     <button>View Pdf</button>
+
+                <div class="stat-card orange">
+                    <i class="fa-solid fa-clock"></i>
+                    <div>
+                        <h3>Pending Books</h3>
+                        <span>1</span>
+                    </div>
                 </div>
-                <div class="course-card">
-                    <h2>MySQL</h2>
-                     <p><b>Progress:</b>65%</p> 
-                     <p><b>Book Type:</b> PDF </p>
-                     <p><b>Last Accessed:</b> Yesterday</p>
-                     <button>View Pdf</button>
-                </div>
-                <div class="course-card">
-                    <h2>PHP</h2>
-                    <p><b>Progress:</b>65%</p> 
-                    <p><b>Book Type:</b> PDF </p>
-                    <p><b>Last Accessed:</b> Yesterday</p>
-                    <button>View Pdf</button>
+
+                <div class="stat-card purple">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                    <div>
+                        <h3>Pending Fine</h3>
+                        <span>₹50</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div id="assignment" class="page" >
-            <h2 class="section-title"> My Assignment</h2>
-            <div class="assign-cards">
-                <div class="assign-card">
-                    <h3>5</h3>
-                    <p>Courses Enrolled</p>
-                </div>
-                <div class="assign-card">
-                    <h3>2</h3>
-                    <p>Assignments Pending</p>
-                </div>
-                <div class="assign-card">
-                    <h3>11</h3>
-                    <p>Study Material</p>
-                </div>
-            </div>
+        <div id="mybooks" class="section">
+            <h2>My Books</h2>
+            <table>
+                <tr>
+                    <th>Book Name</th>
+                    <th>Author</th>
+                    <th>Issue Date</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>JavaScript</td>
+                    <td>John Doe</td>
+                    <td>12 Feb</td>
+                    <td>Issued</td>
+                </tr>
+            </table>
         </div>
 
-        <div id="study" class="page" >
-            <h2 class="section-title">Study Material</h2>
-            <div class="books">
-                <div class="book"><h3>20</h3><p>Ordered Books</p></div>
-                <div class="book"><h3>30</h3><p>Issued Books</p></div>
-                <div class="book"><h3>60</h3><p>Purchased Books</p></div>
-                <div class="book"><h3>15</h3><p>Rented Books</p></div>
-            </div>
+        <div id="history" class="section">
+            <h2>Issue History</h2>
+            <table>
+                <tr>
+                    <th>Book</th>
+                    <th>Issue Date</th>
+                    <th>Return Date</th>
+                </tr>
+                <tr>
+                    <td>Python</td>
+                    <td>10 Jan</td>
+                    <td>20 Jan</td>
+                </tr>
+            </table>
         </div>
 
-        <div id="profile" class="page" >
+        <div id="profile" class="section">
             <h2>My Profile</h2>
-            <p><b>Name:</b> Chitransh</p>
-            <p><b>Course:</b> BCA</p>
-            <p><b>Status:</b> Active</p>
+            <p><strong>Name:</strong> Rahul Sharma</p>
+            <p><strong>Course:</strong> BCA</p>
+            <p><strong>Status:</strong> Active</p>
         </div>
 
-    </div>
+        <div id="notifications" class="section">
+            <h2>Notifications</h2>
+            <p>No new notifications</p>
+        </div>
+
+    </main>
 </div>
 
 <script>
-function showPage(pageId) {
+function showSection(id, el) {
+    document.querySelectorAll(".section").forEach(sec => sec.style.display = "none");
+    document.getElementById(id).style.display = "block";
 
-    document.getElementById("dashboard").style.display = "none";
-    document.getElementById("courses").style.display = "none";
-    document.getElementById("assignment").style.display = "none";
-    document.getElementById("study").style.display = "none";
-    document.getElementById("profile").style.display = "none";
-
-    document.getElementById(pageId).style.display = "block";
-}
-function popupalert(){
-    confirm('You want to logout ?');
-}
-    window.onload = function () {
-    setTimeout(() => {
-        alert("Congratulations, you have logged in as user.");
-    }, 300);
+    document.querySelectorAll(".menu li").forEach(li => li.classList.remove("active"));
+    el.classList.add("active");
 }
 </script>
 
