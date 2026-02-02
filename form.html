@@ -1,31 +1,26 @@
 <div class="form-overlay"></div>
 
 <div class="box">
+    <h2>Signup</h2>
 
-  <form class="loginForm" id="studentForm">
-    <h2>Student Login</h2>
-    <input type="text" placeholder="Name">
-    <input type="email" placeholder="E-mail">
-    <input type="password" placeholder="Password">
-    <button>Login</button>
-  </form>
+    <form id="studentform" class="loginForm">
+        <input type="text" placeholder="Username">
+        <span></span>
 
-  <form class="loginForm" id="teacherForm">
-    <h2>Teacher Login</h2>
-    <input type="text" placeholder="Teacher ID">
-    <input type="text" placeholder="Name">
-    <input type="password" placeholder="Password">
-    <button>Login</button>
-  </form>
+        <input type="email" placeholder="E-mail">
+        <span></span>
 
-  <form class="loginForm" id="librarianForm">
-    <h2>Librarian Login</h2>
-    <input type="text" placeholder="Name">
-    <input type="text" placeholder="Library Name">
-    <input type="email" placeholder="E-mail">
-    <input type="tel" placeholder="Number">
-    <input type="password" placeholder="Password">
-    <button type= "button"  onclick="window.location.href='../LMS-DASHBOARD/admin.html'">Login</button>
-  </form>
+        <input type="password" placeholder="Password">
+        <span></span>
+
+        <input type="password" placeholder="Confirm Password">
+        <span></span>
+
+        <label>
+            <input type="checkbox" id="showpass"> Show Password
+        </label>
+
+        <button type="submit">Signup</button>
+    </form>
 
 </div>
