@@ -21,3 +21,29 @@ async function addBookToDB() {
     alert("Book not Added");
   }
 }
+
+async function loadBooks() {
+
+    const { data, error } = await supabaseClient
+        .from("books")
+        .select("*");
+
+    if (error) {
+        console.error("Error loading books:", error);
+        return;
+    }
+
+    const table = document.getElementById("bookTable");
+
+    data.forEach(book => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${book["book name"]}</td>
+            <td>${book["author name"]}</td>
+            <td>${book.quantity}</td>
+        `;
+
+        table.appendChild(row);
+    });
+}
