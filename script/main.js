@@ -51,51 +51,57 @@ fetch("form.html")
 
 document.addEventListener("click", function (e) {
 
-    const loginBtn = document.getElementById("loginBtn");
-    const dropdown = document.getElementById("loginDropdown");
-    const box = document.querySelector(".box");
-    const overlay = document.querySelector(".form-overlay");
+  const loginBtn = document.getElementById("loginBtn");
+  const dropdown = document.getElementById("loginDropdown");
+  const box = document.querySelector(".box");
+  const overlay = document.querySelector(".form-overlay");
+  const forms = document.querySelectorAll(".loginForm");
 
-    if (!loginBtn || !dropdown || !box || !overlay) return;
+  if (!loginBtn || !dropdown || !box || !overlay) return;
 
-    if (e.target === loginBtn) {
-        e.stopPropagation();
-        dropdown.classList.toggle("show");
-        return;
+  if (e.target === loginBtn) {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+    return;
+  }
+
+  function openForm(formId) {
+    forms.forEach(form => form.style.display = "none");
+
+    const activeForm = document.getElementById(formId);
+    if (activeForm) {
+      activeForm.style.display = "block";
+      box.classList.add("show");
+      overlay.classList.add("show");
+      dropdown.classList.remove("show");
     }
+  }
 
-    if (e.target.id === "student-form") {
-        e.preventDefault();
-        window.location.href = "Dashboards/student.html";
-        box.classList.remove("show");
-        overlay.classList.remove("show");
-        dropdown.classList.remove("show");
-        return;
-    }
+  if (e.target.id === "student-form") {
+    e.preventDefault();
+    openForm("studentForm");
+    return;
+  }
 
-    if (e.target.id === "teacher-form") {
-        e.preventDefault();
-        box.classList.remove("show");
-        overlay.classList.remove("show");
-        dropdown.classList.remove("show");
-        return;
-    }
+  if (e.target.id === "teacher-form") {
+    e.preventDefault();
+    openForm("teacherForm");
+    return;
+  }
 
-    if (e.target.id === "librarian-form") {
-        e.preventDefault();
-        box.classList.add("show");
-        overlay.classList.add("show");
-        dropdown.classList.remove("show");
-        return;
-    }
+  if (e.target.id === "librarian-form") {
+    e.preventDefault();
+    openForm("librarianForm");
+    return;
+  }
 
-    if (e.target.classList.contains("form-overlay")) {
-        box.classList.remove("show");
-        overlay.classList.remove("show");
-        return;
-    }
+  if (e.target.classList.contains("form-overlay")) {
+    box.classList.remove("show");
+    overlay.classList.remove("show");
+    return;
+  }
 
-    dropdown.classList.remove("show");
+  dropdown.classList.remove("show");
 });
 
 let scrollBtn = document.getElementById("scrollTopBtn");
