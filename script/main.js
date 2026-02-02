@@ -42,11 +42,11 @@ fetch("contact-section.html")
         document.getElementById("contact-section").innerHTML = data;
     });
 
-fetch("form.html")
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById("login-form").innerHTML = data;
-    });
+// fetch("form.html")
+//     .then(response => response.text())
+//     .then(data => {
+//         document.getElementById("login-form").innerHTML = data;
+//     });
 
 
 document.addEventListener("click", function (e) {
