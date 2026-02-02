@@ -42,11 +42,11 @@ fetch("contact-section.html")
         document.getElementById("contact-section").innerHTML = data;
     });
 
-// fetch("form.html")
-//     .then(response => response.text())
-//     .then(data => {
-//         document.getElementById("login-form").innerHTML = data;
-//     });
+fetch("form.html")
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("login-form").innerHTML = data;
+    });
 
 
 document.addEventListener("click", function (e) {
@@ -55,7 +55,7 @@ document.addEventListener("click", function (e) {
     const dropdown = document.getElementById("loginDropdown");
     const box = document.querySelector(".box");
     const overlay = document.querySelector(".form-overlay");
-    const loginForm = doument.getElementById("login-form");
+    const loginForm = document.getElementById("login-form");
 
     if (!loginBtn || !dropdown || !box || !overlay || !loginForm) return;
 
@@ -65,31 +65,24 @@ document.addEventListener("click", function (e) {
         return;
     }
 
-    // if (e.target.id === "student-form") {
-    //     e.preventDefault();
-    //     box.classList.add("show");
-    //     overlay.classList.add("show");
-    //     dropdown.classList.remove("show");
-    //     return;
-    // }
+    if (e.target.id === "student-form") {
+        // e.preventDefault();
+        // box.classList.add("show");
+        // overlay.classList.add("show");
+        // dropdown.classList.remove("show");
+        return;
+    }
 
-    // if (e.target.id === "teacher-form") {
-    //     e.preventDefault();
-    //     box.classList.add("show");
-    //     overlay.classList.add("show");
-    //     dropdown.classList.remove("show");
-    //     return;
-    // }
+    if (e.target.id === "teacher-form") {
+        // e.preventDefault();
+        // box.classList.add("show");
+        // overlay.classList.add("show");
+        // dropdown.classList.remove("show");
+        return;
+    }
 
     if (e.target.id === "librarian-form") {
-        e.preventDefault();
-        if(loginForm.innerHTML.trim() === ""){
-            fetch("form.html")
-            .then(response => response.text())
-            .then (data =>{
-                loginForm.innerHTML = data;
-            });
-            
+        e.preventDefault();        
         box.classList.add("show");
         overlay.classList.add("show");
         dropdown.classList.remove("show");
