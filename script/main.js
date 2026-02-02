@@ -55,8 +55,9 @@ document.addEventListener("click", function (e) {
     const dropdown = document.getElementById("loginDropdown");
     const box = document.querySelector(".box");
     const overlay = document.querySelector(".form-overlay");
+    const loginForm = doument.getElementById("login-form");
 
-    if (!loginBtn || !dropdown || !box || !overlay) return;
+    if (!loginBtn || !dropdown || !box || !overlay || !loginForm) return;
 
     if (e.target === loginBtn) {
         e.stopPropagation();
@@ -82,6 +83,13 @@ document.addEventListener("click", function (e) {
 
     if (e.target.id === "librarian-form") {
         e.preventDefault();
+        if(loginForm.innerHTML.trim() === ""){
+            fetch("form.html")
+            .then(response => response.text())
+            .then (data =>{
+                loginForm.innerHTML = data;
+            });
+            
         box.classList.add("show");
         overlay.classList.add("show");
         dropdown.classList.remove("show");
