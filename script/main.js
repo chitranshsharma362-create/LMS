@@ -61,10 +61,12 @@ document.addEventListener("click", function (e) {
 
   // Login button
   if (e.target.closest("#loginBtn")) {
-    e.stopPropagation();
     dropdown.classList.toggle("show");
     return;
   }
+
+  // Dropdown ke andar click → close mat karo
+  if (e.target.closest("#loginDropdown")) return;
 
   function openForm(formId) {
     forms.forEach(f => f.style.display = "none");
@@ -96,12 +98,14 @@ document.addEventListener("click", function (e) {
     return;
   }
 
+  // Overlay click → close modal
   if (e.target.classList.contains("form-overlay")) {
     box.classList.remove("show");
     overlay.classList.remove("show");
     return;
   }
 
+  // Outside click → dropdown close
   dropdown.classList.remove("show");
 });
 
