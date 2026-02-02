@@ -1,13 +1,8 @@
-/* =======================
-   LOAD HTML PARTIALS
-======================= */
 
 fetch("header.html")
   .then(res => res.text())
   .then(data => {
     document.getElementById("header").innerHTML = data;
-
-    // underline current menu
     let currentPage = window.location.pathname.split("/").pop();
     if (!currentPage || currentPage === "#") currentPage = "home.html";
 
@@ -51,10 +46,6 @@ fetch("form.html")
   });
 
 
-/* =======================
-   LOGIN POPUP LOGIC
-======================= */
-
 document.addEventListener("click", function (e) {
 
   const loginBtn = document.getElementById("loginBtn");
@@ -65,14 +56,11 @@ document.addEventListener("click", function (e) {
 
   if (!loginBtn || !dropdown || !box || !overlay) return;
 
-  // LOGIN BUTTON CLICK
   if (e.target === loginBtn) {
     e.stopPropagation();
     dropdown.classList.toggle("show");
     return;
   }
-
-  // OPEN FORM FUNCTION
   function openForm(formId) {
     forms.forEach(form => form.style.display = "none");
 
@@ -84,43 +72,30 @@ document.addEventListener("click", function (e) {
       dropdown.classList.remove("show");
     }
   }
-
-  // STUDENT LOGIN
   if (e.target.id === "student-form") {
     e.preventDefault();
     openForm("studentForm");
     return;
   }
-
-  // TEACHER LOGIN
   if (e.target.id === "teacher-form") {
     e.preventDefault();
     openForm("teacherForm");
     return;
   }
-
-  // LIBRARIAN LOGIN
   if (e.target.id === "librarian-form") {
     e.preventDefault();
     openForm("librarianForm");
     return;
   }
 
-  // CLOSE POPUP (OVERLAY)
   if (e.target.classList.contains("form-overlay")) {
     box.classList.remove("show");
     overlay.classList.remove("show");
     return;
   }
 
-  // CLICK OUTSIDE DROPDOWN
   dropdown.classList.remove("show");
 });
-
-
-/* =======================
-   SCROLL TO TOP BUTTON
-======================= */
 
 const scrollBtn = document.getElementById("scrollTopBtn");
 
