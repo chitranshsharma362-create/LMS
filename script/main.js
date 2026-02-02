@@ -66,7 +66,7 @@ document.addEventListener("click", function (e) {
 
     if (e.target.id === "student-form") {
         e.preventDefault();
-        window.location.href = "student.html";
+        window.location.href = "Dashboards/student.html";
         box.classList.remove("show");
         overlay.classList.remove("show");
         dropdown.classList.remove("show");
