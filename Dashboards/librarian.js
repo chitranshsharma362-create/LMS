@@ -45,34 +45,35 @@ const sections = document.querySelectorAll(".section");
 
         let scanner = null;
 
-        function extractISBN(text){
-                return text.replace(/\D/g, "").slice(0 , 13);
-        }
+function extractISBN(text) {
+  return text.replace(/\D/g, "").slice(0, 13);
+}
 
-        function StartScanner(){
-                reader.style.display="block";
+function StartScanner() {
+  reader.style.display = "block";
 
-                if(!scanner){
-                        scanner = new Html5Qrcode("reader");
-                }
+  if (!scanner) {
+    scanner = new Html5Qrcode("reader");
+  }
 
-                scanner.start(
-                        {facingMode : "enviroment"},
-                        {fps : 10 , qrbox : 250},
-                        function(text){
-                                const isbn = extractISBN(text);
+  scanner.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: 250 },
+    function (text) {
+      const isbn = extractISBN(text);
 
-                                if(isbn.length < 10){
-                                        alert("Invalid ISBN");
-                                        return;
-                                }
+      if (isbn.length < 10) {
+        alert("Invalid ISBN");
+        return;
+      }
 
-                                document.getElementById("result").innerText = isbn;
-                                scanner.stop();
-                                reader.display = "none";
-                        }
-                ).catch (function(err){
-                        alert("Camera is not opening");
-                        reader.style.display = "none";
-                });
-        }
+      document.getElementById("result").innerText = isbn;
+
+      scanner.stop().catch(() => {});
+      reader.style.display = "none";
+    }
+  ).catch(function (err) {
+    alert("Camera is not opening");
+    reader.style.display = "none";
+  });
+}
