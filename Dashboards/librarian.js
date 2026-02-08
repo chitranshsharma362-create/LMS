@@ -50,7 +50,6 @@ function extractISBN(text) {
 }
 
 function StartScanner() {
-        openModal("bookModal");
   const reader = document.getElementById("reader");
   reader.style.display = "block";
 
