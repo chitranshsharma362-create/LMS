@@ -43,6 +43,12 @@ const sections = document.querySelectorAll(".section");
             else alert("No data to remove");
         }
 
+        let scanner = null;
+
+        function extractISBN(text){
+                return text.replace(/\D/g, "").slice(0 , 13);
+        }
+
         function StartScanner(){
                 reader.style.display="block";
 
