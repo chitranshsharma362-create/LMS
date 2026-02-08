@@ -43,15 +43,9 @@ const sections = document.querySelectorAll(".section");
             else alert("No data to remove");
         }
 
-        let scanner = null;
-let scanning = false;
-
-function StartScanner() {
+        function StartScanner() {
   const reader = document.getElementById("reader");
   if (!reader) return;
-
-  if (scanning) return;          // prevent double start
-  scanning = true;
 
   reader.style.display = "block";
 
@@ -62,25 +56,10 @@ function StartScanner() {
   scanner.start(
     { facingMode: "environment" },
     { fps: 10, qrbox: 250 },
-    function (text) {
-      const isbn = extractISBN(text);
-
-      if (isbn.length < 10) {
-        alert("Invalid ISBN");
-        return; // scanner continues for next frame
-      }
-
-      console.log("Scanned ISBN:", isbn);
-      // 👆 yahin se tu aage book add / fetch karega
-
-      scanner.stop().catch(() => {});
-      reader.style.display = "none";
-      scanning = false;
+    function () {
+      // camera is running, nothing else
     }
   ).catch(function (err) {
     console.error(err);
-    alert("Camera is not opening (permission / HTTPS issue)");
-    reader.style.display = "none";
-    scanning = false;
   });
 }
