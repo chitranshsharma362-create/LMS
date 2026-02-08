@@ -42,24 +42,3 @@ const sections = document.querySelectorAll(".section");
             if (table.rows.length > 1) table.deleteRow(-1);
             else alert("No data to remove");
         }
-
-        function StartScanner() {
-  const reader = document.getElementById("reader");
-  if (!reader) return;
-
-  reader.style.display = "block";
-
-  if (!scanner) {
-    scanner = new Html5Qrcode("reader");
-  }
-
-  scanner.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: 250 },
-    function () {
-      // camera is running, nothing else
-    }
-  ).catch(function (err) {
-    console.error(err);
-  });
-}
