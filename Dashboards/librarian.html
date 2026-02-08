@@ -225,20 +225,31 @@
         </main>
     </div>
 
-    <div class="modal" id="bookModal">
-        <div class="modal-box">
-            <h3>Add Book</h3>
-            <input id="bookName" placeholder="Book Name">
-            <input id="bookAuthor" placeholder="Author">
-            <input id="bookQty" type="number" placeholder="Quantity">
-            <div class="modal-actions">
-                <button class="btn add-btn" onclick="addBookToDB();">Add</button>
-                <button class="btn add-btn" onclick="StartScanner();">Scan ISBN</button>
-                <div id="reader"> </div>
-                <button class="btn delete-btn" onclick="closeModal('bookModal')">Cancel</button>
-            </div>
-        </div>
+    <!-- 📚 BOOK MODAL -->
+<div class="modal" id="bookModal">
+  <div class="modal-box">
+    <h3>Add Book</h3>
+
+    <!-- 🔹 Manual Mode -->
+    <div id="manualMode">
+      <input id="bookName" placeholder="Book Name">
+      <input id="bookAuthor" placeholder="Author">
+      <input id="bookQty" type="number" placeholder="Quantity">
+      <button class="btn add-btn" onclick="addManualBook()">Add Book</button>
     </div>
+
+    <hr>
+
+    <!-- 🔹 Scan Button -->
+    <button class="btn add-btn" onclick="startScanner()">📷 Scan ISBN</button>
+
+    <!-- 🔹 Scanner Area -->
+    <div id="reader" style="display:none;"></div>
+
+    <button class="btn delete-btn" onclick="closeBookModal()">Cancel</button>
+  </div>
+</div>
+
 
     <div class="modal" id="studentModal">
         <div class="modal-box">
