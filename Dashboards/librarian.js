@@ -44,13 +44,15 @@ const sections = document.querySelectorAll(".section");
         }
 
         let scanner = null;
-
-function extractISBN(text) {
-  return text.replace(/\D/g, "").slice(0, 13);
-}
+let scanning = false;
 
 function StartScanner() {
   const reader = document.getElementById("reader");
+  if (!reader) return;
+
+  if (scanning) return;          // prevent double start
+  scanning = true;
+
   reader.style.display = "block";
 
   if (!scanner) {
@@ -65,16 +67,20 @@ function StartScanner() {
 
       if (isbn.length < 10) {
         alert("Invalid ISBN");
-        return;
+        return; // scanner continues for next frame
       }
 
-      document.getElementById("result").innerText = isbn;
+      console.log("Scanned ISBN:", isbn);
+      // 👆 yahin se tu aage book add / fetch karega
 
       scanner.stop().catch(() => {});
       reader.style.display = "none";
+      scanning = false;
     }
   ).catch(function (err) {
-    alert("Camera is not opening");
+    console.error(err);
+    alert("Camera is not opening (permission / HTTPS issue)");
     reader.style.display = "none";
+    scanning = false;
   });
 }
