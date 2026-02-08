@@ -32,7 +32,7 @@ const sections = document.querySelectorAll(".section");
 
         function issuebook() {
             if (!issueStudentName.value || !issueBookName || !issueDuration) return alert("Fill all fields");
-            IssuereturnTable.innerHTML += `<tr><td>${issueStudentName.value}</td><td>${issueBookName.value}</td><td>${issueDuration.value}</td><td>${issueReturnStatus.value}</td><td>${issueStudentFees.value}</td><?tr>`;
+            IssuereturnTable.innerHTML += `<tr><td>${issueStudentName.value}</td><td>${issueBookName.value}</td><td>${issueDuration.value}</td><td>${issueReturnStatus.value}</td><td>${issueStudentFees.value}</td></tr>`;
             closeModal("issueModal");
             issueStudentName.value = issueBookName.value = issueDuration.value = issueStudentFees.value = "";
         }
@@ -50,6 +50,8 @@ function extractISBN(text) {
 }
 
 function StartScanner() {
+        openModal("bookModal");
+  const reader = document.getElementById("reader");
   reader.style.display = "block";
 
   if (!scanner) {
