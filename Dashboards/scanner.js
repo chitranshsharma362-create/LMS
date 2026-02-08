@@ -9,7 +9,7 @@ function fetchBook(isbn) {
     .then(res => res.json())
     .then(data => {
       if (!data.docs || data.docs.length === 0) {
-        alert("Book details nahi mili");
+        alert("Book not found");
         return;
       }
 
@@ -22,7 +22,6 @@ function fetchBook(isbn) {
     .catch(() => alert("Network error"));
 }
 
-// ✅ SAFE EVENT BINDING
 document.addEventListener("DOMContentLoaded", () => {
   const scanBtn = document.getElementById("scanBtn");
   const reader = document.getElementById("reader");
