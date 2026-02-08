@@ -146,6 +146,9 @@
                 <div class="books-header">
                     <h2>Manage Books</h2>
                     <div class="book-actions">
+                        <button class="btn add-btn" id="scanBtn">
+                            <i class="fa-solid fa-camera"></i> Scan Book 
+                        </button>
                         <button class="btn add-btn" onclick="openModal('bookModal')">
                             <i class="fa-solid fa-plus"></i> Add Book
                         </button>
@@ -226,19 +229,26 @@
     </div>
 
     <div class="modal" id="bookModal">
-        <div class="modal-box">
-            <h3>Add Book</h3>
-            <input id="bookName" placeholder="Book Name">
-            <input id="bookAuthor" placeholder="Author">
-            <input id="bookQty" type="number" placeholder="Quantity">
-            <div class="modal-actions">
-                <button class="btn add-btn" onclick="addBookToDB();">Add</button>
-                <button class="btn add-btn" onclick="StartScanner();">Scan ISBN</button>
-                <div id="reader"></div>
-                <div id="reader"> </div> <button class="btn delete-btn" onclick="closeModal('bookModal')">Cancel</button>
-            </div>
+    <div class="modal-box">
+        <h3>Add Book (ISBN Supported)</h3>
+        <input id="isbnInput" placeholder="Enter ISBN (10 or 13 digits)">
+        <button class="btn add-btn" onclick="manualSearch()">Search ISBN</button>
+
+        <div id="reader" style="width:300px; margin:auto; display:none;"></div>
+
+        <hr>
+
+        <input id="bookName" placeholder="Book Name">
+        <input id="bookAuthor" placeholder="Author">
+        <input id="bookQty" type="number" placeholder="Quantity">
+
+        <div class="modal-actions">
+            <button class="btn add-btn" onclick="addBookToDB()">Add</button>
+            <button class="btn delete-btn" onclick="closeModal('bookModal')">Cancel</button>
         </div>
     </div>
+</div>
+
 
     <div class="modal" id="studentModal">
         <div class="modal-box">
