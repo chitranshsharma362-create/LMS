@@ -42,3 +42,31 @@ const sections = document.querySelectorAll(".section");
             if (table.rows.length > 1) table.deleteRow(-1);
             else alert("No data to remove");
         }
+
+        function StartScanner(){
+                reader.style.display="block";
+
+                if(!scanner){
+                        scanner = new Html5Qrcode("reader");
+                }
+
+                scanner.start(
+                        {facingMode : "enviroment"},
+                        {fps : 10 , qrbox : 250},
+                        function(text){
+                                const isbn = extractISBN(text);
+
+                                if(isbn.length < 10){
+                                        alert("Invalid ISBN");
+                                        return;
+                                }
+
+                                document.getElementById("result").innerText = isbn;
+                                scanner.stop();
+                                reader.display = "none";
+                        }
+                ).catch (function(err){
+                        alert("Camera is not opening");
+                        reader.style.display = "none";
+                });
+        }
