@@ -230,18 +230,23 @@
     </div>
 
     <div class="modal" id="bookModal">
-    <div class="modal-box">
-        <h3>Add Book (ISBN Supported)</h3>
-        <input id="isbnInput" placeholder="Enter ISBN (10 or 13 digits)">
-        <input id="bookName" placeholder="Book Name">
-        <input id="bookAuthor" placeholder="Author">
-        <input id="bookQty" type="number" placeholder="Quantity">
+  <div class="modal-box">
+    <h3>Add Book (ISBN Supported)</h3>
 
-        <div class="modal-actions">
-            <button class="btn add-btn" onclick="addBookToDB()">Add</button>
-            <button class="btn delete-btn" onclick="closeModal('bookModal')">Cancel</button>
-        </div>
+    <input id="isbnInput" placeholder="Enter ISBN (10 or 13 digits)">
+
+    <!-- ✅ ADD THIS -->
+    <div id="reader" style="width:300px; margin:10px auto; display:none;"></div>
+
+    <input id="bookName" placeholder="Book Name">
+    <input id="bookAuthor" placeholder="Author">
+    <input id="bookQty" type="number" placeholder="Quantity">
+
+    <div class="modal-actions">
+      <button class="btn add-btn" onclick="addBookToDB()">Add</button>
+      <button class="btn delete-btn" onclick="closeModal('bookModal')">Cancel</button>
     </div>
+  </div>
 </div>
 
 
