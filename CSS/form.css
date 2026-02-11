@@ -1,5 +1,5 @@
 .loginForm { display: none; }
-.box {
+.box , .box1{
     display: none;
     position: fixed;
     top: 50%;
@@ -15,7 +15,7 @@
     transition: 0.3s ease;
 }
 
-.box.show {
+.box.show , .box1.show{
     display: block;
     opacity: 1;
     visibility: visible;
