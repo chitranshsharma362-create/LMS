@@ -96,6 +96,14 @@ document.addEventListener("click", function (e) {
     }
 
     dropdown.classList.remove("show");
+
+     if (e.target.classList.contains("form-overlay")) {
+        .box1.classList.remove("show");
+        overlay.classList.remove("show");
+        return;
+    }
+
+    dropdown.classList.remove("show");
 });
 
 let scrollBtn = document.getElementById("scrollTopBtn");
