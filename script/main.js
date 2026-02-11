@@ -54,7 +54,7 @@ document.addEventListener("click", function (e) {
     const loginBtn = document.getElementById("loginBtn");
     const dropdown = document.getElementById("loginDropdown");
     const box = document.querySelector(".box");
-    const box = document.querySelector(".box1")
+    const box1 = document.querySelector(".box1")
     const overlay = document.querySelector(".form-overlay");
 
     if (!loginBtn || !dropdown || !box || !box1 || !overlay) return;
