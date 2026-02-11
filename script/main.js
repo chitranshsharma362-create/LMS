@@ -57,7 +57,7 @@ document.addEventListener("click", function (e) {
     const box1 = document.querySelector(".box1")
     const overlay = document.querySelector(".form-overlay");
 
-    if (!loginBtn || !dropdown || !box || !box1 || !overlay) return;
+    if (!loginBtn || !dropdown || !box || !box1 || !box2 || !overlay) return;
 
     if (e.target === loginBtn) {
         e.stopPropagation();
@@ -65,14 +65,7 @@ document.addEventListener("click", function (e) {
         return;
     }
 
-    // if (e.target.id === "teacher-form") {
-    //     e.preventDefault();
-    //     box.classList.add("show");
-    //     overlay.classList.add("show");
-    //     dropdown.classList.remove("show");
-    //     return;
-    // }
-
+    
     if (e.target.id === "librarian-form") {
         e.preventDefault();
         box.classList.add("show");
@@ -88,10 +81,19 @@ document.addEventListener("click", function (e) {
         dropdown.classList.remove("show");
         return;
     }
+
+    if (e.target.id === "teacher-form") {
+        e.preventDefault();
+        box2.classList.add("show");
+        overlay.classList.add("show");
+        dropdown.classList.remove("show");
+        return;
+    }
     
     if (e.target.classList.contains("form-overlay")) {
         box.classList.remove("show");
         box1.classList.remove("show");
+        box2.classList.remove("show");
         overlay.classList.remove("show");
         return;
     }
