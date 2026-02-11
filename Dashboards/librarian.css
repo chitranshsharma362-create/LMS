@@ -269,13 +269,24 @@ table tr:hover td {
   margin-top: 12px;
 }
 
-#reader{
-  width: 280px;
-  margin: 15px;
-  display: none;
-  border: 2px dashed #1e88e5;
+#reader {
+  width: 100%;
+  max-width: 320px;
+  height: 250px;             
+  margin: 15px auto;
+  display: none;              
   border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+  position: relative;
 }
+
+#reader video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
 
 media (max-width: 768px) {
   .sidebar {
