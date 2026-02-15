@@ -1,1 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>eLibrary+ Teacher Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="stylesheet" href="teacher.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+<body>
+
+<div class="container">
+
+    <aside class="sidebar">
+
+        <div>
+            <div class="logo">
+                <i class="fa-solid fa-book"></i> eLibrary+
+            </div>
+
+            <ul class="menu">
+                <li class="active" onclick="showSection('dashboard', this)">
+                    <i class="fa-solid fa-gauge"></i> Dashboard
+                </li>
+
+                <li onclick="showSection('mybooks', this)">
+                    <i class="fa-solid fa-book-open"></i> My Books
+                </li>
+
+                <li onclick="showSection('history', this)">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Issue History
+                </li>
+
+                <li onclick="showSection('profile', this)">
+                    <i class="fa-solid fa-user"></i> Profile
+                </li>
+
+                <li onclick="showSection('notifications', this)">
+                    <i class="fa-solid fa-bell"></i> Notifications
+                </li>
+            </ul>
+        </div>
+
+        <div class="logout">
+            <a href="../index.html">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <div id="dashboard" class="section" style="display:block;">
+            <div class="dash-header">
+                <h2>Teacher Dashboard</h2>
+                <p>Overview of your library activity</p>
+            </div>
+
+            <div class="stats-cards">
+
+                <div class="stat-card blue">
+                    <i class="fa-solid fa-book"></i>
+                    <div>
+                        <h3>Total Books Issued</h3>
+                        <span>2</span>
+                    </div>
+                </div>
+
+                <div class="stat-card green">
+                    <i class="fa-solid fa-check"></i>
+                    <div>
+                        <h3>Books Returned</h3>
+                        <span>10</span>
+                    </div>
+                </div>
+
+                <div class="stat-card orange">
+                    <i class="fa-solid fa-clock"></i>
+                    <div>
+                        <h3>Pending Books</h3>
+                        <span>1</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+      
+        <div id="mybooks" class="section">
+            <h2>My Books</h2>
+
+            <table>
+                <tr>
+                    <th>Book Name</th>
+                    <th>Author</th>
+                    <th>Issue Date</th>
+                    <th>Status</th>
+                </tr>
+
+                <tr>
+                    <td>Data Structures</td>
+                    <td>Mark Allen Weiss</td>
+                    <td>12 Feb</td>
+                    <td>Issued</td>
+                </tr>
+
+                <tr>
+                    <td>Operating Systems</td>
+                    <td>Galvin</td>
+                    <td>05 Feb</td>
+                    <td>Pending</td>
+                </tr>
+            </table>
+        </div>
+
+     
+        <div id="history" class="section">
+            <h2>Issue History</h2>
+
+            <table>
+                <tr>
+                    <th>Book</th>
+                    <th>Issue Date</th>
+                    <th>Return Date</th>
+                </tr>
+
+                <tr>
+                    <td>Computer Networks</td>
+                    <td>01 Jan</td>
+                    <td>15 Jan</td>
+                </tr>
+
+                <tr>
+                    <td>Java Programming</td>
+                    <td>10 Dec</td>
+                    <td>22 Dec</td>
+                </tr>
+            </table>
+        </div>
+
+      
+        <div id="profile" class="section">
+
+            <div class="profile-card">
+
+                <div class="profile-left">
+                    <img src="https://i.pravatar.cc/150?img=12">
+                    <h3>Mr. Raj Sharma</h3>
+                    <p>Computer Science Faculty</p>
+                </div>
+
+                <div class="profile-right">
+
+                    <div class="info-box">
+                        <span>Email</span>
+                        <span>teacher@email.com</span>
+                    </div>
+
+                    <div class="info-box">
+                        <span>Employee ID</span>
+                        <span>FAC102</span>
+                    </div>
+
+                    <div class="info-box">
+                        <span>Department</span>
+                        <span>Computer Science</span>
+                    </div>
+
+                    <div class="info-box">
+                        <span>Experience</span>
+                        <span>7 Years</span>
+                    </div>
+
+                    <button class="edit-btn">Edit Profile</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="notifications" class="section">
+            <h2>Notifications</h2>
+            <p>No new notifications</p>
+        </div>
+
+    </main>
+</div>
+
+<script>
+function showSection(id, el) {
+
+    document.querySelectorAll(".section").forEach(sec => {
+        sec.style.display = "none";
+    });
+
+    document.getElementById(id).style.display = "block";
+
+    document.querySelectorAll(".menu li").forEach(li => {
+        li.classList.remove("active");
+    });
+
+    el.classList.add("active");
+}
+</script>
+
+</body>
+</html>
