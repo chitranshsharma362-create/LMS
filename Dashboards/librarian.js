@@ -43,14 +43,14 @@ const sections = document.querySelectorAll(".section");
             else alert("No data to remove");
         }
 
-document.addEventListner("DOMContentLoaded" , () => {
+document.addEventListener("DOMContentLoaded" , () => {
         const user = JSON.parse(localStorage.getItem("loggedUser"));
         if (!user){
-                window.loaction.href = "../index.html";
+                window.location.href = "../index.html";
                 return;
         }
 
-        document.getElementById("Welcome-text").innerText = `Welcome ${user.name}`;
+        document.getElementById("welcome-text").innerText = `Welcome ${user.name}`;
 
-        document.getElementById("Welcome-subtext").innerText = "This is your library overview and insight";
+        document.getElementById("welcome-subtext").innerText = "This is your library overview and insight";
 });
