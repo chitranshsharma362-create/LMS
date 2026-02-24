@@ -301,7 +301,7 @@ media (max-width: 768px) {
 }
 .dash-header h2{
   font-size: 30px;
-  font-style: serif;
+  font-family: serif;
 }
 .dash-header p {
   color: #6b7280;
