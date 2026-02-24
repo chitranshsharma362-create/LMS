@@ -42,3 +42,15 @@ const sections = document.querySelectorAll(".section");
             if (table.rows.length > 1) table.deleteRow(-1);
             else alert("No data to remove");
         }
+
+document.addEventListner("DOMContentLoaded" , () => {
+        const user = JSON.parse(localStorage.getItem("loggedUser"));
+        if (!user){
+                window.loaction.href = "../index.html";
+                return;
+        }
+
+        document.getElementById("Welcome-text").innerText = `Welcome ${user.name}`;
+
+        document.getElementById("Welcome-subtext").innerText = "This is your library overview and insight";
+});
