@@ -49,7 +49,7 @@ document.addEventListener("submit", async (e) => {
 
     localStorage.setItem(
       "loggedUser",
-      JSON.stringfy({name , email})
+      JSON.stringify({name , email})
     );
 
     alert("Registration successful");
