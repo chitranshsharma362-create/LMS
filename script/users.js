@@ -47,6 +47,11 @@ document.addEventListener("submit", async (e) => {
 
     if (insertError) throw insertError;
 
+    localStorage.setItem(
+      "loggedUser",
+      JSON.stringfy({name , email})
+    );
+
     alert("Registration successful");
     e.target.reset();
 
