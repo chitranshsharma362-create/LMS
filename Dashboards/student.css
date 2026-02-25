@@ -209,42 +209,59 @@ table tr:hover td {
   margin-bottom:15px;
 }
 
-.profile-left h3{
-  margin:10px 0 5px;
-}
-
-.profile-left p{
-  opacity:0.9;
-}
-
 .profile-right{
   width:65%;
   padding:30px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
 }
 
 .info-box{
   display:flex;
-  justify-content:space-between;
-  padding:12px 0;
-  border-bottom:1px solid #eee;
-  font-size:15px;
+  flex-direction:column;
+  gap:6px;
+  font-size:14px;
+}
+
+.info-box span{
+  color:#666;
+  font-size:13px;
+}
+
+.info-box input{
+  padding:10px 12px;
+  border-radius:8px;
+  border:1px solid #ddd;
+  font-size:14px;
+  background:#f9fafc;
+  transition:0.3s;
+}
+
+.info-box input:focus{
+  outline:none;
+  border-color:#1e88e5;
+  background:#fff;
+  box-shadow:0 0 0 2px rgba(30,136,229,0.15);
 }
 
 .edit-btn{
-  margin-top:20px;
+  margin-top:10px;
   padding:10px 20px;
   background:#1e88e5;
   color:#fff;
   border:none;
-  border-radius:6px;
+  border-radius:8px;
   cursor:pointer;
+  font-weight:500;
   transition:0.3s;
 }
 
 .edit-btn:hover{
   background:#1565c0;
-  transform:scale(1.05);
+  transform:translateY(-2px);
 }
+
 
 
 @media (max-width: 768px) {
