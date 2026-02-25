@@ -436,10 +436,9 @@ table tr:hover td {
     }
 
     .menu li {
-        padding: 6px 0;
-        flex-direction: column;
-        gap: 3px;
-        font-size: 10px;
+        padding: 6px 2px;
+        gap: 40px;
+        font-size: 0px;
         border-radius: 0;
     }
 
@@ -448,14 +447,9 @@ table tr:hover td {
         width: auto;
     }
 
-    .menu li:hover {
-        padding-left: 0;
-        background: none;
-    }
 
     .menu li.active {
         background: none;
-        color: #a5b4fc;
     }
 
     .main {
@@ -524,7 +518,6 @@ table tr:hover td {
     }
 
     table {
-        display: block;
         width: 100%;
         overflow-x: auto;
         white-space: nowrap;
