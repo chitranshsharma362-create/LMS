@@ -131,31 +131,31 @@
       <p>BCA Student</p>
     </div>
 
-    <div class="profile-right">
+    <div class="profile-right" id="profileForm">
 
-      <div class="info-box">
-        <span>Email</span>
-        <span>student@email.com</span>
-      </div>
+  <div class="info-box">
+    <span>Email</span>
+    <input type="text" value="student@email.com" readonly>
+  </div>
 
-      <div class="info-box">
-        <span> Roll No</span>
-        <span>1023</span>
-      </div>
+  <div class="info-box">
+    <span>Roll No</span>
+    <input type="text" value="1023" readonly>
+  </div>
 
-      <div class="info-box">
-        <span> Semester</span>
-        <span>4th</span>
-      </div>
+  <div class="info-box">
+    <span>Semester</span>
+    <input type="text" value="4th" readonly>
+  </div>
 
-      <div class="info-box">
-        <span> Department</span>
-        <span>Computer Science</span>
-      </div>
+  <div class="info-box">
+    <span>Department</span>
+    <input type="text" value="Computer Science" readonly>
+  </div>
 
-      <button class="edit-btn">Edit Profile</button>
+  <button type="button" class="edit-btn" id="editBtn">Edit Profile</button>
 
-    </div>
+</div>
 
   </div>
         </div>
@@ -176,6 +176,23 @@ function showSection(id, el) {
     document.querySelectorAll(".menu li").forEach(li => li.classList.remove("active"));
     el.classList.add("active");
 }
+
+    const editBtn = document.getElementById("editBtn");
+let isEditing = false;
+
+editBtn.addEventListener("click", () => {
+
+    const inputs = document.querySelectorAll("#profileForm input");
+
+    isEditing = !isEditing;
+
+    inputs.forEach(input => {
+        input.readOnly = !isEditing;
+    });
+
+    editBtn.innerText = isEditing ? "Save Profile" : "Edit Profile";
+});
+    
 </script>
 
 </body>
