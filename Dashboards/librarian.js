@@ -43,14 +43,29 @@ const sections = document.querySelectorAll(".section");
             else alert("No data to remove");
         }
 
-document.addEventListener("DOMContentLoaded" , () => {
-        const user = JSON.parse(localStorage.getItem("loggedUser"));
-        if (!user){
-                window.location.href = "../index.html";
-                return;
+document.addEventListener("DOMContentLoaded", () => {
+    const user = JSON.parse(localStorage.getItem("loggedUser"));
+
+    if (!user) {
+        window.location.href = "../index.html";
+        return;
+    }
+
+    document.getElementById("welcome-text").innerText = `Welcome ${user.name}`;
+
+    document.getElementById("welcome-subtext").innerText =
+        "This is your library overview and insight";
+    if (user.library_name) {
+
+        const formattedName = user.library_name
+            .split(" ")
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join("");
+
+        const logo = document.getElementById("libraryLogo");
+        if (logo) {
+            logo.innerText = "e" + formattedName + "+";
         }
-
-        document.getElementById("welcome-text").innerText = `Welcome ${user.name}`;
-
-        document.getElementById("welcome-subtext").innerText = "This is your library overview and insight";
+        document.title = "e" + formattedName + " Dashboard";
+    }
 });
