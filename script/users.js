@@ -10,7 +10,7 @@ document.addEventListener("submit", async (e) => {
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
 
-  if ( !library_name || !nameInput || !emailInput || !passwordInput) return;
+  if ( !libraryInput || !nameInput || !emailInput || !passwordInput) return;
 
   const library_name = libraryInput.value.trim();
   const name = nameInput.value.trim();
