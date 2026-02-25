@@ -5,12 +5,14 @@ document.addEventListener("submit", async (e) => {
   
   if (!validateForm()) return;
 
+  const libraryInput = document.getElementById("library_name");
   const nameInput = document.getElementById("name");
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
 
-  if (!nameInput || !emailInput || !passwordInput) return;
+  if ( !library_name || !nameInput || !emailInput || !passwordInput) return;
 
+  const library_name = libraryInput.value.trim();
   const name = nameInput.value.trim();
   const email = emailInput.value.trim().toLowerCase();
   const password = passwordInput.value.trim();
@@ -39,6 +41,7 @@ document.addEventListener("submit", async (e) => {
       .from("users")
       .insert([
         {
+          library_name,
           name,
           email,
           password
@@ -49,7 +52,7 @@ document.addEventListener("submit", async (e) => {
 
     localStorage.setItem(
       "loggedUser",
-      JSON.stringify({name , email})
+      JSON.stringify({name , email , library_name })
     );
 
     alert("Registration successful");
