@@ -17,7 +17,7 @@ document.addEventListener("submit", async (e) => {
   const email = emailInput.value.trim().toLowerCase();
   const password = passwordInput.value.trim();
 
-  if (!name || !email || !password) {
+  if (!library_name || !name || !email || !password) {
     alert("All fields are required");
     return;
   }
