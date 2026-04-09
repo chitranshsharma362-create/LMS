@@ -47,7 +47,7 @@ async function registerUser() {
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const library_name = document.getElementById("library")?.value || "My Library";
+    const library_name = document.getElementById("library_name").value;
 
     const response = await fetch("http://127.0.0.1:5000/register", {
         method: "POST",
