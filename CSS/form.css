@@ -15,7 +15,7 @@
     transition: 0.3s ease;
 }
 
-.box.show , .box1.show , .box2.show{
+.box.show , .box1.show , .box2.show , .box3.show{
     display: block;
     opacity: 1;
     visibility: visible;
