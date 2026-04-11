@@ -1,4 +1,4 @@
-// ✅ VALIDATION
+//////////////////// VALIDATION ////////////////////
 function validateForm() {
     let nameInput = document.getElementById("name");
     let mailInput = document.getElementById("email");
@@ -12,10 +12,10 @@ function validateForm() {
 
     let valid = true;
 
-    if (nameInput && nameInput.value.length < 3) {
+    if (nameInput.value.length < 3) {
         nameError.innerText = "Minimum 3 Character";
         valid = false;
-    } else if (nameError) nameError.innerText = "";
+    } else nameError.innerText = "";
 
     let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
     if (!mailInput.value.match(emailPattern)) {
@@ -33,16 +33,18 @@ function validateForm() {
         valid = false;
     } else passError.innerText = "";
 
-    if (confirmInput && password !== confirmInput.value) {
+    if (password !== confirmInput.value) {
         confirmError.innerText = "Password mismatch";
         valid = false;
-    } else if (confirmError) confirmError.innerText = "";
+    } else confirmError.innerText = "";
 
     return valid;
 }
 
+//////////////////// REGISTER ////////////////////
+async function registerUser(event) {
+    event.preventDefault(); // 🔥 VERY IMPORTANT
 
-async function registerUser() {
     if (!validateForm()) return;
 
     const name = document.getElementById("name").value;
@@ -66,18 +68,21 @@ async function registerUser() {
 
         const data = await response.json();
 
-        if (data.message === "Registered Successfully") {
+        console.log("Register Response:", data); // 🔥 debug
 
-            alert("Registered Successfully 🎉\nLibrary Code: " + data.library_code);
+        // ✅ CORRECT CHECK
+        if (response.ok) {
 
-            localStorage.setItem("email", email);
-            localStorage.setItem("role", "admin");
+            // 🔥 SAVE FULL USER OBJECT
+            localStorage.setItem("loggedUser", JSON.stringify(data));
 
-        
+            alert("Registered Successfully 🎉");
+
+            // 🔥 REDIRECT
             window.location.href = "Dashboards/librarian.html";
 
         } else {
-            alert("Registration Failed ❌");
+            alert(data.message || "Registration Failed ❌");
         }
 
     } catch (error) {
@@ -86,11 +91,10 @@ async function registerUser() {
     }
 }
 
-
+//////////////////// LOGIN ////////////////////
 async function loginUser() {
-
-    const email = document.getElementById("login-email").value;
-    const password = document.getElementById("login-password").value;
+    const email = document.getElementById("login-email")?.value;
+    const password = document.getElementById("login-password")?.value;
 
     if (!email || !password) {
         alert("Please enter email & password");
@@ -103,20 +107,17 @@ async function loginUser() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                email,
-                password
-            })
+            body: JSON.stringify({ email, password })
         });
 
         const data = await response.json();
 
-        if (data.message === "Login Success") {
+        if (response.ok) {
 
-            localStorage.setItem("user_id", data.user_id);
-            localStorage.setItem("role", data.role);
+            // 🔥 SAVE USER PROPERLY
+            localStorage.setItem("loggedUser", JSON.stringify(data));
 
-            alert("Login Success ");
+            alert("Login Success 🎉");
 
             if (data.role === "admin") {
                 window.location.href = "Dashboards/librarian.html";
@@ -125,26 +126,23 @@ async function loginUser() {
             }
 
         } else {
-            alert("Invalid Credentials ");
+            alert("Invalid Credentials ❌");
         }
 
     } catch (error) {
         console.error(error);
-        alert("Server Error ");
+        alert("Server Error ❌");
     }
 }
 
-
+//////////////////// SHOW PASSWORD ////////////////////
 document.addEventListener("change", function (e) {
     if (e.target.id !== "showpass") return;
 
     let passwordInput = document.getElementById("password");
     let confirmInput = document.getElementById("confirmpass");
 
-    if (!passwordInput) return;
-
     let type = e.target.checked ? "text" : "password";
     passwordInput.type = type;
-
     if (confirmInput) confirmInput.type = type;
 });
