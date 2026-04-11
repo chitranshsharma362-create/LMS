@@ -93,7 +93,7 @@ document.addEventListener("click", function (e) {
         return;
     }
 
-     if (e.target.id === "login-form") {
+     if (e.target.id === "librarian-login-form") {
         e.preventDefault();
         box3.classList.add("show");
         overlay.classList.add("show");
