@@ -1,4 +1,6 @@
-async function addBookToDB() {
+async function addBookToDB(event) {
+  if (event) event.preventDefault(); 
+
   try {
     const name = document.getElementById("bookName").value.trim();
     const author = document.getElementById("bookAuthor").value.trim();
@@ -16,14 +18,26 @@ async function addBookToDB() {
       })
     });
 
+
+    if (!response.ok) {
+      throw new Error("Server error");
+    }
+
     const data = await response.json();
 
-    alert(data.message);
+    
+    alert(data.message || "Book added Successfully");
 
-    loadBooks(); // reload table
+    
+    document.getElementById("bookName").value = "";
+    document.getElementById("bookAuthor").value = "";
+    document.getElementById("bookQty").value = "";
+
+    
+    await loadBooks();
 
   } catch (err) {
-    console.error(err);
-    alert("Book not added ❌");
+    console.error("Error:", err);
+    alert("Book not added ");
   }
 }
