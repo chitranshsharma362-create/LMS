@@ -16,12 +16,12 @@ const sections = document.querySelectorAll(".section");
             document.getElementById(id).style.display = "none";
         }
 
-        function addBook() {
-            if (!bookName.value || !bookAuthor.value || !bookQty.value) return alert("Fill all fields");
-            bookTable.innerHTML += `<tr><td>${bookName.value}</td><td>${bookAuthor.value}</td><td>${bookQty.value}</td></tr>`;
-            closeModal("bookModal");
-            bookName.value = bookAuthor.value = bookQty.value = "";
-        }
+        // function addBook() {
+        //     if (!bookName.value || !bookAuthor.value || !bookQty.value) return alert("Fill all fields");
+        //     bookTable.innerHTML += `<tr><td>${bookName.value}</td><td>${bookAuthor.value}</td><td>${bookQty.value}</td></tr>`;
+        //     closeModal("bookModal");
+        //     bookName.value = bookAuthor.value = bookQty.value = "";
+        // }
 
         function addStudent() {
             if (!studentName.value || !studentCourse.value) return alert("Fill all fields");
