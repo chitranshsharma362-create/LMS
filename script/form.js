@@ -139,25 +139,35 @@ async function loginUser() {
 async function loginStudent() {
     const code = document.getElementById("student-code").value;
 
-    if (!code) return alert("Enter Library Code");
+    if (!code) {
+        alert("Enter Library Code");
+        return;
+    }
 
-    const response = await fetch("http://127.0.0.1:5000/join_library", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            library_code: code,
-            role: "student",
-            name: "Student"
-        })
-    });
+    try {
+        const response = await fetch("http://127.0.0.1:5000/join_library", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                library_code: code,
+                role: "student"
+            })
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    if (response.ok) {
-        localStorage.setItem("loggedUser", JSON.stringify(data));
-        window.location.href = "Dashboards/student.html";
-    } else {
-        alert(data.message);
+        console.log("Student:", data);
+
+        if (response.ok) {
+            localStorage.setItem("loggedUser", JSON.stringify(data));
+            window.location.href = "Dashboards/student.html";
+        } else {
+            alert(data.message);
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("Error ❌");
     }
 }
  //Teacher login
@@ -165,28 +175,37 @@ async function loginStudent() {
 async function loginTeacher() {
     const code = document.getElementById("teacher-code").value;
 
-    if (!code) return alert("Enter Library Code");
+    if (!code) {
+        alert("Enter Library Code");
+        return;
+    }
 
-    const response = await fetch("http://127.0.0.1:5000/join_library", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            library_code: code,
-            role: "teacher",
-            name: "Teacher"
-        })
-    });
+    try {
+        const response = await fetch("http://127.0.0.1:5000/join_library", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                library_code: code,
+                role: "teacher"
+            })
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    if (response.ok) {
-        localStorage.setItem("loggedUser", JSON.stringify(data));
-        window.location.href = "Dashboards/teacher.html";
-    } else {
-        alert(data.message);
+        console.log("Teacher:", data);
+
+        if (response.ok) {
+            localStorage.setItem("loggedUser", JSON.stringify(data));
+            window.location.href = "Dashboards/teacher.html";
+        } else {
+            alert(data.message);
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("Error ❌");
     }
 }
-
 //////////////////// SHOW PASSWORD ////////////////////
 document.addEventListener("change", function (e) {
     if (e.target.id !== "showpass") return;
