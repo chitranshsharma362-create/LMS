@@ -35,7 +35,7 @@
 </div>
 
 <!-- LOGIN -->
-<div class="box3" id="loginBox">
+<div class="box3">
     <h2>Librarian Login</h2>
 
     <form class="login-form" onsubmit="loginUser(event)">
@@ -43,11 +43,6 @@
         <input type="password" id="login-password" placeholder="Password" required>
 
         <button type="submit">Login</button>
-
-        <p>
-            New User?
-            <a href="#" id="registerSwitch">Register</a>
-        </p>
     </form>
 </div>
 
@@ -78,31 +73,4 @@
     </form>
 </div>
 
-<script>
-/* 🔥 TOGGLE SYSTEM (NO CONFLICT) */
-document.addEventListener("click", function(e) {
-    const registerBox = document.getElementById("registerBox");
-    const loginBox = document.getElementById("loginBox");
-    const overlay = document.getElementById("overlay");
 
-    if (e.target.id === "loginSwitch") {
-        e.preventDefault();
-        registerBox.classList.remove("show");
-        loginBox.classList.add("show");
-        overlay.classList.add("show");
-    }
-
-    if (e.target.id === "registerSwitch") {
-        e.preventDefault();
-        loginBox.classList.remove("show");
-        registerBox.classList.add("show");
-        overlay.classList.add("show");
-    }
-
-    if (e.target.id === "overlay") {
-        registerBox.classList.remove("show");
-        loginBox.classList.remove("show");
-        overlay.classList.remove("show");
-    }
-});
-</script>
