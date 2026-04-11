@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "This is your library overview and insight";
 
     // 🔥 IMPORTANT → user_id global bana diya
-    window.userId = user.id;
+    window.userId = user.user_id;
 
     if (user.library_name) {
         const formattedName = user.library_name
