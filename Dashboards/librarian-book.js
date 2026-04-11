@@ -1,9 +1,10 @@
+//////////////////// ADD BOOK ////////////////////
 async function addBookToDB(event) {
     if (event) event.preventDefault();
 
-    const name = bookName.value.trim();
-    const author = bookAuthor.value.trim();
-    const quantity = bookQty.value;
+    const name = document.getElementById("bookName")?.value.trim();
+    const author = document.getElementById("bookAuthor")?.value.trim();
+    const quantity = document.getElementById("bookQty")?.value;
 
     if (!name || !author || !quantity) {
         return alert("Fill all fields");
@@ -16,7 +17,7 @@ async function addBookToDB(event) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                user_id: window.userId, // 🔥 user link
+                user_id: window.userId,
                 book_name: name,
                 author: author,
                 quantity: quantity
@@ -29,15 +30,15 @@ async function addBookToDB(event) {
 
         alert(data.message || "Book added ✅");
 
-        // ✅ UI update
-        addBookToTable(name, author, quantity);
+        // 🔥 Reload from DB (BEST PRACTICE)
+        loadBooks();
 
         closeModal("bookModal");
 
         // clear inputs
-        bookName.value = "";
-        bookAuthor.value = "";
-        bookQty.value = "";
+        document.getElementById("bookName").value = "";
+        document.getElementById("bookAuthor").value = "";
+        document.getElementById("bookQty").value = "";
 
     } catch (err) {
         console.error(err);
@@ -45,30 +46,47 @@ async function addBookToDB(event) {
     }
 }
 
-// ✅ Table render function
-function addBookToTable(name, author, quantity) {
-    bookTable.innerHTML += `
-        <tr>
-            <td>${name}</td>
-            <td>${author}</td>
-            <td>${quantity}</td>
-        </tr>
-    `;
-}
-
-// ✅ Load books from DB
+//////////////////// LOAD BOOKS ////////////////////
 async function loadBooks() {
     try {
         const response = await fetch(`http://127.0.0.1:5000/get_books/${window.userId}`);
         const data = await response.json();
 
-        bookTable.innerHTML = "";
+        const table = document.getElementById("bookTable");
+        if (!table) return;
+
+        table.innerHTML = "";
 
         data.forEach(book => {
-            addBookToTable(book.book_name, book.author, book.quantity);
+            table.innerHTML += `
+            <tr>
+                <td>${book.book_name}</td>
+                <td>${book.author}</td>
+                <td>${book.quantity}</td>
+                <td>
+                    <button onclick="deleteBook(${book.id})">Delete</button>
+                </td>
+            </tr>
+            `;
         });
 
     } catch (err) {
         console.error("Error loading books:", err);
+    }
+}
+
+//////////////////// DELETE BOOK ////////////////////
+async function deleteBook(id) {
+    try {
+        await fetch(`http://127.0.0.1:5000/delete_book/${id}`, {
+            method: "DELETE"
+        });
+
+        // 🔥 reload
+        loadBooks();
+
+    } catch (err) {
+        console.error(err);
+        alert("Delete failed ❌");
     }
 }
