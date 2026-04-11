@@ -149,11 +149,11 @@ document.addEventListener("change", function (e) {
 
 
 function showLogin() {
-    document.getElementById("registerBox").style.display = "none";
-    document.getElementById("loginBox").style.display = "block";
+    document.getElementById("registerBox").classList.remove("show");
+    document.getElementById("loginBox").classList.add("show");
 }
 
 function showRegister() {
-    document.getElementById("registerBox").style.display = "block";
-    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("loginBox").classList.remove("show");
+    document.getElementById("registerBox").classList.add("show");
 }
