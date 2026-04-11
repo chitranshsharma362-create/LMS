@@ -1,49 +1,39 @@
 //////////////////// VALIDATION ////////////////////
 function validateForm() {
-    let nameInput = document.getElementById("name");
-    let mailInput = document.getElementById("email");
-    let passwordInput = document.getElementById("password");
-    let confirmInput = document.getElementById("confirmpass");
-
-    let nameError = document.getElementById("nameError");
-    let mailError = document.getElementById("mailError");
-    let passError = document.getElementById("passError");
-    let confirmError = document.getElementById("confirmError");
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+    let confirm = document.getElementById("confirmpass").value;
 
     let valid = true;
 
-    if (nameInput.value.length < 3) {
-        nameError.innerText = "Minimum 3 Character";
+    if (name.length < 3) {
+        document.getElementById("nameError").innerText = "Minimum 3 characters";
         valid = false;
-    } else nameError.innerText = "";
+    } else document.getElementById("nameError").innerText = "";
 
-    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
-    if (!mailInput.value.match(emailPattern)) {
-        mailError.innerText = "Invalid email";
+    let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
+    if (!email.match(pattern)) {
+        document.getElementById("mailError").innerText = "Invalid email";
         valid = false;
-    } else mailError.innerText = "";
+    } else document.getElementById("mailError").innerText = "";
 
-    let password = passwordInput.value;
-    if (
-        password.length < 8 ||
-        !(/\d/.test(password)) ||
-        !(/[!@#$%^&*]/.test(password))
-    ) {
-        passError.innerText = "Min 8 chars, 1 number & 1 special char required";
+    if (password.length < 6) {
+        document.getElementById("passError").innerText = "Min 6 characters";
         valid = false;
-    } else passError.innerText = "";
+    } else document.getElementById("passError").innerText = "";
 
-    if (password !== confirmInput.value) {
-        confirmError.innerText = "Password mismatch";
+    if (password !== confirm) {
+        document.getElementById("confirmError").innerText = "Password mismatch";
         valid = false;
-    } else confirmError.innerText = "";
+    } else document.getElementById("confirmError").innerText = "";
 
     return valid;
 }
 
-//////////////////// REGISTER ////////////////////
+//////////////////// REGISTER (LIBRARIAN) ////////////////////
 async function registerUser(event) {
-    event.preventDefault(); // 🔥 VERY IMPORTANT
+    event.preventDefault();
 
     if (!validateForm()) return;
 
@@ -53,99 +43,89 @@ async function registerUser(event) {
     const library_name = document.getElementById("library_name").value;
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/register", {
+        const res = await fetch("http://127.0.0.1:5000/register", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name,
-                email,
-                password,
-                library_name
-            })
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ name, email, password, library_name })
         });
 
-        const data = await response.json();
+        const data = await res.json();
 
-        console.log("Register Response:", data); // 🔥 debug
+        console.log("REGISTER:", data);
 
-        // ✅ CORRECT CHECK
-        if (response.ok) {
-
-            // 🔥 SAVE FULL USER OBJECT
+        if (res.ok) {
             localStorage.setItem("loggedUser", JSON.stringify(data));
 
-            alert("Registered Successfully 🎉");
+            alert("Registered ✅\nLibrary Code: " + data.library_code);
 
-            // 🔥 REDIRECT
             window.location.href = "Dashboards/librarian.html";
-
         } else {
-            alert(data.message || "Registration Failed ❌");
+            alert(data.message);
         }
 
-    } catch (error) {
-        console.error(error);
+    } catch (err) {
+        console.error(err);
         alert("Server Error ❌");
     }
 }
 
-//////////////////// LOGIN ////////////////////
-async function loginUser() {
-    const email = document.getElementById("login-email")?.value;
-    const password = document.getElementById("login-password")?.value;
+//////////////////// LOGIN (LIBRARIAN) ////////////////////
+async function loginUser(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
 
     if (!email || !password) {
-        alert("Please enter email & password");
+        alert("Enter email & password");
         return;
     }
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/login", {
+        const res = await fetch("http://127.0.0.1:5000/login", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify({ email, password })
         });
 
-        const data = await response.json();
+        const data = await res.json();
 
-        if (response.ok) {
+        console.log("LOGIN:", data);
 
-            // 🔥 SAVE USER PROPERLY
+        if (res.ok) {
             localStorage.setItem("loggedUser", JSON.stringify(data));
-
-            alert("Login Success 🎉");
 
             if (data.role === "admin") {
                 window.location.href = "Dashboards/librarian.html";
-            } else {
+            } 
+            else if (data.role === "student") {
                 window.location.href = "Dashboards/student.html";
+            } 
+            else if (data.role === "teacher") {
+                window.location.href = "Dashboards/teacher.html";
+            } 
+            else {
+                alert("Unknown role ❌");
             }
 
         } else {
             alert("Invalid Credentials ❌");
         }
 
-    } catch (error) {
-        console.error(error);
+    } catch (err) {
+        console.error(err);
         alert("Server Error ❌");
     }
 }
 
-
+//////////////////// STUDENT LOGIN ////////////////////
 async function loginStudent() {
     const code = document.getElementById("student-code").value;
 
-    if (!code) {
-        alert("Enter Library Code");
-        return;
-    }
+    if (!code) return alert("Enter Library Code");
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/join_library", {
+        const res = await fetch("http://127.0.0.1:5000/join_library", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
@@ -154,11 +134,11 @@ async function loginStudent() {
             })
         });
 
-        const data = await response.json();
+        const data = await res.json();
 
-        console.log("Student:", data);
+        console.log("STUDENT:", data);
 
-        if (response.ok) {
+        if (res.ok) {
             localStorage.setItem("loggedUser", JSON.stringify(data));
             window.location.href = "Dashboards/student.html";
         } else {
@@ -170,18 +150,15 @@ async function loginStudent() {
         alert("Error ❌");
     }
 }
- //Teacher login
 
+//////////////////// TEACHER LOGIN ////////////////////
 async function loginTeacher() {
     const code = document.getElementById("teacher-code").value;
 
-    if (!code) {
-        alert("Enter Library Code");
-        return;
-    }
+    if (!code) return alert("Enter Library Code");
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/join_library", {
+        const res = await fetch("http://127.0.0.1:5000/join_library", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
@@ -190,11 +167,11 @@ async function loginTeacher() {
             })
         });
 
-        const data = await response.json();
+        const data = await res.json();
 
-        console.log("Teacher:", data);
+        console.log("TEACHER:", data);
 
-        if (response.ok) {
+        if (res.ok) {
             localStorage.setItem("loggedUser", JSON.stringify(data));
             window.location.href = "Dashboards/teacher.html";
         } else {
@@ -206,16 +183,16 @@ async function loginTeacher() {
         alert("Error ❌");
     }
 }
+
 //////////////////// SHOW PASSWORD ////////////////////
 document.addEventListener("change", function (e) {
     if (e.target.id !== "showpass") return;
 
-    let passwordInput = document.getElementById("password");
-    let confirmInput = document.getElementById("confirmpass");
+    const pass = document.getElementById("password");
+    const confirm = document.getElementById("confirmpass");
 
-    let type = e.target.checked ? "text" : "password";
-    passwordInput.type = type;
-    if (confirmInput) confirmInput.type = type;
+    const type = e.target.checked ? "text" : "password";
+
+    pass.type = type;
+    if (confirm) confirm.type = type;
 });
-
-
