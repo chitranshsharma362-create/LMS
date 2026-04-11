@@ -1,5 +1,5 @@
 .loginForm { display: none; }
-.box , .box1 , .box2{
+.box , .box1 , .box2 , .box3{
     display: none;
     position: fixed;
     top: 50%;
