@@ -56,9 +56,10 @@ document.addEventListener("click", function (e) {
     const box = document.querySelector(".box");
     const box1 = document.querySelector(".box1");
     const box2 = document.querySelector(".box2");
+    const box3 = document.querySelector(".box3");
     const overlay = document.querySelector(".form-overlay");
 
-    if (!loginBtn || !dropdown || !box || !box1 || !box2 || !overlay) return;
+    if (!loginBtn || !dropdown || !box || !box1 || !box2 || !box3 || !overlay) return;
 
     if (e.target === loginBtn) {
         e.stopPropagation();
@@ -95,6 +96,7 @@ document.addEventListener("click", function (e) {
         box.classList.remove("show");
         box1.classList.remove("show");
         box2.classList.remove("show");
+        box3.classList.remove("show");
         overlay.classList.remove("show");
         return;
     }
