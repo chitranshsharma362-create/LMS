@@ -148,12 +148,3 @@ document.addEventListener("change", function (e) {
 });
 
 
-function showLogin() {
-    document.getElementById("registerBox").classList.remove("show");
-    document.getElementById("loginBox").classList.add("show");
-}
-
-function showRegister() {
-    document.getElementById("loginBox").classList.remove("show");
-    document.getElementById("registerBox").classList.add("show");
-}
