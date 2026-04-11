@@ -91,6 +91,14 @@ document.addEventListener("click", function (e) {
         dropdown.classList.remove("show");
         return;
     }
+
+     if (e.target.id === "login-form") {
+        e.preventDefault();
+        box3.classList.add("show");
+        overlay.classList.add("show");
+        dropdown.classList.remove("show");
+        return;
+    }
     
     if (e.target.classList.contains("form-overlay")) {
         box.classList.remove("show");
