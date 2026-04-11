@@ -1,11 +1,15 @@
 async function addBookToDB(event) {
-  if (event) event.preventDefault(); 
+  if (event) event.preventDefault();
+
+  const name = bookName.value.trim();
+  const author = bookAuthor.value.trim();
+  const quantity = bookQty.value;
+
+  if (!name || !author || !quantity) {
+    return alert("Fill all fields");
+  }
 
   try {
-    const name = document.getElementById("bookName").value.trim();
-    const author = document.getElementById("bookAuthor").value.trim();
-    const quantity = Number(document.getElementById("bookQty").value);
-
     const response = await fetch("http://127.0.0.1:5000/add_book", {
       method: "POST",
       headers: {
@@ -18,26 +22,30 @@ async function addBookToDB(event) {
       })
     });
 
-
-    if (!response.ok) {
-      throw new Error("Server error");
-    }
+    if (!response.ok) throw new Error("Server error");
 
     const data = await response.json();
 
-    
-    alert(data.message || "Book added Successfully");
+    alert(data.message || "Book added ✅");
 
-    
-    document.getElementById("bookName").value = "";
-    document.getElementById("bookAuthor").value = "";
-    document.getElementById("bookQty").value = "";
+    // 🔥 UI me turant add karo (NO need loadBooks)
+    bookTable.innerHTML += `
+      <tr>
+        <td>${name}</td>
+        <td>${author}</td>
+        <td>${quantity}</td>
+      </tr>
+    `;
 
-    
-    await loadBooks();
+    closeModal("bookModal");
+
+    // clear inputs
+    bookName.value = "";
+    bookAuthor.value = "";
+    bookQty.value = "";
 
   } catch (err) {
-    console.error("Error:", err);
-    alert("Book not added ");
+    console.error(err);
+    alert("Book not added ❌");
   }
 }
