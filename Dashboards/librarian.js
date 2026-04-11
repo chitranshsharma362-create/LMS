@@ -1,7 +1,7 @@
+//////////////////// SECTIONS ////////////////////
 const sections = document.querySelectorAll(".section");
 const menuItems = document.querySelectorAll(".menu li");
 
-// ✅ Section switch
 function showSection(id, el) {
     sections.forEach(sec => sec.style.display = "none");
 
@@ -11,9 +11,10 @@ function showSection(id, el) {
     menuItems.forEach(item => item.classList.remove("active"));
     if (el) el.classList.add("active");
 }
+
 showSection("dashboard", document.querySelector(".menu li"));
 
-// ✅ Modal
+//////////////////// MODAL ////////////////////
 function openModal(id) {
     const modal = document.getElementById(id);
     if (modal) modal.style.display = "flex";
@@ -24,55 +25,62 @@ function closeModal(id) {
     if (modal) modal.style.display = "none";
 }
 
-// ✅ Student
+//////////////////// STUDENT ////////////////////
 function addStudent() {
-    if (!studentName.value || !studentCourse.value) {
+    const name = document.getElementById("studentName")?.value;
+    const course = document.getElementById("studentCourse")?.value;
+    const status = document.getElementById("studentStatus")?.value;
+    const fees = document.getElementById("studentFees")?.value;
+
+    if (!name || !course) {
         return alert("Fill all fields");
     }
 
-    studentTable.innerHTML += `
+    const table = document.getElementById("studentTable");
+
+    table.innerHTML += `
         <tr>
-            <td>${studentName.value}</td>
-            <td>${studentCourse.value}</td>
-            <td>${studentStatus.value}</td>
-            <td>${studentFees.value}</td>
+            <td>${name}</td>
+            <td>${course}</td>
+            <td>${status}</td>
+            <td>${fees}</td>
         </tr>
     `;
 
     closeModal("studentModal");
-
-    studentName.value = "";
-    studentCourse.value = "";
-    studentFees.value = "";
 }
 
-// ✅ Issue Book
+//////////////////// ISSUE BOOK ////////////////////
 function issuebook() {
-    if (!issueStudentName.value || !issueBookName.value || !issueDuration.value) {
+    const student = document.getElementById("issueStudentName")?.value;
+    const book = document.getElementById("issueBookName")?.value;
+    const duration = document.getElementById("issueDuration")?.value;
+    const status = document.getElementById("issueReturnStatus")?.value;
+    const fees = document.getElementById("issueStudentFees")?.value;
+
+    if (!student || !book || !duration) {
         return alert("Fill all fields");
     }
 
-    IssuereturnTable.innerHTML += `
+    const table = document.getElementById("IssuereturnTable");
+
+    table.innerHTML += `
         <tr>
-            <td>${issueStudentName.value}</td>
-            <td>${issueBookName.value}</td>
-            <td>${issueDuration.value}</td>
-            <td>${issueReturnStatus.value}</td>
-            <td>${issueStudentFees.value}</td>
+            <td>${student}</td>
+            <td>${book}</td>
+            <td>${duration}</td>
+            <td>${status}</td>
+            <td>${fees}</td>
         </tr>
     `;
 
     closeModal("issueModal");
-
-    issueStudentName.value = "";
-    issueBookName.value = "";
-    issueDuration.value = "";
-    issueStudentFees.value = "";
 }
 
-// ✅ Remove row
+//////////////////// REMOVE ROW ////////////////////
 function removeRow(tableId) {
     const table = document.getElementById(tableId);
+
     if (!table) return;
 
     if (table.rows.length > 1) {
@@ -82,30 +90,26 @@ function removeRow(tableId) {
     }
 }
 
-// ✅ Login check + setup
+//////////////////// LOGIN CHECK ////////////////////
 document.addEventListener("DOMContentLoaded", () => {
     const user = JSON.parse(localStorage.getItem("loggedUser"));
-
-    console.log("Logged User:", user); // 🔥 debug
 
     if (!user) {
         window.location.href = "../index.html";
         return;
     }
 
-    // 🔥 IMPORTANT FIX (safe check)
     if (!user.user_id) {
-        alert("User ID missing ❌ Please login again");
+        alert("Session expired ❌ Please login again");
         localStorage.removeItem("loggedUser");
         window.location.href = "../index.html";
         return;
     }
 
-    // ✅ Global userId set
+    // 🔥 GLOBAL USER ID
     window.userId = user.user_id;
-    console.log("User ID set:", window.userId); // 🔥 debug
 
-    // ✅ Welcome text (safe)
+    // ✅ Welcome text
     const welcomeText = document.getElementById("welcome-text");
     if (welcomeText) {
         welcomeText.innerText = `Welcome ${user.name || "User"}`;
@@ -113,26 +117,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const subText = document.getElementById("welcome-subtext");
     if (subText) {
-        subText.innerText = "This is your library overview and insight";
+        subText.innerText = "This is your library dashboard";
     }
 
-    // ✅ Library branding
-    if (user.library_name) {
-        const formattedName = user.library_name
-            .split(" ")
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join("");
-
-        const logo = document.getElementById("libraryLogo");
-        if (logo) logo.innerText = "e" + formattedName + "+";
-
-        document.title = "e" + formattedName + " Dashboard";
-    }
-
-    // 🔥 Load books safely
+    // 🔥 Load books
     if (typeof loadBooks === "function") {
         loadBooks();
-    } else {
-        console.warn("loadBooks() not found");
     }
 });
