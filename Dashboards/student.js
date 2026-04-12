@@ -22,6 +22,49 @@ function showSection(id, el = null) {
 }
 
 
+async function studentLogin() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const library_code = document.getElementById("libcode").value.trim();
+
+  if (!email || !password || !library_code) {
+    alert("All fields required");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://127.0.0.1:5000/student/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        library_code
+      })
+    });
+
+    const data = await res.json();
+
+    console.log("LOGIN RESPONSE:", data);
+
+    if (data.success) {
+      // 🔥 save session
+      localStorage.setItem("student_id", data.student_id);
+      localStorage.setItem("student_name", data.name);
+
+      // ✅ redirect to dashboard
+      window.location.href = "student.html";
+    } else {
+      alert(data.message || "Login failed");
+    }
+
+  } catch (err) {
+    console.error("Login error:", err);
+    alert("Server error");
+  }
+}
 // ================== SAFE DOM LOAD ==================
 document.addEventListener("DOMContentLoaded", () => {
 
