@@ -5,7 +5,7 @@ async function addBookToDB(event) {
     const name = document.getElementById("bookName")?.value.trim();
     const author = document.getElementById("bookAuthor")?.value.trim();
     const quantity = document.getElementById("bookQty")?.value;
-    const isbn = document.getElementById("bookIsbn").values;
+    const isbn = document.getElementById("bookIsbn").value;
 
     if (!name || !author || !quantity) {
         return alert("Fill all fields");
