@@ -145,6 +145,32 @@ async function issuebook() {
 
         // 🔥 reload table (future)
         // loadIssuedBooks();
+        async function loadIssuedBooks() {
+    try {
+        const res = await fetch(`http://127.0.0.1:5000/get_issued_books/${window.userId}`);
+        const data = await res.json();
+
+        const table = document.getElementById("IssuereturnTable");
+        if (!table) return;
+
+        table.innerHTML = "";
+
+        data.forEach(item => {
+            table.innerHTML += `
+            <tr>
+                <td>${item.student}</td>
+                <td>${item.book}</td>
+                <td>${item.date}</td>
+                <td>${item.status}</td>
+                <td>${item.fine}</td>
+            </tr>
+            `;
+        });
+
+    } catch (err) {
+        console.error("Issue load error:", err);
+    }
+}
 
     } catch (err) {
         console.error(err);
@@ -231,4 +257,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadStudentDropdown();
     loadBookDropdown();
+    loadIssuedBooks();
 });
