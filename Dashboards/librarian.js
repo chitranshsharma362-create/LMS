@@ -162,7 +162,7 @@ async function loadStudentDropdown() {
     select.innerHTML = `<option value="">Select Student</option>`;
 
     data.forEach(s => {
-        select.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+        select.innerHTML += `<option value="${s.user_id}">${s.name}</option>`;
     });
 }
 
