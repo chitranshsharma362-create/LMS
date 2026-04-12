@@ -145,10 +145,12 @@ async function issuebook() {
 
         // 🔥 reload table (future)
         // loadIssuedBooks();
-        async function loadIssuedBooks() {
+       async function loadIssuedBooks() {
     try {
         const res = await fetch(`http://127.0.0.1:5000/get_issued_books/${window.userId}`);
         const data = await res.json();
+
+        console.log("Issued data:", data);
 
         const table = document.getElementById("IssuereturnTable");
         if (!table) return;
@@ -168,13 +170,7 @@ async function issuebook() {
         });
 
     } catch (err) {
-        console.error("Issue load error:", err);
-    }
-}
-
-    } catch (err) {
         console.error(err);
-        alert("Failed ❌");
     }
 }
 
