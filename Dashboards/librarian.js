@@ -26,28 +26,50 @@ function closeModal(id) {
 }
 
 //////////////////// STUDENT ////////////////////
-function addStudent() {
+async function addStudent() {
     const name = document.getElementById("studentName")?.value;
+    const email = document.getElementById("studentEmail")?.value;
+    const password = document.getElementById("studentPassword")?.value;
     const course = document.getElementById("studentCourse")?.value;
     const status = document.getElementById("studentStatus")?.value;
     const fees = document.getElementById("studentFees")?.value;
 
-    if (!name || !course) {
-        return alert("Fill all fields");
+    if (!name || !email || !password) {
+        return alert("Name, Email & Password required ❌");
     }
 
-    const table = document.getElementById("studentTable");
+    try {
+        const res = await fetch("http://127.0.0.1:5000/add_student", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                admin_id: window.userId,
+                name,
+                email,
+                password,
+                course,
+                status,
+                fees
+            })
+        });
 
-    table.innerHTML += `
-        <tr>
-            <td>${name}</td>
-            <td>${course}</td>
-            <td>${status}</td>
-            <td>${fees}</td>
-        </tr>
-    `;
+        const data = await res.json();
 
-    closeModal("studentModal");
+        if (!res.ok) throw new Error(data.message);
+
+        alert("Student Added ✅");
+
+        // 🔥 reload from DB (best)
+        loadStudents();
+
+        closeModal("studentModal");
+
+    } catch (err) {
+        console.error(err);
+        alert("Failed ❌");
+    }
 }
 
 //////////////////// ISSUE BOOK ////////////////////
@@ -124,4 +146,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof loadBooks === "function") {
         loadBooks();
     }
+
+    async function loadStudents() {
+    const res = await fetch(`http://127.0.0.1:5000/get_students/${window.userId}`);
+    const data = await res.json();
+
+    const table = document.getElementById("studentTable");
+    table.innerHTML = "";
+
+    data.forEach(s => {
+        table.innerHTML += `
+        <tr>
+            <td>${s.name}</td>
+            <td>${s.course}</td>
+            <td>${s.status}</td>
+            <td>${s.fees}</td>
+        </tr>
+        `;
+    });
+}
 });
