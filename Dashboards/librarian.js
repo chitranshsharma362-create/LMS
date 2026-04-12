@@ -151,6 +151,34 @@ async function issuebook() {
         alert("Failed ❌");
     }
 }
+
+async function loadStudentDropdown() {
+    const res = await fetch(`http://127.0.0.1:5000/get_students/${window.userId}`);
+    const data = await res.json();
+
+    const select = document.getElementById("issueStudent");
+    if (!select) return;
+
+    select.innerHTML = `<option value="">Select Student</option>`;
+
+    data.forEach(s => {
+        select.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+    });
+}
+
+async function loadBookDropdown() {
+    const res = await fetch(`http://127.0.0.1:5000/get_books/${window.userId}`);
+    const data = await res.json();
+
+    const select = document.getElementById("issueBook");
+    if (!select) return;
+
+    select.innerHTML = `<option value="">Select Book</option>`;
+
+    data.forEach(b => {
+        select.innerHTML += `<option value="${b.id}">${b.book_name}</option>`;
+    });
+}
 //////////////////// REMOVE ROW ////////////////////
 function removeRow(tableId) {
     const table = document.getElementById(tableId);
