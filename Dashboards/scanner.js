@@ -15,7 +15,7 @@ function fetchBook(isbn) {
 
       const b = data.docs[0];
       
-      document.getElementById("bookISBN").value = isbn;
+      document.getElementById("bookIsbn").value = isbn;
       document.getElementById("bookName").value = b.title || "";
       document.getElementById("bookAuthor").value =
         b.author_name ? b.author_name.join(", ") : "";
