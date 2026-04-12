@@ -5,6 +5,7 @@ async function addBookToDB(event) {
     const name = document.getElementById("bookName")?.value.trim();
     const author = document.getElementById("bookAuthor")?.value.trim();
     const quantity = document.getElementById("bookQty")?.value;
+    const isbn = document.getElementById("bookIsbn").values;
 
     if (!name || !author || !quantity) {
         return alert("Fill all fields");
@@ -20,7 +21,8 @@ async function addBookToDB(event) {
                 user_id: window.userId,
                 book_name: name,
                 author: author,
-                quantity: quantity
+                quantity: quantity,
+                isbn: isbn
             })
         });
 
@@ -60,6 +62,7 @@ async function loadBooks() {
         data.forEach(book => {
             table.innerHTML += `
             <tr>
+                <td>${book.isbn}</td>
                 <td>${book.book_name}</td>
                 <td>${book.author}</td>
                 <td>${book.quantity}</td>
