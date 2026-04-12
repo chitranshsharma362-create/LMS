@@ -31,8 +31,6 @@ async function loadStudents() {
         const res = await fetch(`http://127.0.0.1:5000/get_students/${window.userId}`);
         const data = await res.json();
 
-        console.log("Students:", data);
-
         const table = document.getElementById("studentTable");
         if (!table) return;
 
@@ -70,9 +68,7 @@ async function addStudent() {
     try {
         const res = await fetch("http://127.0.0.1:5000/add_student", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 admin_id: window.userId,
                 name,
@@ -84,16 +80,13 @@ async function addStudent() {
             })
         });
 
-        const data = await res.json();
-
-        if (!res.ok) throw new Error(data.message);
+        if (!res.ok) throw new Error();
 
         alert("Student Added ✅");
 
-        // 🔥 reload list
         loadStudents();
 
-        // 🔥 clear form
+        // clear
         document.getElementById("studentName").value = "";
         document.getElementById("studentEmail").value = "";
         document.getElementById("studentPassword").value = "";
@@ -108,72 +101,7 @@ async function addStudent() {
     }
 }
 
-//////////////////// ISSUE BOOK (UI ONLY) ////////////////////
-async function issuebook() {
-    const user_id = document.getElementById("issueStudent")?.value;
-    const book_id = document.getElementById("issueBook")?.value;
-    const date = document.getElementById("issueDate")?.value;
-    const status = document.getElementById("issueStatus")?.value;
-    const fine = document.getElementById("issueFine")?.value || 0;
-
-    if (!user_id || !book_id || !date) {
-        return alert("Fill all fields ❌");
-    }
-
-    try {
-        const res = await fetch("http://127.0.0.1:5000/issue_book", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                user_id,
-                book_id,
-                issue_date: date,
-                status,
-                fine
-            })
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) throw new Error(data.message);
-
-        alert("Book Issued ✅");
-
-        closeModal("issueModal");
-
-        // 🔥 reload table (future)
-        // loadIssuedBooks();
-       async function loadIssuedBooks() {
-    try {
-        const res = await fetch(`http://127.0.0.1:5000/get_issued_books/${window.userId}`);
-        const data = await res.json();
-
-        console.log("Issued data:", data);
-
-        const table = document.getElementById("IssuereturnTable");
-        if (!table) return;
-
-        table.innerHTML = "";
-
-        data.forEach(item => {
-            table.innerHTML += `
-            <tr>
-                <td>${item.student}</td>
-                <td>${item.book}</td>
-                <td>${item.date}</td>
-                <td>${item.status}</td>
-                <td>${item.fine}</td>
-            </tr>
-            `;
-        });
-
-    } catch (err) {
-        console.error(err);
-    }
-}
-
+//////////////////// LOAD DROPDOWNS ////////////////////
 async function loadStudentDropdown() {
     const res = await fetch(`http://127.0.0.1:5000/get_students/${window.userId}`);
     const data = await res.json();
@@ -201,16 +129,71 @@ async function loadBookDropdown() {
         select.innerHTML += `<option value="${b.id}">${b.book_name}</option>`;
     });
 }
-//////////////////// REMOVE ROW ////////////////////
-function removeRow(tableId) {
-    const table = document.getElementById(tableId);
 
-    if (!table) return;
+//////////////////// ISSUE BOOK ////////////////////
+async function issuebook() {
+    const user_id = document.getElementById("issueStudent")?.value;
+    const book_id = document.getElementById("issueBook")?.value;
+    const date = document.getElementById("issueDate")?.value;
+    const status = document.getElementById("issueStatus")?.value;
+    const fine = document.getElementById("issueFine")?.value || 0;
 
-    if (table.rows.length > 1) {
-        table.deleteRow(-1);
-    } else {
-        alert("No data to remove");
+    if (!user_id || !book_id || !date) {
+        return alert("Fill all fields ❌");
+    }
+
+    try {
+        const res = await fetch("http://127.0.0.1:5000/issue_book", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                user_id,
+                book_id,
+                issue_date: date,
+                status,
+                fine
+            })
+        });
+
+        if (!res.ok) throw new Error();
+
+        alert("Book Issued ✅");
+
+        closeModal("issueModal");
+
+        loadIssuedBooks(); // 🔥 important
+
+    } catch (err) {
+        console.error(err);
+        alert("Failed ❌");
+    }
+}
+
+//////////////////// LOAD ISSUED BOOKS ////////////////////
+async function loadIssuedBooks() {
+    try {
+        const res = await fetch(`http://127.0.0.1:5000/get_issued_books/${window.userId}`);
+        const data = await res.json();
+
+        const table = document.getElementById("IssuereturnTable");
+        if (!table) return;
+
+        table.innerHTML = "";
+
+        data.forEach(item => {
+            table.innerHTML += `
+            <tr>
+                <td>${item.student}</td>
+                <td>${item.book}</td>
+                <td>${item.date}</td>
+                <td>${item.status}</td>
+                <td>${item.fine}</td>
+            </tr>
+            `;
+        });
+
+    } catch (err) {
+        console.error("Issue load error:", err);
     }
 }
 
@@ -224,33 +207,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!user.user_id) {
-        alert("Session expired ❌ Please login again");
+        alert("Session expired ❌");
         localStorage.removeItem("loggedUser");
         window.location.href = "../index.html";
         return;
     }
 
-    // 🔥 GLOBAL USER ID
     window.userId = user.user_id;
 
-    // ✅ welcome text
     const welcomeText = document.getElementById("welcome-text");
     if (welcomeText) {
         welcomeText.innerText = `Welcome ${user.name || "User"}`;
     }
 
-    const subText = document.getElementById("welcome-subtext");
-    if (subText) {
-        subText.innerText = "This is your library dashboard";
-    }
-
-    // 🔥 load data
-    if (typeof loadBooks === "function") {
-        loadBooks();
-    }
-
-    loadStudents(); // 🔥 important fix
-
+    // load all
+    loadStudents();
     loadStudentDropdown();
     loadBookDropdown();
     loadIssuedBooks();
