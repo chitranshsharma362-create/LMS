@@ -235,7 +235,40 @@ async function saveProfile() {
   }
 }
 
+async function addStudent() {
+  const name = document.getElementById("studentName").value.trim();
+  const email = document.getElementById("studentEmail").value.trim();
+  const password = document.getElementById("studentPassword").value.trim();
+  const course = document.getElementById("studentCourse").value.trim();
+  const fees = document.getElementById("studentFees").value.trim();
+  const status = document.getElementById("studentStatus").value;
 
+  const admin_id = localStorage.getItem("user_id");
+
+  if (!name || !email || !password) {
+    alert("Required fields missing");
+    return;
+  }
+
+  const res = await fetch("http://127.0.0.1:5000/add_student", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name,
+      email,
+      password,
+      course,
+      fees,
+      status,
+      admin_id
+    })
+  });
+
+  const data = await res.json();
+  alert(data.message);
+}
 // ================== LOGOUT ==================
 function logout() {
   localStorage.clear();
