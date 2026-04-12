@@ -109,33 +109,48 @@ async function addStudent() {
 }
 
 //////////////////// ISSUE BOOK (UI ONLY) ////////////////////
-function issuebook() {
-    const student = document.getElementById("issueStudentName")?.value;
-    const book = document.getElementById("issueBookName")?.value;
-    const duration = document.getElementById("issueDuration")?.value;
-    const status = document.getElementById("issueReturnStatus")?.value;
-    const fees = document.getElementById("issueStudentFees")?.value;
+async function issuebook() {
+    const user_id = document.getElementById("issueStudent")?.value;
+    const book_id = document.getElementById("issueBook")?.value;
+    const date = document.getElementById("issueDate")?.value;
+    const status = document.getElementById("issueStatus")?.value;
+    const fine = document.getElementById("issueFine")?.value || 0;
 
-    if (!student || !book || !duration) {
-        return alert("Fill all fields");
+    if (!user_id || !book_id || !date) {
+        return alert("Fill all fields ❌");
     }
 
-    const table = document.getElementById("IssuereturnTable");
-    if (!table) return;
+    try {
+        const res = await fetch("http://127.0.0.1:5000/issue_book", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                user_id,
+                book_id,
+                issue_date: date,
+                status,
+                fine
+            })
+        });
 
-    table.innerHTML += `
-        <tr>
-            <td>${student}</td>
-            <td>${book}</td>
-            <td>${duration}</td>
-            <td>${status}</td>
-            <td>${fees}</td>
-        </tr>
-    `;
+        const data = await res.json();
 
-    closeModal("issueModal");
+        if (!res.ok) throw new Error(data.message);
+
+        alert("Book Issued ✅");
+
+        closeModal("issueModal");
+
+        // 🔥 reload table (future)
+        // loadIssuedBooks();
+
+    } catch (err) {
+        console.error(err);
+        alert("Failed ❌");
+    }
 }
-
 //////////////////// REMOVE ROW ////////////////////
 function removeRow(tableId) {
     const table = document.getElementById(tableId);
