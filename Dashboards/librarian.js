@@ -130,6 +130,40 @@ async function loadBookDropdown() {
     });
 }
 
+async function loadBooks() {
+    try {
+        const res = await fetch(`http://127.0.0.1:5000/get_books/${window.userId}`);
+        const data = await res.json();
+
+        const table = document.getElementById("bookTable");
+        if (!table) return;
+
+        // header preserve karo
+        table.innerHTML = `
+        <tr>
+            <th>ISBN</th>
+            <th>Book</th>
+            <th>Author</th>
+            <th>Quantity</th>
+        </tr>
+        `;
+
+        data.forEach(b => {
+            table.innerHTML += `
+            <tr>
+                <td>${b.isbn}</td>
+                <td>${b.book_name}</td>
+                <td>${b.author}</td>
+                <td>${b.quantity}</td>
+            </tr>
+            `;
+        });
+
+    } catch (err) {
+        console.error("Load books error:", err);
+    }
+}
+
 //////////////////// ISSUE BOOK ////////////////////
 async function issuebook() {
     const user_id = document.getElementById("issueStudent")?.value;
@@ -225,4 +259,5 @@ document.addEventListener("DOMContentLoaded", () => {
     loadStudentDropdown();
     loadBookDropdown();
     loadIssuedBooks();
+    loadBooks();
 });
