@@ -272,23 +272,38 @@
     </div>
 </div>
 
-    <div class="modal" id="issueModal">
-        <div class="modal-box">
-            <h3>Issue/Return Book</h3>
-            <input type="text" id="issueStudentName" placeholder="Student Name">
-            <input type="text" id="issueBookName" placeholder="Book Name">
-            <input type="date" id="issueDuration" placeholder="Date">
-            <select id="issueReturnStatus">
-                <option>Issue</option>
-                <option>Return</option>
-            </select>
-            <input type="number" id="issueStudentFees" placeholder="Charges">
-            <div class="modal-actions">
-                <button class="btn add-btn" onclick="issuebook()">Add</button>
-                <button class="btn delete-btn" onclick="closeModal('issueModal')">Cancel</button>
-            </div>
+   <div class="modal" id="issueModal">
+    <div class="modal-box">
+        <h3>Issue / Return Book</h3>
+
+        <!-- ✅ Student Dropdown -->
+        <select id="issueStudent">
+            <option value="">Select Student</option>
+        </select>
+
+        <!-- ✅ Book Dropdown -->
+        <select id="issueBook">
+            <option value="">Select Book</option>
+        </select>
+
+        <!-- ✅ Date -->
+        <input type="date" id="issueDate">
+
+        <!-- ✅ Status -->
+        <select id="issueStatus">
+            <option value="issued">Issue</option>
+            <option value="returned">Return</option>
+        </select>
+
+        <!-- ✅ Fine -->
+        <input type="number" id="issueFine" placeholder="Charges">
+
+        <div class="modal-actions">
+            <button class="btn add-btn" onclick="issuebook()">Add</button>
+            <button class="btn delete-btn" onclick="closeModal('issueModal')">Cancel</button>
         </div>
     </div>
+</div>
 </body>
 
 </html>
