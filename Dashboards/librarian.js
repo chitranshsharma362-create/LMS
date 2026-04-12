@@ -228,4 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     loadStudents(); // 🔥 important fix
+
+    loadStudentDropdown();
+    loadBookDropdown();
 });
