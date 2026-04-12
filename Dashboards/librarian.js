@@ -25,7 +25,36 @@ function closeModal(id) {
     if (modal) modal.style.display = "none";
 }
 
-//////////////////// STUDENT ////////////////////
+//////////////////// LOAD STUDENTS ////////////////////
+async function loadStudents() {
+    try {
+        const res = await fetch(`http://127.0.0.1:5000/get_students/${window.userId}`);
+        const data = await res.json();
+
+        console.log("Students:", data);
+
+        const table = document.getElementById("studentTable");
+        if (!table) return;
+
+        table.innerHTML = "";
+
+        data.forEach(s => {
+            table.innerHTML += `
+            <tr>
+                <td>${s.name}</td>
+                <td>${s.course || "-"}</td>
+                <td>${s.status || "-"}</td>
+                <td>${s.fees || 0}</td>
+            </tr>
+            `;
+        });
+
+    } catch (err) {
+        console.error("Load student error:", err);
+    }
+}
+
+//////////////////// ADD STUDENT ////////////////////
 async function addStudent() {
     const name = document.getElementById("studentName")?.value;
     const email = document.getElementById("studentEmail")?.value;
@@ -61,8 +90,15 @@ async function addStudent() {
 
         alert("Student Added ✅");
 
-        // 🔥 reload from DB (best)
+        // 🔥 reload list
         loadStudents();
+
+        // 🔥 clear form
+        document.getElementById("studentName").value = "";
+        document.getElementById("studentEmail").value = "";
+        document.getElementById("studentPassword").value = "";
+        document.getElementById("studentCourse").value = "";
+        document.getElementById("studentFees").value = "";
 
         closeModal("studentModal");
 
@@ -72,7 +108,7 @@ async function addStudent() {
     }
 }
 
-//////////////////// ISSUE BOOK ////////////////////
+//////////////////// ISSUE BOOK (UI ONLY) ////////////////////
 function issuebook() {
     const student = document.getElementById("issueStudentName")?.value;
     const book = document.getElementById("issueBookName")?.value;
@@ -85,6 +121,7 @@ function issuebook() {
     }
 
     const table = document.getElementById("IssuereturnTable");
+    if (!table) return;
 
     table.innerHTML += `
         <tr>
@@ -131,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🔥 GLOBAL USER ID
     window.userId = user.user_id;
 
-    // ✅ Welcome text
+    // ✅ welcome text
     const welcomeText = document.getElementById("welcome-text");
     if (welcomeText) {
         welcomeText.innerText = `Welcome ${user.name || "User"}`;
@@ -142,27 +179,10 @@ document.addEventListener("DOMContentLoaded", () => {
         subText.innerText = "This is your library dashboard";
     }
 
-    // 🔥 Load books
+    // 🔥 load data
     if (typeof loadBooks === "function") {
         loadBooks();
     }
 
-    async function loadStudents() {
-    const res = await fetch(`http://127.0.0.1:5000/get_students/${window.userId}`);
-    const data = await res.json();
-
-    const table = document.getElementById("studentTable");
-    table.innerHTML = "";
-
-    data.forEach(s => {
-        table.innerHTML += `
-        <tr>
-            <td>${s.name}</td>
-            <td>${s.course}</td>
-            <td>${s.status}</td>
-            <td>${s.fees}</td>
-        </tr>
-        `;
-    });
-}
+    loadStudents(); // 🔥 important fix
 });
