@@ -130,38 +130,58 @@ async function loadBookDropdown() {
     });
 }
 
+// async function loadBooks() {
+//     try {
+//         const res = await fetch(`http://127.0.0.1:5000/get_books/${window.userId}`);
+//         const data = await res.json();
+
+//         const table = document.getElementById("bookTable");
+//         if (!table) return;
+
+//         // header preserve karo
+//         table.innerHTML = `
+//         <tr>
+//             <th>ISBN</th>
+//             <th>Book</th>
+//             <th>Author</th>
+//             <th>Quantity</th>
+//         </tr>
+//         `;
+
+//         data.forEach(b => {
+//             table.innerHTML += `
+//             <tr>
+//                 <td>${b.isbn}</td>
+//                 <td>${b.book_name}</td>
+//                 <td>${b.author}</td>
+//                 <td>${b.quantity}</td>
+//             </tr>
+//             `;
+//         });
+
+//     } catch (err) {
+//         console.error("Load books error:", err);
+//     }
+// }
+
 async function loadBooks() {
-    try {
-        const res = await fetch(`http://127.0.0.1:5000/get_books/${window.userId}`);
-        const data = await res.json();
+    const res = await fetch(`http://127.0.0.1:5000/get_books/${window.userId}`);
+    const data = await res.json();
 
-        const table = document.getElementById("bookTable");
-        if (!table) return;
+    const tableBody = document.getElementById("bookTableBody");
 
-        // header preserve karo
-        table.innerHTML = `
+    tableBody.innerHTML = ""; // ✅ only body clear hoga, header safe
+
+    data.forEach(b => {
+        tableBody.innerHTML += `
         <tr>
-            <th>ISBN</th>
-            <th>Book</th>
-            <th>Author</th>
-            <th>Quantity</th>
+            <td>${b.isbn}</td>
+            <td>${b.book_name}</td>
+            <td>${b.author}</td>
+            <td>${b.quantity}</td>
         </tr>
         `;
-
-        data.forEach(b => {
-            table.innerHTML += `
-            <tr>
-                <td>${b.isbn}</td>
-                <td>${b.book_name}</td>
-                <td>${b.author}</td>
-                <td>${b.quantity}</td>
-            </tr>
-            `;
-        });
-
-    } catch (err) {
-        console.error("Load books error:", err);
-    }
+    });
 }
 
 //////////////////// ISSUE BOOK ////////////////////
