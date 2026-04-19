@@ -45,6 +45,7 @@ body {
 .manage-button {
     max-width: 200px;
     margin: auto;
+    display:flex;
 }
 
 .manage-button button {
