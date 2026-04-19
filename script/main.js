@@ -129,11 +129,47 @@ scrollBtn.addEventListener("click", () => {
     });
 });
 
-function getLocation() {
-    navigator.geolocation.getCurrentPosition(function(pos) {
+function getLibraries() {
+    if (!navigator.geolocation) {
+        alert("Geolocation not supported ❌");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(async function(pos) {
         let lat = pos.coords.latitude;
         let lon = pos.coords.longitude;
 
-        window.location.href = `/nearby?lat=${lat}&lon=${lon}`;
+        // 🔥 Overpass query
+        let query = `
+        [out:json];
+        (
+          node["amenity"="library"](around:5000,${lat},${lon});
+        );
+        out;
+        `;
+
+        let url = "https://overpass-api.de/api/interpreter";
+
+        try {
+            let response = await fetch(url, {
+                method: "POST",
+                body: query
+            });
+
+            let data = await response.json();
+
+            // 🔥 data save (localStorage)
+            localStorage.setItem("libraries", JSON.stringify(data.elements));
+
+            // redirect to page
+            window.location.href = "nearby.html";
+
+        } catch (error) {
+            alert("Error fetching libraries ❌");
+            console.log(error);
+        }
+
+    }, function() {
+        alert("Location access denied ❌");
     });
 }
