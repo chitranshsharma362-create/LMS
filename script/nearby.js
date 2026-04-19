@@ -1,22 +1,33 @@
-document.addEventListener("DOMContentLoaded", function() {
-    let container = document.querySelector(".grid");
-    let libraries = JSON.parse(localStorage.getItem("libraries")) || [];
+document.addEventListener("DOMContentLoaded", async function () {
 
-    if (libraries.length === 0) {
-        container.innerHTML = "<p>No libraries found 😕</p>";
-        return;
+    let container = document.getElementById("libraryContainer");
+
+    try {
+        let res = await fetch("http://127.0.0.1:5000/get_libraries");
+        let data = await res.json();
+
+        if (data.length === 0) {
+            container.innerHTML = "<p>No libraries found 😕</p>";
+            return;
+        }
+
+        let html = "";
+
+        data.forEach(lib => {
+            html += `
+            <div class="card">
+                <h3>${lib.name}</h3>
+                <p>📍 ${lib.city}</p>
+                <p>🏠 ${lib.address}</p>
+            </div>
+            `;
+        });
+
+        container.innerHTML = html;
+
+    } catch (err) {
+        console.log(err);
+        container.innerHTML = "<p>Error loading data ❌</p>";
     }
 
-    let html = "";
-
-    libraries.forEach(lib => {
-        html += `
-        <div class="card">
-            <h3>${lib.tags?.name || "Library"}</h3>
-            <p>📍 Nearby location</p>
-            <p class="distance">Within 5 KM</p>
-        </div>`;
-    });
-
-    container.innerHTML = html;
 });
