@@ -16,36 +16,58 @@
     
     <div id="header"></div>
 
-    <div id="login-form"></div>
-
     <div class="container">
 
-    <h2>📍 Nearby Libraries</h2>
+        <h2>📍 Nearby Libraries</h2>
 
-    {% if libraries|length == 0 %}
-        <p class="empty">No libraries found 😕</p>
-    {% endif %}
-
-    <div class="grid">
-
-        {% for lib in libraries %}
-        <div class="card">
-            <h3>{{ lib.tags.name if lib.tags.name else "Library" }}</h3>
-
-            <p>📍 Lat: {{ lib.lat }}</p>
-            <p>📍 Lon: {{ lib.lon }}</p>
-
-            <p class="distance">Within 5 KM</p>
-
-            <button class="btn view-btn">View Details</button>
+        <div class="grid">
+            
         </div>
-        {% endfor %}
 
     </div>
 
-</div>
-
     <div id="footer"></div>
+
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        let container = document.querySelector(".grid");
+        let libraries = JSON.parse(localStorage.getItem("libraries")) || [];
+
+        if (libraries.length === 0) {
+            container.innerHTML = "<p class='empty'>No libraries found 😕</p>";
+            return;
+        }
+
+        let html = "";
+
+        libraries.forEach(lib => {
+            html += `
+            <div class="card">
+                <h3>${lib.tags?.name || "Library"}</h3>
+                <p>📍 Lat: ${lib.lat}</p>
+                <p>📍 Lon: ${lib.lon}</p>
+                <p class="distance">Within 5 KM</p>
+
+                <button class="btn view-btn"
+                    onclick="openMap(${lib.lat}, ${lib.lon})">
+                    View on Map
+                </button>
+            </div>
+            `;
+        });
+
+        container.innerHTML = html;
+
+    });
+
+
+    // 🔥 Google Maps open
+    function openMap(lat, lon) {
+        window.open(`https://www.google.com/maps?q=${lat},${lon}`, "_blank");
+    }
+    </script>
 
 </body>
 </html>
