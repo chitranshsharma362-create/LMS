@@ -128,3 +128,12 @@ scrollBtn.addEventListener("click", () => {
         behavior: "smooth"
     });
 });
+
+function getLocation() {
+    navigator.geolocation.getCurrentPosition(function(pos) {
+        let lat = pos.coords.latitude;
+        let lon = pos.coords.longitude;
+
+        window.location.href = `/nearby?lat=${lat}&lon=${lon}`;
+    });
+}
