@@ -46,6 +46,8 @@ body {
     max-width: 500px;
     margin: auto;
     display:flex;
+    align-items:center;
+    justify-content:space between;
 }
 
 .manage-button button {
