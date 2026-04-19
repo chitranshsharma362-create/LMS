@@ -23,8 +23,6 @@ body {
 
 .hero-content {
      position: relative;
-    top: 58%;
-    transform: translateY(-50%);
     color: white;
     text-align: center;
     z-index: 1;
@@ -45,10 +43,11 @@ body {
 
 .manage-button {
     margin-top: 25px;
+    margin-left:155px;
+        width:200px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;/
 }
 
 .manage-button button {
