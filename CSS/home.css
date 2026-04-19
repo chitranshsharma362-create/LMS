@@ -52,6 +52,7 @@ body {
 .manage-button button {
     background: rgb(48, 25, 221);
     width:220px;
+    margin-right:130px;
     color: white;
     border-radius: 8px;
     padding: 15px 30px;
