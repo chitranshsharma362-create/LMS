@@ -39,12 +39,12 @@ body {
 .hero-content h1 {
     margin-top: 0;
     font-size: 80px;
-    margin-bottom: 25px;
+    /* margin-bottom: 25px; */
 }
 
 .manage-button {
     max-width: 200px;
-    margin: auto;
+    margin-left:155px;
     /* display:flex;
     align-items:center;
     justify-content:space between; */
