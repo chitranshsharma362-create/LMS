@@ -61,6 +61,16 @@ body {
     cursor: pointer;
 }
 
+.find-button{
+     background: #28a745;  /* green */
+    color: white;
+}
+
+.find-button:hover{
+    background: #218838;
+    box-shadow: 0px 2px 8px rgba(40, 167, 69, 0.5);
+}
+
 .manage-button button:hover {
     background-color: rgb(17, 14, 195);
     box-shadow: 0px 2px 5px rgb(88, 98, 243);
