@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", async function () {
-
     let container = document.getElementById("libraryContainer");
 
     try {
@@ -17,8 +16,16 @@ document.addEventListener("DOMContentLoaded", async function () {
             html += `
             <div class="card">
                 <h3>${lib.name}</h3>
+
+                <p>🔑 Code: <strong>${lib.code}</strong></p>
+
                 <p>📍 ${lib.city}</p>
                 <p>🏠 ${lib.address}</p>
+
+                <button class="btn"
+                    onclick="copyCode('${lib.code}')">
+                    Copy Code
+                </button>
             </div>
             `;
         });
@@ -29,5 +36,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.log(err);
         container.innerHTML = "<p>Error loading data ❌</p>";
     }
-
 });
+
+function copyCode(code) {
+    navigator.clipboard.writeText(code);
+    alert("Library code copied: " + code);
+}
