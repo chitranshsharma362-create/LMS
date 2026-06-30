@@ -1,5 +1,7 @@
 //////////////////// VALIDATION ////////////////////
+
 function validateForm() {
+
     let name = document.getElementById("name").value;
     let email = document.getElementById("email").value;
     let password = document.getElementById("password").value;
@@ -10,189 +12,244 @@ function validateForm() {
     if (name.length < 3) {
         document.getElementById("nameError").innerText = "Minimum 3 characters";
         valid = false;
-    } else document.getElementById("nameError").innerText = "";
+    } else {
+        document.getElementById("nameError").innerText = "";
+    }
 
     let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
+
     if (!email.match(pattern)) {
-        document.getElementById("mailError").innerText = "Invalid email";
+        document.getElementById("mailError").innerText = "Invalid Email";
         valid = false;
-    } else document.getElementById("mailError").innerText = "";
+    } else {
+        document.getElementById("mailError").innerText = "";
+    }
 
     if (password.length < 6) {
-        document.getElementById("passError").innerText = "Min 6 characters";
+        document.getElementById("passError").innerText = "Minimum 6 characters";
         valid = false;
-    } else document.getElementById("passError").innerText = "";
+    } else {
+        document.getElementById("passError").innerText = "";
+    }
 
     if (password !== confirm) {
-        document.getElementById("confirmError").innerText = "Password mismatch";
+        document.getElementById("confirmError").innerText = "Password Mismatch";
         valid = false;
-    } else document.getElementById("confirmError").innerText = "";
+    } else {
+        document.getElementById("confirmError").innerText = "";
+    }
 
     return valid;
 }
 
-//////////////////// REGISTER (LIBRARIAN) ////////////////////
+/////////////////////////////////////////////////////
+//////////////////// REGISTER ///////////////////////
+/////////////////////////////////////////////////////
+
 async function registerUser(event) {
+
     event.preventDefault();
 
     if (!validateForm()) return;
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
+    const library_name = document.getElementById("library_name").value.trim();
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
     const password = document.getElementById("password").value;
-    const library_name = document.getElementById("library_name").value;
+    const confirmPassword = document.getElementById("confirmpass").value;
 
-    try {
-        const res = await fetch("http://127.0.0.1:5000/register", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ name, email, password, library_name })
-        });
-
-        const data = await res.json();
-
-        console.log("REGISTER:", data);
-
-        if (res.ok) {
-            localStorage.setItem("loggedUser", JSON.stringify(data));
-
-            alert("Registered ✅\nLibrary Code: " + data.library_code);
-
-            window.location.href = "Dashboards/librarian.html";
-        } else {
-            alert(data.message);
-        }
-
-    } catch (err) {
-        console.error(err);
-        alert("Server Error ❌");
-    }
-}
-
-//////////////////// LOGIN (LIBRARIAN) ////////////////////
-async function loginUser(event) {
-    event.preventDefault();
-
-    const email = document.getElementById("login-email").value;
-    const password = document.getElementById("login-password").value;
-
-    if (!email || !password) {
-        alert("Enter email & password");
+    if (password !== confirmPassword) {
+        alert("Password Mismatch");
         return;
     }
 
     try {
-        const res = await fetch("http://127.0.0.1:5000/login", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ email, password })
-        });
 
-        const data = await res.json();
+        // Check Email
 
-        console.log("LOGIN:", data);
+        const { data: existingUser, error: checkError } =
+            await supabaseClient
+                .from("users")
+                .select("user_id")
+                .eq("email", email)
+                .maybeSingle();
 
-        if (res.ok) {
-            localStorage.setItem("loggedUser", JSON.stringify(data));
+        if (checkError) throw checkError;
 
-            if (data.role === "admin") {
-                window.location.href = "Dashboards/librarian.html";
-            } 
-            else if (data.role === "student") {
-                window.location.href = "Dashboards/student.html";
-            } 
-            else if (data.role === "teacher") {
-                window.location.href = "Dashboards/teacher.html";
-            } 
-            else {
-                alert("Unknown role ❌");
-            }
-
-        } else {
-            alert("Invalid Credentials ❌");
+        if (existingUser) {
+            alert("Email Already Exists");
+            return;
         }
 
-    } catch (err) {
-        console.error(err);
-        alert("Server Error ❌");
+        // Generate Library Code
+
+        let libraryCode;
+
+        while (true) {
+
+            libraryCode =
+                "LIB" +
+                Math.floor(100000 + Math.random() * 900000);
+
+            const { data } =
+                await supabaseClient
+                    .from("libraries")
+                    .select("library_id")
+                    .eq("library_code", libraryCode)
+                    .maybeSingle();
+
+            if (!data) break;
+
+        }
+
+        // Insert Library
+
+        const { data: libraryData, error: libraryError } =
+            await supabaseClient
+                .from("libraries")
+                .insert([
+                    {
+                        library_name: library_name,
+                        library_code: libraryCode
+                    }
+                ])
+                .select()
+                .single();
+
+        if (libraryError) throw libraryError;
+
+        // Insert Librarian
+
+        const { data: userData, error: userError } =
+            await supabaseClient
+                .from("users")
+                .insert([
+                    {
+                        library_id: libraryData.library_id,
+                        name: name,
+                        email: email,
+                        password: password,
+                        role: "librarian",
+                        status: "Active"
+                    }
+                ])
+                .select()
+                .single();
+
+        if (userError) throw userError;
+
+        localStorage.setItem(
+            "loggedUser",
+            JSON.stringify({
+                user_id: userData.user_id,
+                library_id: libraryData.library_id,
+                library_code: libraryCode,
+                name: name,
+                email: email,
+                role: "librarian"
+            })
+        );
+
+        alert("Registration Successful\n\nLibrary Code : " + libraryCode);
+
+        document.getElementById("form").reset();
+
+        window.location.href = "index.html";
+
     }
+
+    catch (err) {
+
+        console.error(err);
+
+        alert(err.message);
+
+    }
+
 }
 
-//////////////////// STUDENT LOGIN ////////////////////
-async function loginStudent() {
-    const code = document.getElementById("student-code").value;
+/////////////////////////////////////////////////////
+//////////////////// LOGIN //////////////////////////
+/////////////////////////////////////////////////////
 
-    if (!code) return alert("Enter Library Code");
+async function loginUser(event) {
+
+    event.preventDefault();
+
+    const email =
+        document.getElementById("login-email").value.trim().toLowerCase();
+
+    const password =
+        document.getElementById("login-password").value;
+
+    if (!email || !password) {
+
+        alert("Enter Email & Password");
+
+        return;
+
+    }
 
     try {
-        const res = await fetch("http://127.0.0.1:5000/join_library", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                library_code: code,
-                role: "student"
-            })
-        });
 
-        const data = await res.json();
+        const { data, error } =
+            await supabaseClient
+                .from("users")
+                .select("*")
+                .eq("email", email)
+                .eq("password", password)
+                .maybeSingle();
 
-        console.log("STUDENT:", data);
+        if (error) throw error;
 
-        if (res.ok) {
-            localStorage.setItem("loggedUser", JSON.stringify(data));
-            window.location.href = "Dashboards/student.html";
-        } else {
-            alert(data.message);
+        if (!data) {
+
+            alert("Invalid Credentials");
+
+            return;
+
         }
 
-    } catch (err) {
-        console.error(err);
-        alert("Error ❌");
-    }
-}
+        localStorage.setItem(
+            "loggedUser",
+            JSON.stringify(data)
+        );
 
-//////////////////// TEACHER LOGIN ////////////////////
-async function loginTeacher() {
-    const code = document.getElementById("teacher-code").value;
+        if (data.role === "librarian") {
 
-    if (!code) return alert("Enter Library Code");
+            window.location.href =
+                "Dashboards/librarian.html";
 
-    try {
-        const res = await fetch("http://127.0.0.1:5000/join_library", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                library_code: code,
-                role: "teacher"
-            })
-        });
-
-        const data = await res.json();
-
-        console.log("TEACHER:", data);
-
-        if (res.ok) {
-            localStorage.setItem("loggedUser", JSON.stringify(data));
-            window.location.href = "Dashboards/teacher.html";
-        } else {
-            alert(data.message);
         }
 
-    } catch (err) {
-        console.error(err);
-        alert("Error ❌");
+        else if (data.role === "student") {
+
+            window.location.href =
+                "Dashboards/student.html";
+
+        }
+
+        else if (data.role === "teacher") {
+
+            window.location.href =
+                "Dashboards/teacher.html";
+
+        }
+
+        else {
+
+            alert("Unknown Role");
+
+        }
+
     }
+
+    catch (err) {
+
+        console.error(err);
+
+        alert(err.message);
+
+    }
+
 }
-
-//////////////////// SHOW PASSWORD ////////////////////
-document.addEventListener("change", function (e) {
-    if (e.target.id !== "showpass") return;
-
-    const pass = document.getElementById("password");
-    const confirm = document.getElementById("confirmpass");
-
-    const type = e.target.checked ? "text" : "password";
-
-    pass.type = type;
-    if (confirm) confirm.type = type;
-});
