@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (error) throw error;
 
         if (!data || data.length === 0) {
-            container.innerHTML = "<p>No libraries found 😕</p>";
+            container.innerHTML = "<p>No libraries found </p>";
             return;
         }
 
@@ -24,11 +24,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 <h3>${lib.library_name}</h3>
 
-                <p>🔑 Code: <strong>${lib.library_code}</strong></p>
+                <p> Code: <strong>${lib.library_code}</strong></p>
 
-                <p>📍 ${lib.city ?? "Not Available"}</p>
+                <p> ${lib.city ?? "Not Available"}</p>
 
-                <p>🏠 ${lib.address ?? "Not Available"}</p>
+                <p> ${lib.address ?? "Not Available"}</p>
 
                 <button class="btn"
                     onclick="copyCode('${lib.library_code}')">
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         console.error(err);
 
-        container.innerHTML = "<p>Error loading libraries ❌</p>";
+        container.innerHTML = "<p>Error loading libraries </p>";
 
     }
 
