@@ -1,67 +1,72 @@
-document.addEventListener("submit", async (e) => {
-  if (e.target.id !== "form") return;
+async function registerUser(event) {
+    event.preventDefault();
 
-  e.preventDefault();
-  
-  if (!validateForm()) return;
+    const libraryName = document.getElementById("library_name").value.trim();
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmpass").value;
 
-  const libraryInput = document.getElementById("library_name");
-  const nameInput = document.getElementById("name");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-
-  if ( !libraryInput || !nameInput || !emailInput || !passwordInput) return;
-
-  const library_name = libraryInput.value.trim();
-  const name = nameInput.value.trim();
-  const email = emailInput.value.trim().toLowerCase();
-  const password = passwordInput.value.trim();
-
-  if (!library_name || !name || !email || !password) {
-    alert("All fields are required");
-    return;
-  }
-
-  try {
-    const { data: existingUser, error: checkError } =
-      await supabaseClient
-        .from("users")
-        .select("id")
-        .eq("email", email)
-        .maybeSingle();
-
-    if (checkError) throw checkError;
-
-    if (existingUser) {
-      alert("Email already registered");
-      return;
+    // Password Check
+    if (password !== confirmPassword) {
+        alert("Passwords do not match");
+        return;
     }
 
-    const { error: insertError } = await supabaseClient
-      .from("users")
-      .insert([
-        {
-          library_name,
-          name,
-          email,
-          password
+    try {
+
+        // Check Email Exists
+        const { data: existingUser, error: checkError } = await supabaseClient
+            .from("users")
+            .select("user_id")
+            .eq("email", email)
+            .maybeSingle();
+
+        if (checkError) throw checkError;
+
+        if (existingUser) {
+            alert("Email already exists");
+            return;
         }
-      ]);
 
-    if (insertError) throw insertError;
+        // Generate Library Code
+        const libraryCode = "LIB" + Math.floor(1000 + Math.random() * 9000);
 
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({name , email , library_name })
-    );
+        // Insert Library
+        const { data: libraryData, error: libraryError } = await supabaseClient
+            .from("libraries")
+            .insert({
+                library_name: libraryName,
+                library_code: libraryCode
+            })
+            .select()
+            .single();
 
-    alert("Registration successful");
-    e.target.reset();
+        if (libraryError) throw libraryError;
 
-    window.location.href = "Dashboards/librarian.html";
+        // Insert Librarian
+        const { error: userError } = await supabaseClient
+            .from("users")
+            .insert({
+                library_id: libraryData.library_id,
+                name: name,
+                email: email,
+                password: password,
+                role: "librarian",
+                status: "Active"
+            });
 
-  } catch (err) {
-    console.error(err);
-    alert("Something went wrong. Please try again.");
-  }
-});
+        if (userError) throw userError;
+
+        alert("Registration Successful!");
+
+        console.log({
+            library_id: libraryData.library_id,
+            library_code: libraryCode
+        });
+
+    } catch (err) {
+        console.error(err);
+        alert(err.message);
+    }
+}
