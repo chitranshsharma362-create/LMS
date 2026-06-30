@@ -42,9 +42,6 @@ function validateForm() {
     return valid;
 }
 
-/////////////////////////////////////////////////////
-//////////////////// REGISTER ///////////////////////
-/////////////////////////////////////////////////////
 
 async function registerUser(event) {
 
@@ -64,9 +61,6 @@ async function registerUser(event) {
     }
 
     try {
-
-        // Check Email
-
         const { data: existingUser, error: checkError } =
             await supabaseClient
                 .from("users")
@@ -75,13 +69,10 @@ async function registerUser(event) {
                 .maybeSingle();
 
         if (checkError) throw checkError;
-
         if (existingUser) {
             alert("Email Already Exists");
             return;
         }
-
-        // Generate Library Code
 
         let libraryCode;
 
@@ -168,10 +159,6 @@ async function registerUser(event) {
 
 }
 
-/////////////////////////////////////////////////////
-//////////////////// LOGIN //////////////////////////
-/////////////////////////////////////////////////////
-
 async function loginUser(event) {
 
     event.preventDefault();
@@ -209,7 +196,6 @@ async function loginUser(event) {
             return;
 
         }
-
         localStorage.setItem(
             "loggedUser",
             JSON.stringify(data)
@@ -237,9 +223,7 @@ async function loginUser(event) {
         }
 
         else {
-
             alert("Unknown Role");
-
         }
 
     }
@@ -253,3 +237,135 @@ async function loginUser(event) {
     }
 
 }
+
+async function loginStudent(event) {
+
+    event.preventDefault();
+
+    const code = document.getElementById("student-code").value.trim();
+    const email = document.getElementById("student-email").value.trim().toLowerCase();
+    const password = document.getElementById("student-password").value;
+
+    if (!code || !email || !password) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    try {
+
+        // Find Library
+        const { data: library, error: libError } = await supabaseClient
+            .from("libraries")
+            .select("library_id, library_code")
+            .eq("library_code", code)
+            .maybeSingle();
+
+        if (libError) throw libError;
+
+        if (!library) {
+            alert("Invalid Library Code");
+            return;
+        }
+
+        // Find Student
+        const { data: user, error: userError } = await supabaseClient
+            .from("users")
+            .select("*")
+            .eq("library_id", library.library_id)
+            .eq("email", email)
+            .eq("password", password)
+            .eq("role", "student")
+            .maybeSingle();
+
+        if (userError) throw userError;
+
+        if (!user) {
+            alert("Invalid Credentials");
+            return;
+        }
+
+        localStorage.setItem("loggedUser", JSON.stringify(user));
+
+        window.location.href = "Dashboards/student.html";
+
+    } catch (err) {
+
+        console.error(err);
+        alert(err.message);
+
+    }
+
+}
+
+async function loginTeacher(event) {
+
+    event.preventDefault();
+
+    const code = document.getElementById("teacher-code").value.trim();
+    const email = document.getElementById("teacher-email").value.trim().toLowerCase();
+    const password = document.getElementById("teacher-password").value;
+
+    if (!code || !email || !password) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    try {
+
+        // Find Library
+        const { data: library, error: libError } = await supabaseClient
+            .from("libraries")
+            .select("library_id, library_code")
+            .eq("library_code", code)
+            .maybeSingle();
+
+        if (libError) throw libError;
+
+        if (!library) {
+            alert("Invalid Library Code");
+            return;
+        }
+
+        // Find Teacher
+        const { data: user, error: userError } = await supabaseClient
+            .from("users")
+            .select("*")
+            .eq("library_id", library.library_id)
+            .eq("email", email)
+            .eq("password", password)
+            .eq("role", "teacher")
+            .maybeSingle();
+
+        if (userError) throw userError;
+
+        if (!user) {
+            alert("Invalid Credentials");
+            return;
+        }
+
+        localStorage.setItem("loggedUser", JSON.stringify(user));
+
+        window.location.href = "Dashboards/teacher.html";
+
+    } catch (err) {
+
+        console.error(err);
+        alert(err.message);
+
+    }
+
+}
+
+document.addEventListener("change", function (e) {
+
+    if (e.target.id !== "showpass") return;
+
+    const pass = document.getElementById("password");
+    const confirm = document.getElementById("confirmpass");
+
+    const type = e.target.checked ? "text" : "password";
+
+    pass.type = type;
+    confirm.type = type;
+
+});
