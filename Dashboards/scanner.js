@@ -5,22 +5,34 @@ function extractISBN(text) {
 }
 
 function fetchBook(isbn) {
+
   fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)
+
     .then(res => res.json())
+
     .then(data => {
-      if (!data.docs || data.docs.length === 0) {
+
+      if (!data.items || data.items.length === 0) {
         alert("Book not found");
         return;
       }
 
-      const b = data.docs[0];
-      
+      const book = data.items[0].volumeInfo;
+
       document.getElementById("bookIsbn").value = isbn;
-      document.getElementById("bookName").value = b.title || "";
+
+      document.getElementById("bookName").value =
+        book.title || "";
       document.getElementById("bookAuthor").value =
-        b.author_name ? b.author_name.join(", ") : "";
+        book.authors
+          ? book.authors.join(", ")
+          : "";
     })
-    .catch(() => alert("Network error"));
+
+    .catch(err => {
+      console.error(err);
+      alert("Network Error");
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
