@@ -5,7 +5,7 @@ function extractISBN(text) {
 }
 
 function fetchBook(isbn) {
-  fetch(`https://openlibrary.org/search.json?q=${isbn}`)
+  fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)
     .then(res => res.json())
     .then(data => {
       if (!data.docs || data.docs.length === 0) {
