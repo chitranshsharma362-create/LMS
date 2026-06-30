@@ -1,11 +1,16 @@
-document.addEventListener("DOMContentLoaded", async function () {
-    let container = document.getElementById("libraryContainer");
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const container = document.getElementById("libraryContainer");
 
     try {
-        let res = await fetch("http://127.0.0.1:5000/get_libraries");
-        let data = await res.json();
 
-        if (data.length === 0) {
+        const { data, error } = await supabaseClient
+            .from("libraries")
+            .select("library_name, library_code, city, address");
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
             container.innerHTML = "<p>No libraries found 😕</p>";
             return;
         }
@@ -13,32 +18,46 @@ document.addEventListener("DOMContentLoaded", async function () {
         let html = "";
 
         data.forEach(lib => {
+
             html += `
             <div class="card">
-                <h3>${lib.name}</h3>
 
-                <p>🔑 Code: <strong>${lib.code}</strong></p>
+                <h3>${lib.library_name}</h3>
 
-                <p>📍 ${lib.city}</p>
-                <p>🏠 ${lib.address}</p>
+                <p>🔑 Code: <strong>${lib.library_code}</strong></p>
+
+                <p>📍 ${lib.city ?? "Not Available"}</p>
+
+                <p>🏠 ${lib.address ?? "Not Available"}</p>
 
                 <button class="btn"
-                    onclick="copyCode('${lib.code}')">
+                    onclick="copyCode('${lib.library_code}')">
                     Copy Code
                 </button>
+
             </div>
             `;
+
         });
 
         container.innerHTML = html;
 
-    } catch (err) {
-        console.log(err);
-        container.innerHTML = "<p>Error loading data ❌</p>";
     }
+
+    catch (err) {
+
+        console.error(err);
+
+        container.innerHTML = "<p>Error loading libraries ❌</p>";
+
+    }
+
 });
 
 function copyCode(code) {
+
     navigator.clipboard.writeText(code);
-    alert("Library code copied: " + code);
+
+    alert("Library Code Copied : " + code);
+
 }
