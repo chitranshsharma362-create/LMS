@@ -1,61 +1,67 @@
 emailjs.init("GTIwHs6WntgcGAxyF");
 
-const form = document.getElementById("contactForm");
-const btn = document.getElementById("sendBtn");
-const statusMsg = document.getElementById("statusMsg");
+function initContactForm() {
 
-form.addEventListener("submit", function(e){
+    const form = document.getElementById("contactForm");
+    if (!form) return;
 
-    e.preventDefault();
+    const btn = document.getElementById("sendBtn");
+    const statusMsg = document.getElementById("statusMsg");
 
-    btn.disabled = true;
-    btn.innerHTML = "Sending...";
+    form.addEventListener("submit", function (e) {
 
-    const params = {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        subject: document.getElementById("subject").value,
-        message: document.getElementById("message").value
-    };
+        e.preventDefault();
 
-    emailjs.send(
-        "service_sa1fh49",
-        "template_ua8takg",
-        params
-    )
+        btn.disabled = true;
+        btn.innerHTML = "Sending...";
 
-    .then(() => {
+        const params = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            subject: document.getElementById("subject").value,
+            message: document.getElementById("message").value
+        };
 
-        btn.disabled = false;
-        btn.innerHTML = "Send Message";
+        emailjs.send(
+            "service_sa1fh49",
+            "template_ua8takg",
+            params
+        )
 
-        statusMsg.style.display = "block";
-        statusMsg.className = "success";
-        statusMsg.innerHTML = " Message Sent Successfully.";
+        .then(() => {
 
-        form.reset();
+            btn.disabled = false;
+            btn.innerHTML = "Send Message";
 
-        setTimeout(()=>{
-            statusMsg.style.display="none";
-        },3000);
+            statusMsg.className = "success";
+            statusMsg.style.display = "block";
+            statusMsg.innerHTML = "Message Sent Successfully!";
 
-    })
+            form.reset();
 
-    .catch((error)=>{
+            setTimeout(() => {
+                statusMsg.style.display = "none";
+            }, 3000);
 
-        console.log(error);
+        })
 
-        btn.disabled = false;
-        btn.innerHTML = "Send Message";
+        .catch((error) => {
 
-        statusMsg.style.display = "block";
-        statusMsg.className = "error";
-        statusMsg.innerHTML = " Message could not be sent. Please try again.";
+            console.log(error);
 
-        setTimeout(()=>{
-            statusMsg.style.display="none";
-        },3000);
+            btn.disabled = false;
+            btn.innerHTML = "Send Message";
+
+            statusMsg.className = "error";
+            statusMsg.style.display = "block";
+            statusMsg.innerHTML = " Message could not be sent.";
+
+            setTimeout(() => {
+                statusMsg.style.display = "none";
+            }, 3000);
+
+        });
 
     });
 
-});
+}
