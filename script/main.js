@@ -41,8 +41,9 @@ fetch("contact-section.html")
     .then(response => response.text())
     .then(data => {
         document.getElementById("contact-section").innerHTML = data;
-    });
 
+        initContactForm();
+    });
 fetch("form.html")
     .then(response => response.text())
     .then(data => {
