@@ -65,3 +65,4 @@ function initContactForm() {
     });
 
 }
+window.initContactForm = initContactForm;
