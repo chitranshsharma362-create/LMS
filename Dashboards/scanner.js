@@ -1,7 +1,6 @@
 let html5QrCode = null;
 
 const scanBtn = document.getElementById("scanBtn");
-const reader = document.getElementById("reader");
 
 scanBtn.addEventListener("click", () => {
 
@@ -15,56 +14,39 @@ scanBtn.addEventListener("click", () => {
 
 function startScanner() {
 
-    reader.style.display = "block";
+    const reader = document.getElementById("reader");
 
-     const reader = document.getElementById("reader");
+    reader.style.display = "block";
 
     if (!html5QrCode) {
         html5QrCode = new Html5Qrcode("reader");
     }
 
-    Html5Qrcode.getCameras()
-        .then(cameras => {
-
-            if (!cameras.length) {
-                alert("No Camera Found");
-                return;
-            }
-
-            html5QrCode.start(
-
-                { facingMode: "environment" },
-
-                {
-                    fps: 10,
-                    qrbox: 250
-                },
-
-                onScanSuccess,
-
-                () => { }
-
-            );
-
-        })
-
-        .catch(err => {
-            console.log(err);
-            alert("Camera Error");
-        });
+    html5QrCode.start(
+        { facingMode: "environment" },
+        {
+            fps: 10,
+            qrbox: 250
+        },
+        onScanSuccess,
+        () => { }
+    ).catch(err => {
+        console.log(err);
+        alert("Camera Error");
+    });
 
 }
 
 async function onScanSuccess(decodedText) {
 
     await html5QrCode.stop();
+    await html5QrCode.clear();
 
-    reader.style.display = "none";
+    html5QrCode = null;
 
-    let isbn = decodedText.replace(/\D/g, "");
+    document.getElementById("reader").style.display = "none";
 
-    if (isbn.length > 13)
-        isbn = isbn.substring(0,13);
+    const isbn = decodedText.replace(/\D/g, "").substring(0,13);
 
     document.getElementById("bookIsbn").value = isbn;
 
@@ -74,36 +56,29 @@ async function onScanSuccess(decodedText) {
 
 async function fetchBook(isbn){
 
+    //-----------------------------
+    // 1 GOOGLE BOOKS
+    //-----------------------------
+
     try{
 
-        const response = await fetch(
-            `https://openlibrary.org/isbn/${isbn}.json`
+        let res = await fetch(
+            `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`
         );
 
-        if(!response.ok){
+        let data = await res.json();
 
-            alert("Book Not Found");
+        if(data.totalItems > 0){
 
-            return;
-        }
+            const book = data.items[0].volumeInfo;
 
-        const book = await response.json();
-
-        document.getElementById("bookName").value =
-            book.title || "";
-
-        if(book.authors && book.authors.length){
-
-            const authorRes = await fetch(
-                "https://openlibrary.org" +
-                book.authors[0].key +
-                ".json"
-            );
-
-            const authorData = await authorRes.json();
+            document.getElementById("bookName").value =
+                book.title || "";
 
             document.getElementById("bookAuthor").value =
-                authorData.name || "";
+                book.authors ? book.authors.join(", ") : "";
+
+            return;
 
         }
 
@@ -111,10 +86,58 @@ async function fetchBook(isbn){
 
     catch(err){
 
-        console.log(err);
-
-        alert("Error Fetching Book");
+        console.log("Google Books Error",err);
 
     }
+
+    //-----------------------------
+    // 2 OPEN LIBRARY
+    //-----------------------------
+
+    try{
+
+        let res = await fetch(
+            `https://openlibrary.org/isbn/${isbn}.json`
+        );
+
+        if(res.ok){
+
+            let book = await res.json();
+
+            document.getElementById("bookName").value =
+                book.title || "";
+
+            if(book.authors){
+
+                let authorRes = await fetch(
+                    "https://openlibrary.org"+
+                    book.authors[0].key+
+                    ".json"
+                );
+
+                let author = await authorRes.json();
+
+                document.getElementById("bookAuthor").value =
+                    author.name || "";
+
+            }
+
+            return;
+
+        }
+
+    }
+
+    catch(err){
+
+        console.log("Open Library Error",err);
+
+    }
+
+    //-----------------------------
+    // BOOK NOT FOUND
+    //-----------------------------
+
+    alert("Book Not Found.\nPlease enter details manually.");
 
 }
