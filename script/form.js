@@ -1,58 +1,81 @@
-let form = document.getElementById("form");
+//////////////////// FORM VALIDATION ////////////////////
 
-let nameInput = document.getElementById("name");
-let nameError = document.getElementById("nameError");
-let mailInput = document.getElementById("email");
-let mailError = document.getElementById("mailError");
-let passwordInput = document.getElementById("password");
-let passError = document.getElementById("passError");
-let confirmInput = document.getElementById("confirmpass");
-let confirmError = document.getElementById("confirmError");
-let showpass = document.getElementById("showpass");
-
-form.addEventListener("submit", function (e) {
-    e.preventDefault();
+function validateForm() {
 
     let valid = true;
 
-    if (nameInput.value.length < 3) {
-        nameError.innerText = "Minimum 3 characters";
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirm = document.getElementById("confirmpass").value;
+
+    document.getElementById("nameError").innerText = "";
+    document.getElementById("mailError").innerText = "";
+    document.getElementById("passError").innerText = "";
+    document.getElementById("confirmError").innerText = "";
+
+    // Name Validation
+
+    if (name.length < 3) {
+
+        document.getElementById("nameError").innerText =
+            "Minimum 3 characters required";
+
         valid = false;
-    } else nameError.innerText = "";
 
-    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-    if (!mailInput.value.match(emailPattern)) {
-        mailError.innerText = "Invalid email";
-        valid = false;
-    } else mailError.innerText = "";
-
-    let password = passwordInput.value;
-    if (password.length < 8 || !(/\d/.test(password)) || !(/[!@#$%^&*]/.test(password))) {
-        passError.innerText = "Minimum 8 characters, 1 number & 1 special character required";
-        valid = false;
-    } else passError.innerText = "";
-
-    if (password !== confirmInput.value) {
-        confirmError.innerText = "Password mismatch";
-        valid = false;
-    } else confirmError.innerText = "";
-
-    if (valid) {
-        localStorage.setItem("userData", JSON.stringify({
-            name: nameInput.value,
-            email: mailInput.value,
-            password
-        }));
-
-        alert("Signup Successful");
-        form.reset();
     }
+
+    // Email Validation
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+
+        document.getElementById("mailError").innerText =
+            "Enter a valid email";
+
+        valid = false;
+
+    }
+
+    // Password Validation
+
+    const passwordPattern =
+        /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
+
+    if (!passwordPattern.test(password)) {
+
+        document.getElementById("passError").innerText =
+            "Minimum 8 characters, 1 number & 1 special character";
+
+        valid = false;
+
+    }
+
+    // Confirm Password
+
+    if (password !== confirm) {
+
+        document.getElementById("confirmError").innerText =
+            "Password does not match";
+
+        valid = false;
+
+    }
+
+    return valid;
+
+}
+
+
+//////////////////// SHOW PASSWORD ////////////////////
+
+document.getElementById("showpass").addEventListener("change", function () {
+
+    const type = this.checked ? "text" : "password";
+
+    document.getElementById("password").type = type;
+
+    document.getElementById("confirmpass").type = type;
+
 });
-
-showpass.addEventListener("change", function () {
-    let type = showpass.checked ? "text" : "password";
-    passwordInput.type = type;
-    confirmInput.type = type;
-});
-
-
