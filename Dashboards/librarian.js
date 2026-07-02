@@ -24,3 +24,17 @@ function closeModal(id) {
     const modal = document.getElementById(id);
     if (modal) modal.style.display = "none";
 }
+
+//////////////////// WELCOME USER ////////////////////
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const name = localStorage.getItem("name");
+
+    if (name) {
+
+        document.getElementById("welcome-text").innerText = `Welcome, ${name} 👋`;
+
+    }
+
+});
