@@ -1,63 +1,110 @@
-let scanner = null;
+let html5QrCode = null;
 
-function extractISBN(text) {
-  return text.replace(/\D/g, "").slice(0, 13);
-}
+const scanBtn = document.getElementById("scanBtn");
+const reader = document.getElementById("reader");
 
-function fetchBook(isbn) {
+scanBtn.addEventListener("click", startScanner);
 
-  fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)
+function startScanner() {
 
-    .then(res => res.json())
-
-    .then(data => {
-
-      if (!data.items || data.items.length === 0) {
-        alert("Book not found");
-        return;
-      }
-
-      const book = data.items[0].volumeInfo;
-
-      document.getElementById("bookIsbn").value = isbn;
-
-      document.getElementById("bookName").value =
-        book.title || "";
-      document.getElementById("bookAuthor").value =
-        book.authors
-          ? book.authors.join(", ")
-          : "";
-    })
-
-    .catch(err => {
-      console.error(err);
-      alert("Network Error");
-    });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const scanBtn = document.getElementById("scanBtn");
-  const reader = document.getElementById("reader");
-
-  scanBtn.addEventListener("click", async () => {
-    openModal("bookModal");
     reader.style.display = "block";
 
-    if (!scanner) {
-      scanner = new Html5Qrcode("reader");
+    if (!html5QrCode) {
+        html5QrCode = new Html5Qrcode("reader");
     }
 
-    await scanner.start(
-      { facingMode: "environment" },
-      { fps: 10, qrbox: 250 },
-      (text) => {
-        const isbn = extractISBN(text);
-        if (isbn.length < 10) return;
+    Html5Qrcode.getCameras()
+        .then(cameras => {
 
-        fetchBook(isbn);
-        scanner.stop();
-        reader.style.display = "none";
-      }
-    );
-  });
-});
+            if (!cameras.length) {
+                alert("No Camera Found");
+                return;
+            }
+
+            html5QrCode.start(
+
+                { facingMode: "environment" },
+
+                {
+                    fps: 10,
+                    qrbox: 250
+                },
+
+                onScanSuccess,
+
+                () => { }
+
+            );
+
+        })
+
+        .catch(err => {
+            console.log(err);
+            alert("Camera Error");
+        });
+
+}
+
+async function onScanSuccess(decodedText) {
+
+    await html5QrCode.stop();
+
+    reader.style.display = "none";
+
+    let isbn = decodedText.replace(/\D/g, "");
+
+    if (isbn.length > 13)
+        isbn = isbn.substring(0,13);
+
+    document.getElementById("bookIsbn").value = isbn;
+
+    fetchBook(isbn);
+
+}
+
+async function fetchBook(isbn){
+
+    try{
+
+        const response = await fetch(
+            `https://openlibrary.org/isbn/${isbn}.json`
+        );
+
+        if(!response.ok){
+
+            alert("Book Not Found");
+
+            return;
+        }
+
+        const book = await response.json();
+
+        document.getElementById("bookName").value =
+            book.title || "";
+
+        if(book.authors && book.authors.length){
+
+            const authorRes = await fetch(
+                "https://openlibrary.org" +
+                book.authors[0].key +
+                ".json"
+            );
+
+            const authorData = await authorRes.json();
+
+            document.getElementById("bookAuthor").value =
+                authorData.name || "";
+
+        }
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+        alert("Error Fetching Book");
+
+    }
+
+}
