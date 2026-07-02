@@ -3,7 +3,15 @@ let html5QrCode = null;
 const scanBtn = document.getElementById("scanBtn");
 const reader = document.getElementById("reader");
 
-scanBtn.addEventListener("click", startScanner);
+scanBtn.addEventListener("click", () => {
+
+    openModal("bookModal");
+
+    setTimeout(() => {
+        startScanner();
+    }, 300);
+
+});
 
 function startScanner() {
 
