@@ -77,7 +77,7 @@ async function registerUser(event) {
             localStorage.setItem("name", result.name);
             localStorage.setItem("role", result.role);
             document.getElementById("form").reset();
-            window.location.href = "index.html";
+           window.location.href = "Dashboards/librarian.html";
         } else {
             alert(result.message);
         }
