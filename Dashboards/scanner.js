@@ -1,39 +1,53 @@
 let html5QrCode = null;
 
-const scanBtn = document.getElementById("scanBtn");
+window.addEventListener("DOMContentLoaded", () => {
 
-scanBtn.addEventListener("click", () => {
+    const scanBtn = document.getElementById("scanBtn");
 
-    openModal("bookModal");
+    if (!scanBtn) {
+        console.log("Scan button not found");
+        return;
+    }
 
-    setTimeout(() => {
-        startScanner();
-    }, 300);
+    scanBtn.addEventListener("click", () => {
+
+        openModal("bookModal");
+
+        setTimeout(() => {
+            startScanner();
+        }, 500);
+
+    });
 
 });
 
-function startScanner() {
+async function startScanner() {
 
     const reader = document.getElementById("reader");
 
     reader.style.display = "block";
 
-    if (!html5QrCode) {
-        html5QrCode = new Html5Qrcode("reader");
-    }
+    if (html5QrCode) return;
 
-    html5QrCode.start(
-        { facingMode: "environment" },
-        {
-            fps: 10,
-            qrbox: 250
-        },
-        onScanSuccess,
-        () => { }
-    ).catch(err => {
-        console.log(err);
-        alert("Camera Error");
-    });
+    html5QrCode = new Html5Qrcode("reader");
+
+    try {
+
+        await html5QrCode.start(
+            { facingMode: "environment" },
+            {
+                fps: 10,
+                qrbox: 250
+            },
+            onScanSuccess
+        );
+
+    } catch (err) {
+
+        console.error(err);
+        alert("Camera could not start.");
+
+    }
 
 }
 
@@ -46,98 +60,10 @@ async function onScanSuccess(decodedText) {
 
     document.getElementById("reader").style.display = "none";
 
-    const isbn = decodedText.replace(/\D/g, "").substring(0,13);
+    const isbn = decodedText.replace(/\D/g, "").substring(0, 13);
 
     document.getElementById("bookIsbn").value = isbn;
 
     fetchBook(isbn);
-
-}
-
-async function fetchBook(isbn){
-
-    //-----------------------------
-    // 1 GOOGLE BOOKS
-    //-----------------------------
-
-    try{
-
-        let res = await fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`
-        );
-
-        let data = await res.json();
-
-        if(data.totalItems > 0){
-
-            const book = data.items[0].volumeInfo;
-
-            document.getElementById("bookName").value =
-                book.title || "";
-
-            document.getElementById("bookAuthor").value =
-                book.authors ? book.authors.join(", ") : "";
-
-            return;
-
-        }
-
-    }
-
-    catch(err){
-
-        console.log("Google Books Error",err);
-
-    }
-
-    //-----------------------------
-    // 2 OPEN LIBRARY
-    //-----------------------------
-
-    try{
-
-        let res = await fetch(
-            `https://openlibrary.org/isbn/${isbn}.json`
-        );
-
-        if(res.ok){
-
-            let book = await res.json();
-
-            document.getElementById("bookName").value =
-                book.title || "";
-
-            if(book.authors){
-
-                let authorRes = await fetch(
-                    "https://openlibrary.org"+
-                    book.authors[0].key+
-                    ".json"
-                );
-
-                let author = await authorRes.json();
-
-                document.getElementById("bookAuthor").value =
-                    author.name || "";
-
-            }
-
-            return;
-
-        }
-
-    }
-
-    catch(err){
-
-        console.log("Open Library Error",err);
-
-    }
-
-    //-----------------------------
-    // BOOK NOT FOUND
-    //-----------------------------
-
-    alert("Book Not Found.\nPlease enter details manually.");
 
 }
