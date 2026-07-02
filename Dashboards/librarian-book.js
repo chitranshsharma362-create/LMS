@@ -12,12 +12,16 @@ async function addBookToDB() {
         return;
     }
 
-    // Duplicate ISBN check
-    const { data: existingBook } = await supabaseClient
+    // Duplicate ISBN Check
+    const { data: existingBook, error: checkError } = await supabaseClient
         .from("books")
-        .select("id")
+        .select("book_id")
         .eq("isbn", isbn)
         .maybeSingle();
+
+    if (checkError) {
+        console.log(checkError);
+    }
 
     if (existingBook) {
         alert("Book already exists!");
@@ -31,13 +35,14 @@ async function addBookToDB() {
                 isbn: isbn,
                 book_name: name,
                 author: author,
-                quantity: quantity
+                total_quantity: quantity,
+                available_quantity: quantity
             }
         ]);
 
     if (error) {
         console.error(error);
-        alert("Book not added ❌");
+        alert(error.message);
         return;
     }
 
@@ -60,7 +65,7 @@ async function loadBooks() {
     const { data, error } = await supabaseClient
         .from("books")
         .select("*")
-        .order("id", { ascending: false });
+        .order("book_id", { ascending: false });
 
     if (error) {
         console.error(error);
@@ -78,10 +83,10 @@ async function loadBooks() {
             <td>${book.isbn}</td>
             <td>${book.book_name}</td>
             <td>${book.author}</td>
-            <td>${book.quantity}</td>
+            <td>${book.total_quantity}</td>
             <td>
                 <button class="btn delete-btn"
-                    onclick="deleteBook(${book.id})">
+                    onclick="deleteBook(${book.book_id})">
                     Delete
                 </button>
             </td>
@@ -94,22 +99,22 @@ async function loadBooks() {
 
 //////////////////// DELETE BOOK ////////////////////
 
-async function deleteBook(id) {
+async function deleteBook(book_id) {
 
     if (!confirm("Delete this book?")) return;
 
     const { error } = await supabaseClient
         .from("books")
         .delete()
-        .eq("id", id);
+        .eq("book_id", book_id);
 
     if (error) {
         console.error(error);
-        alert("Delete Failed ❌");
+        alert(error.message);
         return;
     }
 
-    alert("Book Deleted ✅");
+    alert("Book Deleted Successfully ✅");
 
     loadBooks();
 
@@ -118,5 +123,7 @@ async function deleteBook(id) {
 //////////////////// PAGE LOAD ////////////////////
 
 window.addEventListener("DOMContentLoaded", () => {
+
     loadBooks();
+
 });
