@@ -17,6 +17,8 @@ function startScanner() {
 
     reader.style.display = "block";
 
+     const reader = document.getElementById("reader");
+
     if (!html5QrCode) {
         html5QrCode = new Html5Qrcode("reader");
     }
