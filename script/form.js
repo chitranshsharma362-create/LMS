@@ -70,12 +70,22 @@ function validateForm() {
 
 //////////////////// SHOW PASSWORD ////////////////////
 
-document.getElementById("showpass").addEventListener("change", function () {
+//////////////////// SHOW PASSWORD ////////////////////
 
-    const type = this.checked ? "text" : "password";
+const showPass = document.getElementById("showpass");
 
-    document.getElementById("password").type = type;
+if (showPass) {
 
-    document.getElementById("confirmpass").type = type;
+    showPass.addEventListener("change", function () {
 
-});
+        const type = this.checked ? "text" : "password";
+
+        const password = document.getElementById("password");
+        const confirm = document.getElementById("confirmpass");
+
+        if (password) password.type = type;
+        if (confirm) confirm.type = type;
+
+    });
+
+}
