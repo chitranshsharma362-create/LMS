@@ -1,7 +1,3 @@
-let selectedBookId = null;
-
-//////////////////// ADD BOOK ////////////////////
-
 async function addBookToDB() {
 
     const isbn = document.getElementById("bookIsbn").value.trim();
@@ -23,7 +19,6 @@ async function addBookToDB() {
 
     try {
 
-        // Check if ISBN already exists
         const { data: existing, error: checkError } = await supabaseClient
             .from("books")
             .select("*")
@@ -59,6 +54,7 @@ async function addBookToDB() {
                 }]);
 
             if (error) throw error;
+
         }
 
         alert("Book Added Successfully");
@@ -69,6 +65,7 @@ async function addBookToDB() {
         document.getElementById("bookQty").value = "";
 
         closeModal("bookModal");
+
         loadBooks();
 
     } catch (err) {
