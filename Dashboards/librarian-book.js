@@ -128,12 +128,13 @@ async function loadBooks() {
 
 async function removeBook() {
 
-    if (!selectedBookId) {
+    if (selectedBookId === null) {
         alert("Please select a book.");
         return;
     }
 
-    if (!confirm("Delete this book?")) return;
+    const confirmDelete = confirm("Are you sure you want to delete this book?");
+    if (!confirmDelete) return;
 
     try {
 
@@ -144,25 +145,28 @@ async function removeBook() {
 
         if (error) throw error;
 
-        selectedBookId = null;
-        loadBooks();
-
         alert("Book Removed Successfully");
 
+        selectedBookId = null;
+
+        loadBooks();
+
     } catch (err) {
+
         console.error(err);
         alert(err.message);
+
     }
 }
 
-//////////////////// SUPPORT FUNCTION ////////////////////
+//////////////////// ROW SELECT ////////////////////
 
-function removeRow() {
-    removeBook();
+function selectBook(row, bookId) {
+
+    document.querySelectorAll("#bookTableBody tr")
+        .forEach(r => r.classList.remove("selected"));
+
+    row.classList.add("selected");
+
+    selectedBookId = bookId;
 }
-
-//////////////////// PAGE LOAD ////////////////////
-
-window.addEventListener("DOMContentLoaded", () => {
-    loadBooks();
-});
