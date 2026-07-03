@@ -222,3 +222,83 @@ async function loadIssuedBooks() {
     }
 
 }
+
+async function returnBook() {
+
+    if (!selectedIssueId) {
+        alert("Please select a record.");
+        return;
+    }
+
+    try {
+
+        // Get Issue Record
+        const { data: issue, error } = await supabaseClient
+            .from("issued_books")
+            .select("*")
+            .eq("issue_id", selectedIssueId)
+            .single();
+
+        if (error) throw error;
+
+        if (issue.status === "Returned") {
+            alert("Book already returned.");
+            return;
+        }
+
+        const today = new Date();
+        const todayStr = today.toISOString().split("T")[0];
+
+        // Fine Calculation
+        let fine = 0;
+
+        if (today > new Date(issue.due_date)) {
+
+            const lateDays = Math.ceil(
+                (today - new Date(issue.due_date)) /
+                (1000 * 60 * 60 * 24)
+            );
+
+            fine = lateDays * 10;   // ₹10/day
+        }
+
+        // Update Issue Table
+        const { error: updateIssue } = await supabaseClient
+            .from("issued_books")
+            .update({
+                status: "Returned",
+                return_date: todayStr,
+                fine: fine
+            })
+            .eq("issue_id", selectedIssueId);
+
+        if (updateIssue) throw updateIssue;
+
+        // Increase Book Quantity
+        const { data: book } = await supabaseClient
+            .from("books")
+            .select("available_quantity")
+            .eq("book_id", selectedBookId)
+            .single();
+
+        await supabaseClient
+            .from("books")
+            .update({
+                available_quantity: book.available_quantity + 1
+            })
+            .eq("book_id", selectedBookId);
+
+        alert("Book Returned Successfully");
+
+        loadIssuedBooks();
+        loadBooks();
+        loadBooksDropdown();
+
+    } catch (err) {
+
+        console.error(err);
+        alert(err.message);
+
+    }
+
+}
