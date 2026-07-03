@@ -100,74 +100,51 @@ async function loginUser(event) {
     const password = document.getElementById("login-password").value;
 
     if (!email || !password) {
-
         alert("Please enter Email & Password");
         return;
-
     }
 
     try {
 
-        const response = await fetch("http://127.0.0.1:5000/login", {
+        const { data: user, error } = await supabaseClient
+            .from("users")
+            .select("*")
+            .eq("email", email)
+            .eq("password", password)
+            .single();
 
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-
-                email: email,
-                password: password
-
-            })
-
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-
-            // Save Login Data
-
-            localStorage.setItem("user_id", result.user_id);
-            localStorage.setItem("name", result.name);
-            localStorage.setItem("role", result.role);
-
-            alert(result.message);
-
-            // Role Wise Dashboard
-
-            if (result.role === "admin") {
-
-                window.location.href = "Dashboards/librarian.html";
-
-            }
-
-            else if (result.role === "student") {
-
-                window.location.href = "Dashboards/student.html";
-
-            }
-
-            else if (result.role === "teacher") {
-
-                window.location.href = "Dashboards/teacher.html";
-
-            }
-
-            else {
-
-                alert("Unknown Role");
-
-            }
-
+        if (error || !user) {
+            alert("Invalid Email or Password");
+            return;
         }
 
+        // Save Login Data
+        localStorage.setItem("user_id", user.user_id);
+        localStorage.setItem("library_id", user.library_id);
+        localStorage.setItem("name", user.name);
+        localStorage.setItem("role", user.role);
+
+        alert("Login Successful");
+
+        // Role Wise Dashboard
+        if (user.role === "librarian" || user.role === "admin") {
+
+            window.location.href = "Dashboards/librarian.html";
+
+        }
+        else if (user.role === "student") {
+
+            window.location.href = "Dashboards/student.html";
+
+        }
+        else if (user.role === "teacher") {
+
+            window.location.href = "Dashboards/teacher.html";
+
+        }
         else {
 
-            alert(result.message);
+            alert("Unknown Role");
 
         }
 
@@ -177,8 +154,9 @@ async function loginUser(event) {
 
         console.error(err);
 
-        alert("Server Error");
+        alert(err.message);
 
     }
 
+}
 }
