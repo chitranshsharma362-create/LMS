@@ -1,125 +1,90 @@
 //////////////////// REGISTER ////////////////////
 
-async function registerUser(event){
+async function registerUser(event) {
 
     event.preventDefault();
 
-    if(!validateForm()) return;
+    if (!validateForm()) return;
 
-    const library_name=document.getElementById("library_name").value.trim();
+    const library_name = document.getElementById("library_name").value.trim();
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+    const confirm = document.getElementById("confirmpass").value;
 
-    const name=document.getElementById("name").value.trim();
-
-    const email=document.getElementById("email").value.trim().toLowerCase();
-
-    const password=document.getElementById("password").value;
-
-    const confirm=document.getElementById("confirmpass").value;
-
-    if(password!==confirm){
-
+    if (password !== confirm) {
         alert("Password Mismatch");
-
         return;
-
     }
 
-    try{
+    try {
 
         // Check Email
+        const { data: existing, error: checkError } = await supabaseClient
+            .from("users")
+            .select("user_id")
+            .eq("email", email)
+            .maybeSingle();
 
-        const {data:existing}=await supabase
+        if (checkError) throw checkError;
 
-        .from("users")
-
-        .select("user_id")
-
-        .eq("email",email)
-
-        .maybeSingle();
-
-        if(existing){
-
+        if (existing) {
             alert("Email Already Registered");
-
             return;
-
         }
 
-        // Library Code
-
-        const library_code="LIB"+Math.floor(1000+Math.random()*9000);
+        // Generate Library Code
+        const library_code = "LIB" + Math.floor(1000 + Math.random() * 9000);
 
         // Insert Library
+        const { data: library, error: libraryError } = await supabaseClient
+            .from("libraries")
+            .insert([
+                {
+                    library_name: library_name,
+                    library_code: library_code
+                }
+            ])
+            .select()
+            .single();
 
-        const {data:library,error:libraryError}=await supabase
-
-        .from("libraries")
-
-        .insert([{
-
-            library_name,
-
-            library_code
-
-        }])
-
-        .select()
-
-        .single();
-
-        if(libraryError) throw libraryError;
+        if (libraryError) throw libraryError;
 
         // Insert User
+        const { data: user, error: userError } = await supabaseClient
+            .from("users")
+            .insert([
+                {
+                    library_id: library.library_id,
+                    name: name,
+                    email: email,
+                    password: password,
+                    role: "librarian",
+                    status: "Active"
+                }
+            ])
+            .select()
+            .single();
 
-        const {data:user,error:userError}=await supabase
+        if (userError) throw userError;
 
-        .from("users")
-
-        .insert([{
-
-            library_id:library.library_id,
-
-            name,
-
-            email,
-
-            password,
-
-            role:"librarian",
-
-            status:"Active"
-
-        }])
-
-        .select()
-
-        .single();
-
-        if(userError) throw userError;
-
-        localStorage.setItem("user_id",user.user_id);
-
-        localStorage.setItem("library_id",user.library_id);
-
-        localStorage.setItem("library_code",library.library_code);
-
-        localStorage.setItem("library_name",library.library_name);
-
-        localStorage.setItem("name",user.name);
-
-        localStorage.setItem("role",user.role);
+        localStorage.setItem("user_id", user.user_id);
+        localStorage.setItem("library_id", user.library_id);
+        localStorage.setItem("library_code", library.library_code);
+        localStorage.setItem("library_name", library.library_name);
+        localStorage.setItem("name", user.name);
+        localStorage.setItem("role", user.role);
 
         alert("Registration Successful");
 
-        window.location.href="Dashboards/librarian.html";
+        document.getElementById("form").reset();
+
+        window.location.href = "Dashboards/librarian.html";
 
     }
-
-    catch(err){
+    catch (err) {
 
         console.error(err);
-
         alert(err.message);
 
     }
