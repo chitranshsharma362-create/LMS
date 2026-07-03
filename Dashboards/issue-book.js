@@ -80,15 +80,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
 });
 
+//////////////////// ISSUE BOOK ////////////////////
+
 async function issueBook() {
+
+    const library_id = Number(localStorage.getItem("library_id"));
+    const issued_by = Number(localStorage.getItem("user_id"));
 
     const student_id = Number(document.getElementById("issueStudent").value);
     const book_id = Number(document.getElementById("issueBook").value);
     const issue_date = document.getElementById("issueDate").value;
     const fine = Number(document.getElementById("issueFine").value) || 0;
     const status = document.getElementById("issueStatus").value;
-
-    const issued_by = Number(localStorage.getItem("user_id"));
 
     if (!student_id || !book_id || !issue_date) {
         alert("Please fill all fields.");
@@ -97,10 +100,11 @@ async function issueBook() {
 
     try {
 
-        // Check if same book already issued to student
+        // Check if same book already issued
         const { data: alreadyIssued } = await supabaseClient
             .from("issued_books")
             .select("issue_id")
+            .eq("library_id", library_id)
             .eq("student_id", student_id)
             .eq("book_id", book_id)
             .eq("status", "Issued")
@@ -111,11 +115,12 @@ async function issueBook() {
             return;
         }
 
-        // Get book quantity
+        // Get Book Details
         const { data: bookData, error: bookError } = await supabaseClient
             .from("books")
             .select("available_quantity")
             .eq("book_id", book_id)
+            .eq("library_id", library_id)
             .single();
 
         if (bookError) throw bookError;
@@ -125,13 +130,14 @@ async function issueBook() {
             return;
         }
 
-        // Due date = Issue date + 15 days
+        // Due Date = 15 Days
         const due = new Date(issue_date);
         due.setDate(due.getDate() + 15);
+
         const due_date = due.toISOString().split("T")[0];
 
         // Insert Issue Record
-        const { error } = await supabaseClient
+        const { error: issueError } = await supabaseClient
             .from("issued_books")
             .insert([{
                 library_id,
@@ -144,41 +150,45 @@ async function issueBook() {
                 fine
             }]);
 
-        if (error) throw error;
+        if (issueError) throw issueError;
 
-        // Reduce available quantity
+        // Reduce Available Quantity
         const { error: updateError } = await supabaseClient
             .from("books")
             .update({
                 available_quantity: bookData.available_quantity - 1
             })
-            .eq("book_id", book_id);
+            .eq("book_id", book_id)
+            .eq("library_id", library_id);
 
         if (updateError) throw updateError;
 
-       alert("Book Issued Successfully");
+        alert("Book Issued Successfully");
 
-document.getElementById("issueStudent").value = "";
-document.getElementById("issueBook").value = "";
-document.getElementById("issueDate").value = "";
-document.getElementById("issueStatus").value = "issued";
-document.getElementById("issueFine").value = "";
+        // Reset Form
+        document.getElementById("issueStudent").value = "";
+        document.getElementById("issueBook").value = "";
+        document.getElementById("issueDate").value = "";
+        document.getElementById("issueStatus").value = "Issued";
+        document.getElementById("issueFine").value = "0";
 
-closeModal("issueModal");
+        closeModal("issueModal");
 
-loadIssuedBooks();
-loadBooksDropdown();
-loadBooks();
+        loadIssuedBooks();
+        loadBooksDropdown();
+
+        if (typeof loadBooks === "function") {
+            loadBooks();
+        }
 
     } catch (err) {
 
-        console.error(err);
+        console.error("Issue Book Error:", err);
         alert(err.message);
 
     }
 
 }
-
 async function loadIssuedBooks() {
 
     const tbody = document.getElementById("IssuereturnTable");
