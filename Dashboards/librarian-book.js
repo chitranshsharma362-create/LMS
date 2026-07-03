@@ -1,3 +1,7 @@
+let selectedBookId = null;
+
+//////////////////// ADD BOOK ////////////////////
+
 async function addBookToDB() {
 
     const isbn = document.getElementById("bookIsbn").value.trim();
@@ -10,38 +14,176 @@ async function addBookToDB() {
         return;
     }
 
-    const user_id = localStorage.getItem("user_id");
-    if (!user_id) {
+    const library_id = Number(localStorage.getItem("library_id"));
+
+    if (!library_id) {
         alert("Please login first.");
         return;
     }
+
     try {
-        const response = await fetch("http://127.0.0.1:5000/add_book", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                user_id: user_id,
-                isbn: isbn,
-                book_name: name,
-                author: author,
-                quantity: quantity
-            })
-        });
-        const result = await response.json();
-        if (response.ok) {
-            alert(result.message);
-            document.getElementById("bookIsbn").value = "";
-            document.getElementById("bookName").value = "";
-            document.getElementById("bookAuthor").value = "";
-            document.getElementById("bookQty").value = "";
-            closeModal("bookModal");
+
+        // Check if ISBN already exists in this library
+        const { data: existing } = await supabaseClient
+            .from("books")
+            .select("*")
+            .eq("library_id", library_id)
+            .eq("isbn", isbn)
+            .maybeSingle();
+
+        if (existing) {
+
+            const { error } = await supabaseClient
+                .from("books")
+                .update({
+                    total_quantity: existing.total_quantity + quantity,
+                    available_quantity: existing.available_quantity + quantity
+                })
+                .eq("book_id", existing.book_id);
+
+            if (error) throw error;
+
         } else {
-            alert(result.message);
+
+            const { error } = await supabaseClient
+                .from("books")
+                .insert([{
+                    library_id,
+                    isbn,
+                    book_name: name,
+                    author,
+                    total_quantity: quantity,
+                    available_quantity: quantity
+                }]);
+
+            if (error) throw error;
+
         }
-    } catch (err) {
-        console.error(err);
-        alert("Server Error");
+
+        alert("Book Added Successfully");
+
+        document.getElementById("bookIsbn").value = "";
+        document.getElementById("bookName").value = "";
+        document.getElementById("bookAuthor").value = "";
+        document.getElementById("bookQty").value = "";
+
+        closeModal("bookModal");
+
+        loadBooks();
+
     }
+
+    catch (err) {
+
+        console.error(err);
+
+        alert(err.message);
+
+    }
+
 }
+
+//////////////////// LOAD BOOKS ////////////////////
+
+async function loadBooks() {
+
+    const library_id = Number(localStorage.getItem("library_id"));
+
+    const tbody = document.getElementById("bookTableBody");
+
+    tbody.innerHTML = "";
+
+    try {
+
+        const { data: books, error } = await supabaseClient
+            .from("books")
+            .select("*")
+            .eq("library_id", library_id)
+            .order("book_id");
+
+        if (error) throw error;
+
+        books.forEach(book => {
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${book.isbn}</td>
+                <td>${book.book_name}</td>
+                <td>${book.author}</td>
+                <td>${book.available_quantity}/${book.total_quantity}</td>
+            `;
+
+            row.onclick = () => {
+
+                document.querySelectorAll("#bookTableBody tr")
+                    .forEach(r => r.classList.remove("selected"));
+
+                row.classList.add("selected");
+
+                selectedBookId = book.book_id;
+
+            };
+
+            tbody.appendChild(row);
+
+        });
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+    }
+
+}
+
+//////////////////// REMOVE BOOK ////////////////////
+
+async function removeRow() {
+
+    if (!selectedBookId) {
+
+        alert("Please select a book.");
+
+        return;
+
+    }
+
+    if (!confirm("Delete this book?")) return;
+
+    try {
+
+        const { error } = await supabaseClient
+            .from("books")
+            .delete()
+            .eq("book_id", selectedBookId);
+
+        if (error) throw error;
+
+        selectedBookId = null;
+
+        loadBooks();
+
+        alert("Book Removed");
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        alert(err.message);
+
+    }
+
+}
+
+//////////////////// PAGE LOAD ////////////////////
+
+window.addEventListener("DOMContentLoaded", () => {
+
+    loadBooks();
+
+});
