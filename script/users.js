@@ -13,70 +13,67 @@ async function registerUser(event) {
     const confirmPassword = document.getElementById("confirmpass").value;
 
     if (password !== confirmPassword) {
-
         alert("Password Mismatch");
-
         return;
-
     }
 
     try {
 
-        const response = await fetch("http://127.0.0.1:5000/register", {
+        // Email Already Exists ?
+        const { data: existingUser } = await supabase
+            .from("users")
+            .select("user_id")
+            .eq("email", email)
+            .maybeSingle();
 
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-
-                library_name: library_name,
-                name: name,
-                email: email,
-                password: password
-
-            })
-
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-
-            alert(result.message);
-
-            localStorage.setItem("user_id", result.user_id);
-            localStorage.setItem("library_id", result.library_id);
-            localStorage.setItem("library_code", result.library_code);
-            localStorage.setItem("name", result.name);
-            localStorage.setItem("role", result.role);
-
-            document.getElementById("form").reset();
-
-            window.location.href = "Dashboards/librarian.html";
-
+        if (existingUser) {
+            alert("Email already registered");
+            return;
         }
 
-        else {
-
-            alert(result.message);
-
-        }
-
+        // Generate Library Code
+        const library_code = "LIB" + Math.floor(1000 + Math.random() * 9000);
+        const { data: library, error: libraryError } = await supabase
+            .from("libraries")
+            .insert([
+                {
+                    library_name,
+                    library_code
+                }
+            ])
+            .select()
+            .single();
+        if (libraryError) throw libraryError;
+        const { data: user, error: userError } = await supabase
+            .from("users")
+            .insert([
+                {
+                    library_id: library.library_id,
+                    name,
+                    email,
+                    password,
+                    role: "librarian",
+                    status: "Active"
+                }
+            ])
+            .select()
+            .single();
+        if (userError) throw userError;
+        localStorage.setItem("user_id", user.user_id);
+        localStorage.setItem("library_id", user.library_id);
+        localStorage.setItem("library_code", library.library_code);
+        localStorage.setItem("library_name", library.library_name);
+        localStorage.setItem("name", user.name);
+        localStorage.setItem("role", user.role);
+        alert("Registration Successful");
+        document.getElementById("form").reset();
+        window.location.href = "Dashboards/librarian.html";
     }
-
     catch (err) {
-
         console.error(err);
-
-        alert("Server Error");
-
+        alert(err.message);
     }
-
 }
-
 //////////////////// LOGIN ////////////////////
 
 async function loginUser(event) {
