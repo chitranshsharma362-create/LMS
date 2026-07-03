@@ -78,3 +78,92 @@ window.addEventListener("DOMContentLoaded", () => {
     loadBooksDropdown();
 
 });
+
+async function issueBook() {
+
+    const student_id = Number(document.getElementById("issueStudent").value);
+    const book_id = Number(document.getElementById("issueBook").value);
+    const issue_date = document.getElementById("issueDate").value;
+
+    const issued_by = Number(localStorage.getItem("user_id"));
+
+    if (!student_id || !book_id || !issue_date) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    try {
+
+        // Check if same book already issued to student
+        const { data: alreadyIssued } = await supabaseClient
+            .from("issued_books")
+            .select("issue_id")
+            .eq("student_id", student_id)
+            .eq("book_id", book_id)
+            .eq("status", "Issued")
+            .maybeSingle();
+
+        if (alreadyIssued) {
+            alert("This student already has this book.");
+            return;
+        }
+
+        // Get book quantity
+        const { data: bookData, error: bookError } = await supabaseClient
+            .from("books")
+            .select("available_quantity")
+            .eq("book_id", book_id)
+            .single();
+
+        if (bookError) throw bookError;
+
+        if (bookData.available_quantity <= 0) {
+            alert("Book Not Available");
+            return;
+        }
+
+        // Due date = Issue date + 15 days
+        const due = new Date(issue_date);
+        due.setDate(due.getDate() + 15);
+        const due_date = due.toISOString().split("T")[0];
+
+        // Insert Issue Record
+        const { error } = await supabaseClient
+            .from("issued_books")
+            .insert([{
+                student_id,
+                book_id,
+                issued_by,
+                issue_date,
+                due_date,
+                status: "Issued"
+            }]);
+
+        if (error) throw error;
+
+        // Reduce available quantity
+        const { error: updateError } = await supabaseClient
+            .from("books")
+            .update({
+                available_quantity: bookData.available_quantity - 1
+            })
+            .eq("book_id", book_id);
+
+        if (updateError) throw updateError;
+
+        alert("Book Issued Successfully");
+
+        closeModal("issueModal");
+
+        loadIssuedBooks();
+        loadBooksDropdown();
+        loadBooks();
+
+    } catch (err) {
+
+        console.error(err);
+        alert(err.message);
+
+    }
+
+}
