@@ -85,6 +85,8 @@ async function issueBook() {
     const student_id = Number(document.getElementById("issueStudent").value);
     const book_id = Number(document.getElementById("issueBook").value);
     const issue_date = document.getElementById("issueDate").value;
+    const fine = Number(document.getElementById("issueFine").value) || 0;
+    const status = document.getElementById("issueStatus").value;
 
     const issued_by = Number(localStorage.getItem("user_id"));
 
@@ -137,7 +139,8 @@ async function issueBook() {
                 issued_by,
                 issue_date,
                 due_date,
-                status: "Issued"
+                status,
+                fine
             }]);
 
         if (error) throw error;
