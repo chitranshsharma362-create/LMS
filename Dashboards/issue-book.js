@@ -167,3 +167,48 @@ async function issueBook() {
     }
 
 }
+
+async function loadIssuedBooks() {
+
+    const tbody = document.getElementById("IssuereturnTable");
+
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    const { data, error } = await supabaseClient
+        .from("issued_books")
+        .select("*")
+        .order("issue_id", { ascending: false });
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    for (const item of data) {
+
+        const { data: student } = await supabaseClient
+            .from("users")
+            .select("name")
+            .eq("user_id", item.student_id)
+            .single();
+
+        const { data: book } = await supabaseClient
+            .from("books")
+            .select("book_name")
+            .eq("book_id", item.book_id)
+            .single();
+
+        tbody.innerHTML += `
+            <tr>
+                <td>${student?.name ?? "-"}</td>
+                <td>${book?.book_name ?? "-"}</td>
+                <td>${item.due_date}</td>
+                <td>${item.status}</td>
+                <td>₹0</td>
+            </tr>
+        `;
+    }
+
+}
