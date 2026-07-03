@@ -216,7 +216,7 @@ async function loadIssuedBooks() {
                 <td>${book?.book_name ?? "-"}</td>
                 <td>${item.due_date}</td>
                 <td>${item.status}</td>
-                <td>₹0</td>
+                <td>${item.fine}</td>
             </tr>
         `;
     }
