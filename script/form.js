@@ -70,8 +70,6 @@ function validateForm() {
 
 //////////////////// SHOW PASSWORD ////////////////////
 
-//////////////////// SHOW PASSWORD ////////////////////
-
 const showPass = document.getElementById("showpass");
 
 if (showPass) {
