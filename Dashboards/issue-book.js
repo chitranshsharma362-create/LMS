@@ -134,6 +134,7 @@ async function issueBook() {
         const { error } = await supabaseClient
             .from("issued_books")
             .insert([{
+                library_id,
                 student_id,
                 book_id,
                 issued_by,
@@ -186,9 +187,12 @@ async function loadIssuedBooks() {
 
     tbody.innerHTML = "";
 
+    const library_id = Number(localStorage.getItem("library_id"));
+
     const { data, error } = await supabaseClient
         .from("issued_books")
         .select("*")
+        .eq("library_id", library_id)
         .order("issue_id", { ascending: false });
 
     if (error) {
@@ -222,7 +226,6 @@ async function loadIssuedBooks() {
     }
 
 }
-
 async function returnBook() {
 
     if (!selectedIssueId) {
