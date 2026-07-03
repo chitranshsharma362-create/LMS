@@ -38,22 +38,17 @@ async function startScanner() {
     try {
 
         await html5QrCode.start(
-
             { facingMode: "environment" },
-
             {
                 fps: 10,
                 qrbox: 250
             },
-
             onScanSuccess
-
         );
 
     } catch (err) {
 
         console.error(err);
-
         alert("Camera could not start.");
 
     }
@@ -81,7 +76,6 @@ async function onScanSuccess(decodedText) {
     if (isbn.length !== 10 && isbn.length !== 13) {
 
         alert("Invalid ISBN");
-
         return;
 
     }
@@ -98,52 +92,33 @@ async function fetchBookDetails(isbn) {
 
     try {
 
-        // ================= GOOGLE BOOKS =================
-
-        let response = await fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`
+        const response = await fetch(
+            `https://openlibrary.org/isbn/${isbn}.json`
         );
 
-        let data = await response.json();
+        if (!response.ok) {
 
-        if (data.items && data.items.length > 0) {
+            alert("Book Not Found");
 
-            const book = data.items[0].volumeInfo;
-
-            document.getElementById("bookName").value =
-                book.title || "";
-
-            document.getElementById("bookAuthor").value =
-                book.authors ? book.authors.join(", ") : "";
-
-            console.log("Google Books API Success");
+            document.getElementById("bookName").value = "";
+            document.getElementById("bookAuthor").value = "";
 
             return;
 
         }
 
-        console.log("Google Books Not Found");
+        const data = await response.json();
 
+        document.getElementById("bookName").value =
+            data.title || "";
 
+        if (data.authors && data.authors.length > 0) {
 
-        // ================= OPEN LIBRARY =================
+            const authorResponse = await fetch(
+                `https://openlibrary.org${data.authors[0].key}.json`
+            );
 
-        response = await fetch(
-            `https://openlibrary.org/isbn/${isbn}.json`
-        );
-
-        if (response.ok) {
-
-            data = await response.json();
-
-            document.getElementById("bookName").value =
-                data.title || "";
-
-            if (data.authors && data.authors.length > 0) {
-
-                const authorResponse = await fetch(
-                    `https://openlibrary.org${data.authors[0].key}.json`
-                );
+            if (authorResponse.ok) {
 
                 const author = await authorResponse.json();
 
@@ -156,16 +131,13 @@ async function fetchBookDetails(isbn) {
 
             }
 
-            console.log("Open Library API Success");
+        } else {
 
-            return;
+            document.getElementById("bookAuthor").value = "";
 
         }
 
-        alert("Book Not Found");
-
-        document.getElementById("bookName").value = "";
-        document.getElementById("bookAuthor").value = "";
+        console.log("Open Library API Success");
 
     }
 
