@@ -76,6 +76,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     loadStudentsDropdown();
     loadBooksDropdown();
+    loadIssuedBooks();
 
 });
 
