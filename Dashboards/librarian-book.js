@@ -1,3 +1,7 @@
+let selectedBookId = null;
+
+//////////////////// ADD BOOK ////////////////////
+
 async function addBookToDB() {
 
     const isbn = document.getElementById("bookIsbn").value.trim();
@@ -5,8 +9,8 @@ async function addBookToDB() {
     const author = document.getElementById("bookAuthor").value.trim();
     const quantity = parseInt(document.getElementById("bookQty").value);
 
-    if (!isbn || !name || !author || !quantity) {
-        alert("Please fill all fields.");
+    if (!isbn || !name || !author || isNaN(quantity) || quantity <= 0) {
+        alert("Please fill all fields correctly.");
         return;
     }
 
@@ -45,16 +49,15 @@ async function addBookToDB() {
             const { error } = await supabaseClient
                 .from("books")
                 .insert([{
-                    library_id: library_id,
-                    isbn: isbn,
+                    library_id,
+                    isbn,
                     book_name: name,
-                    author: author,
+                    author,
                     total_quantity: quantity,
                     available_quantity: quantity
                 }]);
 
             if (error) throw error;
-
         }
 
         alert("Book Added Successfully");
@@ -64,7 +67,9 @@ async function addBookToDB() {
         document.getElementById("bookAuthor").value = "";
         document.getElementById("bookQty").value = "";
 
-        closeModal("bookModal");
+        if (typeof closeModal === "function") {
+            closeModal("bookModal");
+        }
 
         loadBooks();
 
@@ -79,12 +84,13 @@ async function addBookToDB() {
 async function loadBooks() {
 
     const tbody = document.getElementById("bookTableBody");
-
     if (!tbody) return;
 
     tbody.innerHTML = "";
 
     const library_id = Number(localStorage.getItem("library_id"));
+
+    if (!library_id) return;
 
     try {
 
@@ -92,7 +98,7 @@ async function loadBooks() {
             .from("books")
             .select("*")
             .eq("library_id", library_id)
-            .order("book_id");
+            .order("book_id", { ascending: true });
 
         if (error) throw error;
 
@@ -107,13 +113,15 @@ async function loadBooks() {
                 <td>${book.available_quantity}/${book.total_quantity}</td>
             `;
 
-            row.onclick = () => {
+            row.addEventListener("click", () => {
+
                 document.querySelectorAll("#bookTableBody tr")
                     .forEach(r => r.classList.remove("selected"));
 
                 row.classList.add("selected");
                 selectedBookId = book.book_id;
-            };
+
+            });
 
             tbody.appendChild(row);
 
@@ -121,6 +129,7 @@ async function loadBooks() {
 
     } catch (err) {
         console.error(err);
+        alert(err.message);
     }
 }
 
@@ -133,8 +142,7 @@ async function removeBook() {
         return;
     }
 
-    const confirmDelete = confirm("Are you sure you want to delete this book?");
-    if (!confirmDelete) return;
+    if (!confirm("Delete this book?")) return;
 
     try {
 
@@ -145,28 +153,26 @@ async function removeBook() {
 
         if (error) throw error;
 
-        alert("Book Removed Successfully");
-
         selectedBookId = null;
 
         loadBooks();
 
-    } catch (err) {
+        alert("Book Removed Successfully");
 
+    } catch (err) {
         console.error(err);
         alert(err.message);
-
     }
 }
 
-//////////////////// ROW SELECT ////////////////////
+//////////////////// SUPPORT ////////////////////
 
-function selectBook(row, bookId) {
-
-    document.querySelectorAll("#bookTableBody tr")
-        .forEach(r => r.classList.remove("selected"));
-
-    row.classList.add("selected");
-
-    selectedBookId = bookId;
+function removeRow() {
+    removeBook();
 }
+
+//////////////////// PAGE LOAD ////////////////////
+
+window.addEventListener("DOMContentLoaded", () => {
+    loadBooks();
+});
