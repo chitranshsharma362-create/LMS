@@ -302,3 +302,36 @@ async function returnBook() {
     }
 
 }
+
+async function removeRow() {
+
+    if (!selectedIssueId) {
+        alert("Please select a record.");
+        return;
+    }
+
+    if (!confirm("Delete this issue record?")) return;
+
+    try {
+
+        const { error } = await supabaseClient
+            .from("issued_books")
+            .delete()
+            .eq("issue_id", selectedIssueId);
+
+        if (error) throw error;
+
+        alert("Record Deleted Successfully");
+
+        selectedIssueId = null;
+        selectedBookId = null;
+
+        loadIssuedBooks();
+
+    } catch (err) {
+
+        console.error(err);
+        alert(err.message);
+
+    }
+}
