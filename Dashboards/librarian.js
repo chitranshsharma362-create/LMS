@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (name) {
 
-        document.getElementById("welcome-text").innerText = `Welcome, ${name} 👋`;
+        document.getElementById("welcome-text").innerText = `Welcome, ${name} `;
 
     }
 
