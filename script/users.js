@@ -92,12 +92,14 @@ async function registerUser(event) {
 }
 //////////////////// LOGIN ////////////////////
 
+//////////////////// LOGIN ////////////////////
+
 async function loginUser(event) {
 
     event.preventDefault();
 
     const email = document.getElementById("login-email").value.trim().toLowerCase();
-    const password = document.getElementById("login-password").value;
+    const password = document.getElementById("login-password").value.trim();
 
     if (!email || !password) {
         alert("Please enter Email & Password");
@@ -111,52 +113,59 @@ async function loginUser(event) {
             .select("*")
             .eq("email", email)
             .eq("password", password)
-            .single();
+            .maybeSingle();
 
-        if (error || !user) {
+        if (error) throw error;
+
+        if (!user) {
             alert("Invalid Email or Password");
             return;
         }
 
-        // Save Login Data
+        // Check Account Status
+        if (user.status && user.status.toLowerCase() !== "active") {
+            alert("Your account is inactive.");
+            return;
+        }
+
+        // Save User Data
         localStorage.setItem("user_id", user.user_id);
         localStorage.setItem("library_id", user.library_id);
         localStorage.setItem("name", user.name);
+        localStorage.setItem("email", user.email);
         localStorage.setItem("role", user.role);
+        localStorage.setItem("course", user.course);
 
         alert("Login Successful");
 
-        // Role Wise Dashboard
-        if (user.role === "librarian" || user.role === "admin") {
+        const role = user.role.toLowerCase();
+
+        if (role === "admin" || role === "librarian") {
 
             window.location.href = "Dashboards/librarian.html";
 
         }
-        else if (user.role === "student") {
+        else if (role === "student") {
 
             window.location.href = "Dashboards/student.html";
 
         }
-        else if (user.role === "teacher") {
+        else if (role === "teacher") {
 
             window.location.href = "Dashboards/teacher.html";
 
         }
         else {
 
-            alert("Unknown Role");
+            alert("Unknown User Role");
 
         }
 
-    }
+    } catch (err) {
 
-    catch (err) {
-
-        console.error(err);
-
-        alert(err.message);
+        console.error("Login Error:", err);
+        alert("Login Failed!");
 
     }
 
 }
-
