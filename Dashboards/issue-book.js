@@ -152,13 +152,19 @@ async function issueBook() {
 
         if (updateError) throw updateError;
 
-        alert("Book Issued Successfully");
+       alert("Book Issued Successfully");
 
-        closeModal("issueModal");
+document.getElementById("issueStudent").value = "";
+document.getElementById("issueBook").value = "";
+document.getElementById("issueDate").value = "";
+document.getElementById("issueStatus").value = "issued";
+document.getElementById("issueFine").value = "";
 
-        loadIssuedBooks();
-        loadBooksDropdown();
-        loadBooks();
+closeModal("issueModal");
+
+loadIssuedBooks();
+loadBooksDropdown();
+loadBooks();
 
     } catch (err) {
 
