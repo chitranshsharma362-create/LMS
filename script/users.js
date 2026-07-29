@@ -44,6 +44,21 @@ async function registerUser(event) {
     const email = document.getElementById("email").value.trim().toLowerCase();
     const password = document.getElementById("password").value;
     const confirm = document.getElementById("confirmpass").value;
+    const city = document.getElementById("city").value.trim();
+
+const address = document.getElementById("address").value.trim();
+
+const lat = parseFloat(document.getElementById("lat").value);
+
+const lon = parseFloat(document.getElementById("lon").value);
+
+if(isNaN(lat) || isNaN(lon)){
+
+    alert("Please select your library on the map.");
+
+    return;
+
+}
 
     if (password !== confirm) {
         alert("Password Mismatch");
@@ -74,8 +89,14 @@ async function registerUser(event) {
             .from("libraries")
             .insert([
                 {
-                    library_name: library_name,
-                    library_code: library_code
+                   {
+    library_name: library_name,
+    library_code: library_code,
+    city: city,
+    address: address,
+    lat: lat,
+    lon: lon
+}
                 }
             ])
             .select()
