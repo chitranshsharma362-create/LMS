@@ -85,22 +85,20 @@ if(isNaN(lat) || isNaN(lon)){
         const library_code = "LIB" + Math.floor(1000 + Math.random() * 9000);
 
         // Insert Library
-        const { data: library, error: libraryError } = await supabaseClient
-            .from("libraries")
-            .insert([
-                {
-                   {
-    library_name: library_name,
-    library_code: library_code,
-    city: city,
-    address: address,
-    lat: lat,
-    lon: lon
-}
-                }
-            ])
-            .select()
-            .single();
+       const { data: library, error: libraryError } = await supabaseClient
+    .from("libraries")
+    .insert([
+        {
+            library_name: library_name,
+            library_code: library_code,
+            city: city,
+            address: address,
+            lat: lat,
+            lon: lon
+        }
+    ])
+    .select()
+    .single();
 
         if (libraryError) throw libraryError;
 
