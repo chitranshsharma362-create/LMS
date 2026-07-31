@@ -1,36 +1,3 @@
-let map;
-let marker;
-
-window.addEventListener("DOMContentLoaded", () => {
-
-    map = L.map("map").setView([26.9124,75.7873],13);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
-        attribution:"© OpenStreetMap"
-    }).addTo(map);
-
-    map.on("click",function(e){
-
-        const lat=e.latlng.lat;
-        const lon=e.latlng.lng;
-
-        document.getElementById("lat").value=lat;
-        document.getElementById("lon").value=lon;
-
-        if(marker){
-
-            marker.setLatLng(e.latlng);
-
-        }else{
-
-            marker=L.marker(e.latlng).addTo(map);
-
-        }
-
-    });
-
-});
-
 //////////////////// REGISTER ////////////////////
 
 async function registerUser(event) {
