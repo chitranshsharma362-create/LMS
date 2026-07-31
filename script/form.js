@@ -87,3 +87,34 @@ if (showPass) {
     });
 
 }
+
+// Jaipur Default Location
+var map = L.map('map').setView([26.9124,75.7873],13);
+
+// Map Tiles
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap'
+}).addTo(map);
+
+// Marker Variable
+var marker;
+
+// Click Event
+map.on('click',function(e){
+
+    // Remove Old Marker
+    if(marker){
+        map.removeLayer(marker);
+    }
+
+    // Add New Marker
+    marker = L.marker(e.latlng).addTo(map);
+
+    // Save Coordinates
+    document.getElementById("latitude").value = e.latlng.lat;
+    document.getElementById("longitude").value = e.latlng.lng;
+
+    console.log("Latitude :",e.latlng.lat);
+    console.log("Longitude :",e.latlng.lng);
+
+});
