@@ -386,3 +386,149 @@ window.addEventListener(
 
     }
 );
+
+//////////////////// STUDENT LOGIN ////////////////////
+
+async function loginStudent(event) {
+
+    event.preventDefault();
+
+    const libraryCode =
+        document.getElementById("student-code").value.trim().toUpperCase();
+
+    const email =
+        document.getElementById("student-email").value.trim().toLowerCase();
+
+    const password =
+        document.getElementById("student-password").value;
+
+    // Empty fields check
+    if (!libraryCode || !email || !password) {
+
+        alert("Please enter Library Code, Email & Password");
+        return;
+    }
+
+    try {
+
+        //////////////////// CHECK LIBRARY ////////////////////
+
+        const { data: library, error: libraryError } =
+            await supabaseClient
+                .from("libraries")
+                .select("library_id, library_name, library_code")
+                .eq("library_code", libraryCode)
+                .maybeSingle();
+
+        if (libraryError) {
+            throw libraryError;
+        }
+
+        if (!library) {
+
+            alert("Invalid Library Code");
+            return;
+        }
+
+
+        //////////////////// CHECK STUDENT ////////////////////
+
+        const { data: student, error: studentError } =
+            await supabaseClient
+                .from("users")
+                .select("*")
+                .eq("library_id", library.library_id)
+                .eq("email", email)
+                .eq("password", password)
+                .eq("role", "student")
+                .maybeSingle();
+
+        if (studentError) {
+            throw studentError;
+        }
+
+
+        //////////////////// INVALID LOGIN ////////////////////
+
+        if (!student) {
+
+            alert("Invalid Email or Password");
+            return;
+        }
+
+
+        //////////////////// STATUS CHECK ////////////////////
+
+        if (
+            student.status &&
+            student.status.toLowerCase() !== "active"
+        ) {
+
+            alert("Your account is inactive.");
+            return;
+        }
+
+
+        //////////////////// SAVE LOGIN DATA ////////////////////
+
+        localStorage.setItem(
+            "user_id",
+            student.user_id
+        );
+
+        localStorage.setItem(
+            "library_id",
+            student.library_id
+        );
+
+        localStorage.setItem(
+            "library_code",
+            library.library_code
+        );
+
+        localStorage.setItem(
+            "library_name",
+            library.library_name
+        );
+
+        localStorage.setItem(
+            "name",
+            student.name
+        );
+
+        localStorage.setItem(
+            "email",
+            student.email
+        );
+
+        localStorage.setItem(
+            "role",
+            student.role
+        );
+
+        localStorage.setItem(
+            "course",
+            student.course || ""
+        );
+
+
+        //////////////////// LOGIN SUCCESS ////////////////////
+
+        alert("Student Login Successful");
+
+        window.location.href =
+            "Dashboards/student.html";
+
+
+    } catch (error) {
+
+        console.error(
+            "Student Login Error:",
+            error
+        );
+
+        alert(
+            "Login Failed. Please try again."
+        );
+    }
+}
