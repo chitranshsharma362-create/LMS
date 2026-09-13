@@ -61,9 +61,18 @@ function validateForm() {
 
 //////////////////// SHOW PASSWORD ////////////////////
 
-const showPass = document.getElementById("showpass");
+function initializeShowPassword() {
 
-if (showPass) {
+    const showPass = document.getElementById("showpass");
+
+    if (!showPass) {
+        return;
+    }
+
+    // Prevent duplicate event listener
+    if (showPass.dataset.initialized === "true") {
+        return;
+    }
 
     showPass.addEventListener("change", function () {
 
@@ -82,49 +91,151 @@ if (showPass) {
 
     });
 
+    showPass.dataset.initialized = "true";
 }
 
 
 //////////////////// LIBRARY LOCATION MAP ////////////////////
 
-// Check if map element exists
-const mapElement = document.getElementById("map");
+let libraryMap = null;
+let libraryMarker = null;
 
-if (mapElement && typeof L !== "undefined") {
 
-    // Jaipur Default Location
-    var map = L.map("map").setView([26.9124, 75.7873], 13);
+function initializeLibraryMap() {
 
-    // Map Tiles
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap"
-    }).addTo(map);
+    const mapElement = document.getElementById("map");
 
-    // Marker Variable
-    var marker;
+    // Form/map abhi load nahi hua
+    if (!mapElement) {
+        return false;
+    }
 
-    // Map Click Event
-    map.on("click", function (e) {
+    // Leaflet load nahi hua
+    if (typeof L === "undefined") {
+        console.log("Waiting for Leaflet...");
+        return false;
+    }
 
-        // Remove Old Marker
-        if (marker) {
-            map.removeLayer(marker);
+    // Map already initialized
+    if (libraryMap) {
+        return true;
+    }
+
+    // Jaipur default location
+    libraryMap = L.map("map").setView(
+        [26.9124, 75.7873],
+        13
+    );
+
+
+    // OpenStreetMap Tiles
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            attribution: "© OpenStreetMap"
+        }
+    ).addTo(libraryMap);
+
+
+    // Map Click
+    libraryMap.on("click", function (e) {
+
+        // Remove old marker
+        if (libraryMarker) {
+            libraryMap.removeLayer(libraryMarker);
         }
 
-        // Add New Marker
-        marker = L.marker(e.latlng).addTo(map);
 
-        // Save Coordinates
-        document.getElementById("lat").value = e.latlng.lat;
-        document.getElementById("lon").value = e.latlng.lng;
+        // Add new marker
+        libraryMarker = L.marker(e.latlng)
+            .addTo(libraryMap);
+
+
+        // Save Latitude
+        const latInput = document.getElementById("lat");
+
+        // Save Longitude
+        const lonInput = document.getElementById("lon");
+
+
+        if (latInput) {
+            latInput.value = e.latlng.lat;
+        }
+
+        if (lonInput) {
+            lonInput.value = e.latlng.lng;
+        }
+
 
         console.log("Latitude :", e.latlng.lat);
         console.log("Longitude :", e.latlng.lng);
 
     });
 
-} else {
 
-    console.log("Map is not available on this page.");
+    // Fix map rendering inside modal
+    setTimeout(function () {
+
+        if (libraryMap) {
+            libraryMap.invalidateSize();
+        }
+
+    }, 500);
+
+
+    console.log("Library map initialized.");
+
+    return true;
+}
+
+
+//////////////////// INITIALIZE DYNAMIC FORM ////////////////////
+
+function initializeFormElements() {
+
+    initializeShowPassword();
+
+    initializeLibraryMap();
+}
+
+
+//////////////////// WATCH FOR DYNAMIC FORM ////////////////////
+
+const formObserver = new MutationObserver(function () {
+
+    const mapElement = document.getElementById("map");
+    const showPass = document.getElementById("showpass");
+
+    // Form dynamically load ho gaya
+    if (mapElement || showPass) {
+
+        initializeFormElements();
+
+    }
+
+});
+
+
+//////////////////// START OBSERVER ////////////////////
+
+if (document.body) {
+
+    formObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
 
 }
+
+
+// In case form already exists
+initializeFormElements();
+
+
+//////////////////// WINDOW LOAD ////////////////////
+
+window.addEventListener("load", function () {
+
+    initializeFormElements();
+
+});
