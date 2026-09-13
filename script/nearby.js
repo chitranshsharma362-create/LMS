@@ -1,9 +1,12 @@
+document.addEventListener("DOMContentLoaded", () => {
+    getLibraries();
+});
+
 async function getLibraries() {
 
     const container = document.getElementById("libraryContainer");
 
     if (!container) {
-        console.error("libraryContainer not found");
         return;
     }
 
@@ -24,39 +27,28 @@ async function getLibraries() {
             return;
         }
 
-        let html = "";
+        container.innerHTML = data.map(lib => `
+            <div class="card">
 
-        data.forEach(lib => {
+                <h3>${lib.library_name ?? "Unnamed Library"}</h3>
 
-            html += `
-                <div class="card">
+                <p>
+                    Code:
+                    <strong>${lib.library_code ?? "N/A"}</strong>
+                </p>
 
-                    <h3>${lib.library_name ?? "Unnamed Library"}</h3>
+                <p>${lib.city ?? "Not Available"}</p>
 
-                    <p>
-                        Code:
-                        <strong>${lib.library_code ?? "N/A"}</strong>
-                    </p>
+                <p>${lib.address ?? "Not Available"}</p>
 
-                    <p>
-                        ${lib.city ?? "Not Available"}
-                    </p>
+                <button
+                    class="btn"
+                    onclick="copyCode('${lib.library_code ?? ""}')">
+                    Copy Code
+                </button>
 
-                    <p>
-                        ${lib.address ?? "Not Available"}
-                    </p>
-
-                    <button
-                        class="btn"
-                        onclick="copyCode('${lib.library_code ?? ""}')">
-                        Copy Code
-                    </button>
-
-                </div>
-            `;
-        });
-
-        container.innerHTML = html;
+            </div>
+        `).join("");
 
     } catch (err) {
 
