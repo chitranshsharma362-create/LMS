@@ -142,6 +142,35 @@ body {
     color: #ffffff;
 }
 
+.nav-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.theme-btn {
+    width: 40px;
+    height: 30px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #f3d58b;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.theme-btn:hover {
+    background: rgba(217, 164, 65, 0.15);
+    border-color: #d9a441;
+}
+
 .log-button {
     position: relative;
     display: flex;
@@ -152,10 +181,10 @@ body {
 
 #loginBtn {
     height: 32px;
-    min-width: 70px;
-    padding: 0 16px;
-    border: 1px solid rgba(255, 255, 255, 0.75);
-    border-radius: 18px;
+    min-width: 72px;
+    padding: 0 17px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
     background: transparent;
     color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
@@ -205,6 +234,27 @@ body {
     background: #f7f2e7;
     color: #063b32;
     padding-left: 17px;
+}
+
+.signup-btn {
+    height: 32px;
+    min-width: 78px;
+    padding: 0 19px;
+    border: 1px solid #e2b65a;
+    border-radius: 20px;
+    background: #e2b65a;
+    color: #17332b;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.signup-btn:hover {
+    background: #f0cc7a;
+    border-color: #f0cc7a;
+    color: #17332b;
 }
 
 .footer {
@@ -390,13 +440,26 @@ body {
         display: none;
     }
 
-    .log-button {
-        margin: 0;
+    .nav-right {
+        gap: 7px;
+    }
+
+    .theme-btn {
+        width: 34px;
+        height: 29px;
+        font-size: 11px;
     }
 
     #loginBtn {
-        height: 31px;
-        min-width: 64px;
+        height: 30px;
+        min-width: 62px;
+        padding: 0 13px;
+        font-size: 11px;
+    }
+
+    .signup-btn {
+        height: 30px;
+        min-width: 65px;
         padding: 0 13px;
         font-size: 11px;
     }
