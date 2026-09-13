@@ -1,54 +1,173 @@
 <div class="form-overlay"></div>
 
-<!-- REGISTER (Librarian) -->
+
+<!-- =====================================================
+     REGISTER - LIBRARIAN
+===================================================== -->
+
 <div class="box">
+
     <h2>Signup</h2>
 
     <form id="form" class="login-form" onsubmit="registerUser(event)">
 
-        <input type="text" id="library_name" placeholder="Library Name" required>
+        <div class="signup-grid">
 
-        <input type="text" id="name" placeholder="Username" required>
-        <span id="nameError"></span>
+            <!-- Library Name -->
+            <div class="form-group">
+                <input
+                    type="text"
+                    id="library_name"
+                    placeholder="Library Name"
+                    required
+                >
+            </div>
 
-        <input type="email" id="email" placeholder="E-mail" required>
-        <span id="mailError"></span>
 
-        <input type="password" id="password" placeholder="Password" required>
-        <span id="passError"></span>
+            <!-- Username -->
+            <div class="form-group">
 
-        <input type="password" id="confirmpass" placeholder="Confirm Password" required>
-        <span id="confirmError"></span>
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Username"
+                    required
+                >
 
-        <input type="text" id="city" placeholder="City" required>
+                <span id="nameError"></span>
 
-<input type="text" id="address" placeholder="Library Address" required>
+            </div>
 
-<label>Select Library Location</label>
 
-<div id="map"> </div>
+            <!-- Email -->
+            <div class="form-group">
 
-<input type="hidden" id="lat">
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="E-mail"
+                    required
+                >
 
-<input type="hidden" id="lon">
+                <span id="mailError"></span>
 
-        <label>
-            <input type="checkbox" id="showpass">
-            Show Password
+            </div>
+
+
+            <!-- City -->
+            <div class="form-group">
+
+                <input
+                    type="text"
+                    id="city"
+                    placeholder="City"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Password -->
+            <div class="form-group">
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    required
+                >
+
+                <span id="passError"></span>
+
+            </div>
+
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+
+                <input
+                    type="password"
+                    id="confirmpass"
+                    placeholder="Confirm Password"
+                    required
+                >
+
+                <span id="confirmError"></span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Library Address -->
+
+        <div class="form-group full-width">
+
+            <input
+                type="text"
+                id="address"
+                placeholder="Library Address"
+                required
+            >
+
+        </div>
+
+
+        <!-- Location -->
+
+        <label class="location-title">
+            <i class="fa-solid fa-location-dot"></i>
+            Select Library Location
         </label>
 
-        <button type="submit">Register</button>
+
+        <div id="map"></div>
+
+
+        <!-- Hidden Coordinates -->
+
+        <input type="hidden" id="lat">
+        <input type="hidden" id="lon">
+
+
+        <!-- Show Password -->
+
+        <label class="show-password">
+
+            <input
+                type="checkbox"
+                id="showpass"
+            >
+
+            <span>Show Password</span>
+
+        </label>
+
+
+        <!-- Register Button -->
+
+        <button type="submit" class="form-btn">
+            Register
+        </button>
 
     </form>
+
 </div>
 
 
-<!-- STUDENT LOGIN -->
+
+<!-- =====================================================
+     STUDENT LOGIN
+===================================================== -->
+
 <div class="box1">
 
     <h2>Student Login</h2>
 
-    <form class="login-form" onsubmit="loginStudent(event)">
+    <form
+        class="login-form"
+        onsubmit="loginStudent(event)"
+    >
 
         <input
             type="text"
@@ -71,7 +190,7 @@
             required
         >
 
-        <button type="submit">
+        <button type="submit" class="form-btn">
             Login
         </button>
 
@@ -80,12 +199,19 @@
 </div>
 
 
-<!-- TEACHER LOGIN -->
+
+<!-- =====================================================
+     TEACHER LOGIN
+===================================================== -->
+
 <div class="box2">
 
     <h2>Teacher Login</h2>
 
-    <form class="login-form" onsubmit="loginTeacher(event)">
+    <form
+        class="login-form"
+        onsubmit="loginTeacher(event)"
+    >
 
         <input
             type="text"
@@ -108,7 +234,7 @@
             required
         >
 
-        <button type="submit">
+        <button type="submit" class="form-btn">
             Login
         </button>
 
@@ -117,7 +243,11 @@
 </div>
 
 
-<!-- LIBRARIAN LOGIN -->
+
+<!-- =====================================================
+     LIBRARIAN LOGIN
+===================================================== -->
+
 <div class="box3">
 
     <h2>Librarian Login</h2>
@@ -141,7 +271,7 @@
             required
         >
 
-        <button type="submit">
+        <button type="submit" class="form-btn">
             Login
         </button>
 
