@@ -15,18 +15,15 @@ function validateForm() {
     document.getElementById("confirmError").innerText = "";
 
     // Name Validation
-
     if (name.length < 3) {
 
         document.getElementById("nameError").innerText =
             "Minimum 3 characters required";
 
         valid = false;
-
     }
 
     // Email Validation
-
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailPattern.test(email)) {
@@ -35,11 +32,9 @@ function validateForm() {
             "Enter a valid email";
 
         valid = false;
-
     }
 
     // Password Validation
-
     const passwordPattern =
         /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
 
@@ -49,22 +44,18 @@ function validateForm() {
             "Minimum 8 characters, 1 number & 1 special character";
 
         valid = false;
-
     }
 
     // Confirm Password
-
     if (password !== confirm) {
 
         document.getElementById("confirmError").innerText =
             "Password does not match";
 
         valid = false;
-
     }
 
     return valid;
-
 }
 
 
@@ -81,40 +72,59 @@ if (showPass) {
         const password = document.getElementById("password");
         const confirm = document.getElementById("confirmpass");
 
-        if (password) password.type = type;
-        if (confirm) confirm.type = type;
+        if (password) {
+            password.type = type;
+        }
+
+        if (confirm) {
+            confirm.type = type;
+        }
 
     });
 
 }
 
-// Jaipur Default Location
-var map = L.map('map').setView([26.9124,75.7873],13);
 
-// Map Tiles
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    attribution:'© OpenStreetMap'
-}).addTo(map);
+//////////////////// LIBRARY LOCATION MAP ////////////////////
 
-// Marker Variable
-var marker;
+// Check if map element exists
+const mapElement = document.getElementById("map");
 
-// Click Event
-map.on('click',function(e){
+if (mapElement && typeof L !== "undefined") {
 
-    // Remove Old Marker
-    if(marker){
-        map.removeLayer(marker);
-    }
+    // Jaipur Default Location
+    var map = L.map("map").setView([26.9124, 75.7873], 13);
 
-    // Add New Marker
-    marker = L.marker(e.latlng).addTo(map);
+    // Map Tiles
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap"
+    }).addTo(map);
 
-    // Save Coordinates
-    document.getElementById("latitude").value = e.latlng.lat;
-    document.getElementById("longitude").value = e.latlng.lng;
+    // Marker Variable
+    var marker;
 
-    console.log("Latitude :",e.latlng.lat);
-    console.log("Longitude :",e.latlng.lng);
+    // Map Click Event
+    map.on("click", function (e) {
 
-});
+        // Remove Old Marker
+        if (marker) {
+            map.removeLayer(marker);
+        }
+
+        // Add New Marker
+        marker = L.marker(e.latlng).addTo(map);
+
+        // Save Coordinates
+        document.getElementById("lat").value = e.latlng.lat;
+        document.getElementById("lon").value = e.latlng.lng;
+
+        console.log("Latitude :", e.latlng.lat);
+        console.log("Longitude :", e.latlng.lng);
+
+    });
+
+} else {
+
+    console.log("Map is not available on this page.");
+
+}
