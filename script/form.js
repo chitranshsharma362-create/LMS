@@ -69,7 +69,6 @@ function initializeShowPassword() {
         return;
     }
 
-    // Prevent duplicate event listener
     if (showPass.dataset.initialized === "true") {
         return;
     }
@@ -78,8 +77,11 @@ function initializeShowPassword() {
 
         const type = this.checked ? "text" : "password";
 
-        const password = document.getElementById("password");
-        const confirm = document.getElementById("confirmpass");
+        const password =
+            document.getElementById("password");
+
+        const confirm =
+            document.getElementById("confirmpass");
 
         if (password) {
             password.type = type;
@@ -105,7 +107,7 @@ function initializeLibraryMap() {
 
     const mapElement = document.getElementById("map");
 
-    // Form/map abhi load nahi hua
+    // Form abhi load nahi hua
     if (!mapElement) {
         return false;
     }
@@ -118,12 +120,27 @@ function initializeLibraryMap() {
 
     // Map already initialized
     if (libraryMap) {
+        setTimeout(() => {
+            libraryMap.invalidateSize();
+        }, 300);
+
         return true;
     }
 
-    // Jaipur default location
+
+    /*
+       Default location only used temporarily.
+       Browser ki current location milte hi
+       map automatically wahan move ho jayega.
+    */
+
+    const defaultLat = 26.9124;
+    const defaultLon = 75.7873;
+
+
+    // Create Map
     libraryMap = L.map("map").setView(
-        [26.9124, 75.7873],
+        [defaultLat, defaultLon],
         13
     );
 
@@ -137,59 +154,178 @@ function initializeLibraryMap() {
     ).addTo(libraryMap);
 
 
-    // Map Click
-    libraryMap.on("click", function (e) {
-
-        // Remove old marker
-        if (libraryMarker) {
-            libraryMap.removeLayer(libraryMarker);
-        }
-
-
-        // Add new marker
-        libraryMarker = L.marker(e.latlng)
-            .addTo(libraryMap);
-
-
-        // Save Latitude
-        const latInput = document.getElementById("lat");
-
-        // Save Longitude
-        const lonInput = document.getElementById("lon");
-
-
-        if (latInput) {
-            latInput.value = e.latlng.lat;
-        }
-
-        if (lonInput) {
-            lonInput.value = e.latlng.lng;
-        }
-
-
-        console.log("Latitude :", e.latlng.lat);
-        console.log("Longitude :", e.latlng.lng);
-
-    });
-
-
     // Fix map rendering inside modal
-    setTimeout(function () {
+    setTimeout(() => {
 
-        if (libraryMap) {
-            libraryMap.invalidateSize();
-        }
+        libraryMap.invalidateSize();
 
     }, 500);
 
 
-    console.log("Library map initialized.");
+    //////////////////// CURRENT LOCATION ////////////////////
+
+    if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(
+
+            function (position) {
+
+                const currentLat =
+                    position.coords.latitude;
+
+                const currentLon =
+                    position.coords.longitude;
+
+
+                // Move map to current location
+                libraryMap.setView(
+                    [currentLat, currentLon],
+                    16
+                );
+
+
+                // Remove previous marker
+                if (libraryMarker) {
+
+                    libraryMap.removeLayer(
+                        libraryMarker
+                    );
+
+                }
+
+
+                // Add current location marker
+                libraryMarker = L.marker([
+                    currentLat,
+                    currentLon
+                ]).addTo(libraryMap);
+
+
+                libraryMarker
+                    .bindPopup("Your Current Location")
+                    .openPopup();
+
+
+                console.log(
+                    "Current Latitude:",
+                    currentLat
+                );
+
+                console.log(
+                    "Current Longitude:",
+                    currentLon
+                );
+
+            },
+
+            function (error) {
+
+                console.log(
+                    "Unable to get current location."
+                );
+
+                console.log(error);
+
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+
+        );
+
+    } else {
+
+        console.log(
+            "Geolocation is not supported."
+        );
+
+    }
+
+
+    //////////////////// MAP CLICK ////////////////////
+
+    libraryMap.on("click", function (e) {
+
+        const selectedLat =
+            e.latlng.lat;
+
+        const selectedLon =
+            e.latlng.lng;
+
+
+        // Remove old marker
+        if (libraryMarker) {
+
+            libraryMap.removeLayer(
+                libraryMarker
+            );
+
+        }
+
+
+        // Add selected location marker
+        libraryMarker = L.marker([
+            selectedLat,
+            selectedLon
+        ]).addTo(libraryMap);
+
+
+        libraryMarker
+            .bindPopup("Selected Library Location")
+            .openPopup();
+
+
+        // Save Latitude
+        const latInput =
+            document.getElementById("lat");
+
+
+        // Save Longitude
+        const lonInput =
+            document.getElementById("lon");
+
+
+        if (latInput) {
+
+            latInput.value =
+                selectedLat;
+
+        }
+
+
+        if (lonInput) {
+
+            lonInput.value =
+                selectedLon;
+
+        }
+
+
+        console.log(
+            "Selected Latitude:",
+            selectedLat
+        );
+
+        console.log(
+            "Selected Longitude:",
+            selectedLon
+        );
+
+    });
+
+
+    console.log(
+        "Library map initialized successfully."
+    );
 
     return true;
 }
 
 
-//////////////////// INITIALIZE DYNAMIC FORM ////////////////////
+//////////////////// FORM INITIALIZATION ////////////////////
 
 function initializeFormElements() {
 
@@ -199,43 +335,54 @@ function initializeFormElements() {
 }
 
 
-//////////////////// WATCH FOR DYNAMIC FORM ////////////////////
+//////////////////// DYNAMIC FORM OBSERVER ////////////////////
 
-const formObserver = new MutationObserver(function () {
+const formObserver =
+    new MutationObserver(function () {
 
-    const mapElement = document.getElementById("map");
-    const showPass = document.getElementById("showpass");
+        const mapElement =
+            document.getElementById("map");
 
-    // Form dynamically load ho gaya
-    if (mapElement || showPass) {
+        const showPass =
+            document.getElementById("showpass");
 
-        initializeFormElements();
 
-    }
+        if (mapElement || showPass) {
 
-});
+            initializeFormElements();
+
+        }
+
+    });
 
 
 //////////////////// START OBSERVER ////////////////////
 
 if (document.body) {
 
-    formObserver.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
+    formObserver.observe(
+        document.body,
+        {
+            childList: true,
+            subtree: true
+        }
+    );
 
 }
 
 
-// In case form already exists
+//////////////////// INITIAL CHECK ////////////////////
+
 initializeFormElements();
 
 
 //////////////////// WINDOW LOAD ////////////////////
 
-window.addEventListener("load", function () {
+window.addEventListener(
+    "load",
+    function () {
 
-    initializeFormElements();
+        initializeFormElements();
 
-});
+    }
+);
