@@ -74,6 +74,7 @@ async function getLibraries() {
 
                     return `
                         <div class="card">
+
                             <h3>${name}</h3>
 
                             <p>
@@ -93,15 +94,29 @@ async function getLibraries() {
 
                             <p>
                                 <i class="fa-solid fa-route"></i>
-                                ${lib.distance.toFixed(2)} KM away
+                                ${lib.distance < 1
+                                    ? Math.round(lib.distance * 1000) + " m away"
+                                    : lib.distance.toFixed(2) + " KM away"}
                             </p>
 
-                            <button
-                                class="btn"
-                                onclick="copyCode('${code.replace(/'/g, "\\'")}')">
-                                <i class="fa-solid fa-copy"></i>
-                                Copy Code
-                            </button>
+                            <div class="card-buttons">
+
+                                <button
+                                    class="btn"
+                                    onclick="copyCode('${code.replace(/'/g, "\\'")}')">
+                                    <i class="fa-solid fa-copy"></i>
+                                    Copy Code
+                                </button>
+
+                                <button
+                                    class="btn direction-btn"
+                                    onclick="openDirections(${Number(lib.lat)}, ${Number(lib.lon)})">
+                                    <i class="fa-solid fa-diamond-turn-right"></i>
+                                    Directions
+                                </button>
+
+                            </div>
+
                         </div>
                     `;
                 }).join("");
@@ -148,13 +163,23 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
 
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const c = 2 * Math.atan2(
+        Math.sqrt(a),
+        Math.sqrt(1 - a)
+    );
 
     return earthRadius * c;
 }
 
 function toRadians(degrees) {
     return degrees * Math.PI / 180;
+}
+
+function openDirections(lat, lon) {
+    const url =
+        `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
+
+    window.open(url, "_blank");
 }
 
 async function copyCode(code) {
@@ -170,11 +195,13 @@ async function copyCode(code) {
         console.error("Copy failed:", error);
 
         const textarea = document.createElement("textarea");
+
         textarea.value = code;
         textarea.style.position = "fixed";
         textarea.style.opacity = "0";
 
         document.body.appendChild(textarea);
+
         textarea.select();
 
         try {
@@ -190,3 +217,4 @@ async function copyCode(code) {
 
 window.getLibraries = getLibraries;
 window.copyCode = copyCode;
+window.openDirections = openDirections;
